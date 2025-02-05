@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "crime-stoppers-frontend",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular-standalone"
 }
