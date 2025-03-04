@@ -1,0 +1,29 @@
+<ion-modal [inert]="!isOpen" (willDismiss)="onWillDismiss()">
+	<ng-template>
+		<ion-header>
+			<ion-toolbar>
+				<ion-title>Anonymous Tip Information</ion-title>
+				<ion-buttons slot="end">
+					<ion-button (click)="close()">Close</ion-button>
+				</ion-buttons>
+			</ion-toolbar>
+		</ion-header>
+		<ion-content class="ion-padding">
+			<h2>How to Submit an Anonymous Tip</h2>
+			<p>
+				Your anonymous tips help us solve and prevent crime in our community. All information provided is kept
+				strictly confidential.
+			</p>
+			<h3>Benefits of submitting a tip:</h3>
+			<ul>
+				<li>100% anonymous - your identity is never revealed</li>
+				<li>Information goes directly to investigators</li>
+				<li>You may be eligible for a cash reward</li>
+			</ul>
+			<p>
+				You can submit a tip online through our secure web portal or call our dedicated phone line.
+			</p>
+			<ion-button expand="full" (click)="continueTip()">Continue to Submit a Tip</ion-button>
+		</ion-content>
+	</ng-template>
+</ion-modal>

@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-toggle menu="main-menu">
+				<ion-button>
+					<ion-icon slot="icon-only" name="menu"></ion-icon>
+				</ion-button>
+			</ion-menu-toggle>
+		</ion-buttons>
+		<ion-title>Map</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+	<iframe src="https://experience.arcgis.com/experience/5372f09e53114a46a871a3a5c2a58a48/"
+		style="width: 100%; height: 100%; border: none;"></iframe>
+</ion-content>

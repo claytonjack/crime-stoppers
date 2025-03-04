@@ -1,0 +1,14 @@
+{
+  "name": "crime-stoppers",
+  "version": "1.0.0",
+  "description": "Cross platform mobile app",
+  "private": true,
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "start:frontend": "npm run start --workspace=frontend",
+    "start:backend": "npm run dev --workspace=backend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Code Against Crime",
+  "license": "MIT"
+}

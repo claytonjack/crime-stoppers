@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-toggle menu="main-menu">
+				<ion-button>
+					<ion-icon slot="icon-only" name="menu-outline"></ion-icon>
+				</ion-button>
+			</ion-menu-toggle>
+		</ion-buttons>
+		<ion-title>Tab 5</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+	<div class="ion-padding">
+		<ion-card class="swiper-card">
+			<swiper-container class="mySwiper" pagination="true" navigation="true">
+				<swiper-slide>
+					<div class="slide-content">
+						<img src="../../assets/images/hcs-1.jpg" alt="Slide Image" />
+					</div>
+				</swiper-slide>
+				<swiper-slide>
+					<div class="slide-content">
+						<img src="../../assets/images/hcs-2.jpg" alt="Slide Image" />
+					</div>
+				</swiper-slide>
+				<swiper-slide>
+					<div class="slide-content">
+						<img src="../../assets/images/hcs-3.jpg" alt="Slide Image" />
+					</div>
+				</swiper-slide>
+			</swiper-container>
+		</ion-card>
+
+		<ion-button expand="full" (click)="openTipModal()">Submit a Tip!</ion-button>
+	</div>
+
+	<ion-modal [isOpen]="isModalOpen">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-title>Anonymous Tip Information</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="setOpen(false)">Close</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content class="ion-padding">
+				<h2>How to Submit an Anonymous Tip</h2>
+				<p>
+					Your anonymous tips help us solve and prevent crime in our community. All information provided is kept
+					strictly confidential.
+				</p>
+				<h3>Benefits of submitting a tip:</h3>
+				<ul>
+					<li>100% anonymous - your identity is never revealed</li>
+					<li>Information goes directly to investigators</li>
+					<li>You may be eligible for a cash reward</li>
+				</ul>
+				<p>
+					You can submit a tip online through our secure web portal or call our dedicated phone line.
+				</p>
+				<ion-button expand="full" (click)="openTipOptions()">Continue to Submit a Tip</ion-button>
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+</ion-content>

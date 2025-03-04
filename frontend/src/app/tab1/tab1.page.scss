@@ -1,0 +1,31 @@
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-logo {
+  height: 40px;
+  max-width: 100px;
+  object-fit: contain;
+}
+
+ion-card {
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+}
+
+ion-card {
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+}
+
+ion-button[expand="full"] {
+  width: 100%;
+  --padding-start: 0;
+  --padding-end: 0;
+  margin-bottom: 10px;
+}
