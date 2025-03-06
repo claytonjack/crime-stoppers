@@ -30,20 +30,20 @@ jobs:
               run: npx ng build --configuration=production
 
             - name: Install Lighthouse CI
-              run: npm install -g @lhci/cli@0.14.x
+              run: npm install -g @lhci/cli
 
             - name: Start ng serve in background
               working-directory: ./frontend
               run: |
-                  nohup npx ng serve --disable-host-check &
+                  nohup npx ng serve --disable-host-check --port 8100 &
 
             - name: Wait for ng serve to start
-              run: sleep 10
+              run: npx wait-on http://localhost:8100/tabs/tab1
 
             - name: Run Lighthouse tests
               run: |
                   npx lhci autorun \
-                    --collect.frequency=3 \
+                    --collect.numberOfRuns=2 \
                     --upload.target=temporary-public-storage \
                     --collect.url="http://localhost:8100/tabs/tab1" \
                     --collect.url="http://localhost:8100/tabs/tab2" \
