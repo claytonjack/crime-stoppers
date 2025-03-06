@@ -30,6 +30,13 @@ jobs:
               working-directory: ./frontend
               run: npx ng build --configuration=production
 
+            - name: Run Jasmine unit tests
+              working-directory: ./frontend
+              run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
+
+            - name: Run npm audit --audit-level=high
+              run: npm audit --audit-level=high
+
             - name: Install Lighthouse CI
               run: npm install -g @lhci/cli
 
@@ -44,7 +51,7 @@ jobs:
             - name: Run Lighthouse tests
               run: |
                   npx lhci autorun \
-                    --assert '{"performance": 40, "accessibility": 80, "best-practices": 80, "seo": 80, "pwa": 80}' \
+                    --assert='{"performance": 40, "accessibility": 80, "best-practices": 80, "seo": 80, "pwa": 80}' \
                     --collect.numberOfRuns=2 \
                     --upload.target=temporary-public-storage \
                     --collect.url="http://localhost:8100/tabs/tab1" \
@@ -52,7 +59,3 @@ jobs:
                     --collect.url="http://localhost:8100/tabs/tab3" \
                     --collect.url="http://localhost:8100/tabs/tab4" \
                     --collect.url="http://localhost:8100/tabs/tab5"
-
-            - name: Run Jasmine unit tests
-              working-directory: ./frontend
-              run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
