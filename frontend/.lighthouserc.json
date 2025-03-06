@@ -1,0 +1,26 @@
+{
+  "ci": {
+    "assert": {
+      "assertions": {
+        "performance": ["error", { "minScore": 0.4 }],
+        "accessibility": ["error", { "minScore": 0.8 }],
+        "best-practices": ["error", { "minScore": 0.8 }],
+        "seo": ["error", { "minScore": 0.8 }],
+        "pwa": ["error", { "minScore": 0.8 }]
+      }
+    },
+    "collect": {
+      "url": [
+        "http://localhost:8100/tabs/tab1",
+        "http://localhost:8100/tabs/tab2",
+        "http://localhost:8100/tabs/tab3",
+        "http://localhost:8100/tabs/tab4",
+        "http://localhost:8100/tabs/tab5"
+      ],
+      "numberOfRuns": 1
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

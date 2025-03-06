@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Frontend CI Pipeline
 on:
     push:
         branches: [main]
@@ -49,13 +49,5 @@ jobs:
               run: npx wait-on http://localhost:8100/tabs/tab1
 
             - name: Run Lighthouse tests
-              run: |
-                  npx lhci autorun \
-                    --assert='{"performance": 40, "accessibility": 80, "best-practices": 80, "seo": 80, "pwa": 80}' \
-                    --collect.numberOfRuns=2 \
-                    --upload.target=temporary-public-storage \
-                    --collect.url="http://localhost:8100/tabs/tab1" \
-                    --collect.url="http://localhost:8100/tabs/tab2" \
-                    --collect.url="http://localhost:8100/tabs/tab3" \
-                    --collect.url="http://localhost:8100/tabs/tab4" \
-                    --collect.url="http://localhost:8100/tabs/tab5"
+              working-directory: ./frontend
+              run: npx lhci autorun
