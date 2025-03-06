@@ -39,11 +39,14 @@ jobs:
             - name: Install latest Ionic CLI
               run: npm install -g @ionic/cli
 
+            - name: Install Angular CLI
+              run: npm install -D @angular/cli
+
             - name: Install Capacitor (if required)
               run: npm install @capacitor/core @capacitor/cli
 
             - name: Verify ionic.config.json
-              run: cat ionic.config.json
+              run: cat ionic.config.json # Debugging step
 
             - name: Build application
               run: ionic build --prod
