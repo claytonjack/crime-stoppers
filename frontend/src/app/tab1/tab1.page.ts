@@ -19,6 +19,7 @@ import {
   IonImg,
   ActionSheetController,
 } from '@ionic/angular/standalone';
+
 import { TipInfoComponent } from '@components/tip-info/tip-info.component';
 import { AboutUsComponent } from '@components/about-us/about-us.component';
 import { TipProcedureComponent } from '@components/tip-procedure/tip-procedure.component';

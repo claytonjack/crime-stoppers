@@ -24,12 +24,15 @@
       "@services/*": ["src/app/services/*"],
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"]
-    }
+    },
+    "types": ["cypress", "node"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": ["src/**/*", "cypress/**/*"],  // ✅ Ensure Cypress tests are included
+  "exclude": ["node_modules", "dist"]
 }
