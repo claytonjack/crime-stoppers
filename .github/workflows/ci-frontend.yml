@@ -1,19 +1,12 @@
 name: CI Pipeline
-
 on:
     push:
         branches: [main]
     pull_request:
         branches: [main]
-
 jobs:
     test:
         runs-on: ubuntu-latest
-
-        defaults:
-            run:
-                working-directory: ./frontend
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -22,24 +15,20 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 18.x
+                  cache: "npm"
+                  cache-dependency-path: ./package-lock.json
 
-            - name: Install node dependencies
-              run: npm ci || npm install
+            - name: Install root dependencies
+              run: npm ci --no-progress --prefer-offline
 
-            - name: Install latest Ionic CLI
-              run: npm install -g @ionic/cli
-
-            - name: Install Angular CLI and link it
-              run: npm install -D @angular/cli && npm link @angular/cli
-
-            - name: Install Capacitor (if required)
-              run: npm install @capacitor/core @capacitor/cli
-
-            - name: Verify ionic.config.json
-              run: cat ionic.config.json # Debugging step
+            - name: Install frontend dependencies
+              working-directory: ./frontend
+              run: npm install --no-progress
 
             - name: Build application
-              run: npx ionic build --prod
+              working-directory: ./frontend
+              run: npx ng build --configuration=production
 
             - name: Run unit tests
+              working-directory: ./frontend
               run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
