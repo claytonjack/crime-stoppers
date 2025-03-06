@@ -36,5 +36,8 @@ jobs:
             - name: Build application
               run: npx ionic build --prod
 
+            - name: Sync with Capacitor
+              run: npx cap sync
+
             - name: Run unit tests
               run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
