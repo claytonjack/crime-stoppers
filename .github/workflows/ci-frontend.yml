@@ -32,9 +32,17 @@ jobs:
             - name: Install Lighthouse CI
               run: npm install -g @lhci/cli@0.14.x
 
-            - name: Run Lighthouse CI
-              run: npx lhci autorun --upload.target=temporary-public-storage --collect.staticDistDir=./frontend/www
+            - name: Run Lighthouse tests
+              run: |
+                  npx lhci autorun \
+                    --upload.target=temporary-public-storage \
+                    --collect.staticDistDir=./frontend/www \
+                    --collect.url="http://localhost:37321/tabs/tab1" \
+                    --collect.url="http://localhost:37321/tabs/tab2" \
+                    --collect.url="http://localhost:37321/tabs/tab3" \
+                    --collect.url="http://localhost:37321/tabs/tab4" \
+                    --collect.url="http://localhost:37321/tabs/tab5"
 
-            - name: Run unit tests
+            - name: Run Jasmine unit tests
               working-directory: ./frontend
               run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
