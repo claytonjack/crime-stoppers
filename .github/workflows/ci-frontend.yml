@@ -38,17 +38,18 @@ jobs:
                   nohup npx ng serve --disable-host-check &
 
             - name: Wait for ng serve to start
-              run: sleep 15
+              run: sleep 10
 
             - name: Run Lighthouse tests
               run: |
                   npx lhci autorun \
+                    --collect.frequency=3 \
                     --upload.target=temporary-public-storage \
-                    --collect.url="http://0.0.0.0:8100/tabs/tab1" \
-                    --collect.url="http://0.0.0.0:8100/tabs/tab2" \
-                    --collect.url="http://0.0.0.0:8100/tabs/tab3" \
-                    --collect.url="http://0.0.0.0:8100/tabs/tab4" \
-                    --collect.url="http://0.0.0.0:8100/tabs/tab5"
+                    --collect.url="http://localhost:8100/tabs/tab1" \
+                    --collect.url="http://localhost:8100/tabs/tab2" \
+                    --collect.url="http://localhost:8100/tabs/tab3" \
+                    --collect.url="http://localhost:8100/tabs/tab4" \
+                    --collect.url="http://localhost:8100/tabs/tab5"
 
             - name: Run Jasmine unit tests
               working-directory: ./frontend
