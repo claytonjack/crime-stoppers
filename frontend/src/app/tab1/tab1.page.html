@@ -2,15 +2,12 @@
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-menu-toggle menu="main-menu">
-				<ion-button>
+				<ion-button aria-label="Open main menu">
 					<ion-icon slot="icon-only" name="menu-outline"></ion-icon>
 				</ion-button>
 			</ion-menu-toggle>
 		</ion-buttons>
-		<div class="toolbar-content">
-			<ion-title>Home</ion-title>
-			<img src="../../assets/images/hcs-logo.png" alt="Crime Stoppers Logo" class="header-logo" />
-		</div>
+		<ion-title>Home</ion-title>
 	</ion-toolbar>
 </ion-header>
 
@@ -22,54 +19,44 @@
 			<swiper-container class="mySwiper" pagination="true" navigation="true">
 				<swiper-slide>
 					<div class="slide-content">
-						<img src="../../assets/images/hcs-1.jpg" alt="Slide Image" />
+						<ion-img src="assets/images/csh-logo-square.jpg" alt="Crime Stoppers Organization Logo"></ion-img>
 					</div>
 				</swiper-slide>
 				<swiper-slide>
 					<div class="slide-content">
-						<img src="../../assets/images/hcs-2.jpg" alt="Slide Image" />
+						<ion-img src="assets/images/csh-1.jpg" alt="Crime Stoppers Community Event"></ion-img>
 					</div>
 				</swiper-slide>
 				<swiper-slide>
 					<div class="slide-content">
-						<img src="../../assets/images/hcs-3.jpg" alt="Slide Image" />
+						<ion-img src="assets/images/csh-2.jpg" alt="Crime Stoppers Awareness Campaign"></ion-img>
+					</div>
+				</swiper-slide>
+				<swiper-slide>
+					<div class="slide-content">
+						<ion-img src="assets/images/csh-3.jpg" alt="Crime Stoppers Team Members"></ion-img>
 					</div>
 				</swiper-slide>
 			</swiper-container>
 		</div>
 
 		<ion-segment [(ngModel)]="selectedSegment">
-			<ion-segment-button value="tab1">
-				Vision
+			<ion-segment-button value="about-us">
+				About Us
 			</ion-segment-button>
-			<ion-segment-button value="tab2">
-				Mission
-			</ion-segment-button>
-			<ion-segment-button value="tab3">
-				Procedure
+			<ion-segment-button value="tip-procedure">
+				Tip Procedure
 			</ion-segment-button>
 		</ion-segment>
 
-		<ion-card *ngIf="selectedSegment === 'tab1'">
-			<ion-card-content>
-				<p>A crime-free Halton.</p>
-			</ion-card-content>
-		</ion-card>
+		<div *ngIf="selectedSegment === 'about-us'">
+			<app-about-us></app-about-us>
+		</div>
 
-		<ion-card *ngIf="selectedSegment === 'tab2'">
-			<ion-card-content>
-				<p>To reduce crime in Halton Region through community education and engagement in partnership with the public,
-					the police, and the media and by providing citizens the ability to provide information with guaranteed
-					anonymity to deter and solve crime, with rewards offered for tips that lead to an arrest.</p>
-			</ion-card-content>
-		</ion-card>
-
-		<ion-card *ngIf="selectedSegment === 'tab3'">
-			<ion-card-content>
-				<p>Content for Procedure</p>
-			</ion-card-content>
-		</ion-card>
+		<div *ngIf="selectedSegment === 'tip-procedure'">
+			<app-tip-procedure></app-tip-procedure>
+		</div>
 	</div>
 
-	<app-tip-modal [isOpen]="isModalOpen" (closeModal)="closeTipModal()" (submitTip)="openTipOptions()"></app-tip-modal>
+	<app-tip-info [isOpen]="isModalOpen" (closeModal)="closeTipModal()" (submitTip)="openTipOptions()"></app-tip-info>
 </ion-content>

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { TipModalComponent } from './tip-modal.component';
+import { AboutUsComponent } from './about-us.component';
 
-describe('TipModalComponent', () => {
-  let component: TipModalComponent;
-  let fixture: ComponentFixture<TipModalComponent>;
+describe('AboutUsComponent', () => {
+  let component: AboutUsComponent;
+  let fixture: ComponentFixture<AboutUsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [TipModalComponent],
+      imports: [AboutUsComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TipModalComponent);
+    fixture = TestBed.createComponent(AboutUsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

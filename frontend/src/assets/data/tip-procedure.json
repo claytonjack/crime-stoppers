@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Submit Your Tip",
+    "icon": "send-outline",
+    "description": "Submit your tip anonymously and we will issue you a code number that you can use to inquire about the status of your tip."
+  },
+  {
+    "id": 2,
+    "title": "Sharing Your Tip",
+    "icon": "share-social-outline",
+    "description": "The valuable information you provide anonymously is shared with law enforcement."
+  },
+  {
+    "id": 3,
+    "title": "The Investigation",
+    "icon": "search-outline",
+    "description": "Once the investigation is complete, Crime Stoppers of Halton is advised of the case results."
+  },
+  {
+    "id": 4,
+    "title": "Reward Amount",
+    "icon": "cash-outline",
+    "description": "The usefulness of your tip will be reviewed by Crime Stoppers of Halton to determine the amount of your cash reward."
+  },
+  {
+    "id": 5,
+    "title": "Tip Inquiry",
+    "icon": "help-circle-outline",
+    "description": "Use your tip number to inquire by phone or online about the status of your tip and possible cash reward up to $2000."
+  },
+  {
+    "id": 6,
+    "title": "Reward Arranged",
+    "icon": "checkmark-circle-outline",
+    "description": "Crime Stoppers of Halton will authorize the bank (or other public outlet) to prepare your cash reward identifiable by your tip number."
+  },
+  {
+    "id": 7,
+    "title": "Cash Pick-up",
+    "icon": "wallet-outline",
+    "description": "A tip inquiry will tell you the amount of your cash award & where you can pick it up by providing your tip number only – no ID needed."
+  }
+]

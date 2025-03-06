@@ -24,9 +24,9 @@ import {
 } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-tip-modal',
-  templateUrl: './tip-modal.component.html',
-  styleUrls: ['./tip-modal.component.scss'],
+  selector: 'app-tip-info',
+  templateUrl: './tip-info.component.html',
+  styleUrls: ['./tip-info.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -39,7 +39,7 @@ import {
     IonModal,
   ],
 })
-export class TipModalComponent {
+export class TipInfoComponent {
   @ViewChild(IonModal) modal!: IonModal;
   @Input()
   set isOpen(value: boolean) {

@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: ./frontend
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18.x
+                  cache: "npm"
+                  cache-dependency-path: ./frontend/package-lock.json
+
+            - name: Install node dependencies
+              run: npm ci
+
+            - name: Install Chrome
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y chromium-browser
+
+            - name: Build application
+              run: npx ionic build --prod
+
+            - name: Run unit tests
+              run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress

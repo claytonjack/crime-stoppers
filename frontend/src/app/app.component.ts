@@ -8,7 +8,23 @@ import {
   IonTitle,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { menu, home, heart } from 'ionicons/icons';
+import {
+  menuOutline,
+  homeOutline,
+  informationCircleOutline,
+  callOutline,
+  globeOutline,
+  eyeOutline,
+  compassOutline,
+  shieldCheckmarkOutline,
+  megaphoneOutline,
+  documentTextOutline,
+  shareOutline,
+  checkmarkDoneOutline,
+  cashOutline,
+  cardOutline,
+  downloadOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +35,22 @@ import { menu, home, heart } from 'ionicons/icons';
 })
 export class AppComponent {
   constructor() {
-    addIcons({ menu, home, heart });
+    addIcons({
+      menuOutline,
+      homeOutline,
+      informationCircleOutline,
+      callOutline,
+      globeOutline,
+      eyeOutline,
+      compassOutline,
+      shieldCheckmarkOutline,
+      megaphoneOutline,
+      documentTextOutline,
+      shareOutline,
+      checkmarkDoneOutline,
+      cashOutline,
+      cardOutline,
+      downloadOutline,
+    });
   }
 }

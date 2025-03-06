@@ -14,20 +14,14 @@ import {
   IonButton,
   IonMenuToggle,
   IonIcon,
-  IonCard,
   IonSegment,
   IonSegmentButton,
+  IonImg,
   ActionSheetController,
-  AlertController,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {
-  menuOutline,
-  informationCircleOutline,
-  callOutline,
-  globeOutline,
-} from 'ionicons/icons';
-import { TipModalComponent } from '../components/tip-modal/tip-modal.component';
+import { TipInfoComponent } from '@components/tip-info/tip-info.component';
+import { AboutUsComponent } from '@components/about-us/about-us.component';
+import { TipProcedureComponent } from '@components/tip-procedure/tip-procedure.component';
 
 @Component({
   selector: 'app-tab1',
@@ -47,25 +41,18 @@ import { TipModalComponent } from '../components/tip-modal/tip-modal.component';
     IonIcon,
     IonSegment,
     IonSegmentButton,
-    TipModalComponent,
+    IonImg,
+    TipInfoComponent,
+    AboutUsComponent,
+    TipProcedureComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Tab1Page {
   isModalOpen = false;
-  selectedSegment: string = 'tab1';
+  selectedSegment: string = 'about-us';
 
-  constructor(
-    private actionSheetCtrl: ActionSheetController,
-    private alertCtrl: AlertController
-  ) {
-    addIcons({
-      menuOutline,
-      informationCircleOutline,
-      callOutline,
-      globeOutline,
-    });
-  }
+  constructor(private actionSheetCtrl: ActionSheetController) {}
 
   openTipModal() {
     this.isModalOpen = true;
@@ -106,9 +93,14 @@ export class Tab1Page {
   }
 
   async openWebTip() {
-    await InAppBrowser.openInSystemBrowser({
-      url: 'https://www.p3tips.com/TipForm.aspx?ID=201',
-      options: DefaultSystemBrowserOptions,
-    });
+    try {
+      await InAppBrowser.openInSystemBrowser({
+        url: 'https://www.p3tips.com/TipForm.aspx?ID=201',
+        options: DefaultSystemBrowserOptions,
+      });
+    } catch (error) {
+      console.error('Error opening browser:', error);
+      // TODO: Add user feedback
+    }
   }
 }

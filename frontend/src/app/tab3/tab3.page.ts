@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  InAppBrowser,
-  DefaultSystemBrowserOptions,
-} from '@capacitor/inappbrowser';
-import {
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -31,11 +27,4 @@ import {
 })
 export class Tab3Page {
   constructor() {}
-
-  async openWebpage() {
-    await InAppBrowser.openInSystemBrowser({
-      url: 'https://www.google.ca',
-      options: DefaultSystemBrowserOptions,
-    });
-  }
 }
