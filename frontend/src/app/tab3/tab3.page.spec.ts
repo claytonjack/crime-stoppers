@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { addIcons } from 'ionicons';
-import { menu } from 'ionicons/icons';
 import {
   IonHeader,
   IonToolbar,

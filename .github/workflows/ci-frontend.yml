@@ -29,6 +29,12 @@ jobs:
               working-directory: ./frontend
               run: npx ng build --configuration=production
 
+            - name: Install Lighthouse CI
+              run: npm install -g @lhci/cli@0.14.x
+
+            - name: Run Lighthouse CI
+              run: npx lhci autorun --upload.target=temporary-public-storage
+
             - name: Run unit tests
               working-directory: ./frontend
               run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress

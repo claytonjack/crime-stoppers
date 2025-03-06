@@ -7,7 +7,6 @@ import {
   IonItem,
   IonLabel,
   IonIcon,
-  IonCard,
 } from '@ionic/angular/standalone';
 import {
   documentTextOutline,
@@ -25,7 +24,6 @@ import {
   styleUrls: ['./tip-procedure.component.scss'],
   standalone: true,
   imports: [
-    IonCard,
     CommonModule,
     IonAccordionGroup,
     IonAccordion,
