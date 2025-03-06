@@ -25,19 +25,28 @@ jobs:
                   cache: "npm"
                   cache-dependency-path: ./package-lock.json
 
-            - name: Install node dependencies
-              run: npm ci
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
-            - name: Install Chrome
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install -y chromium-browser
+            - name: Install node dependencies
+              run: npm ci --no-progress --prefer-offline
+
+            - name: Install latest Ionic CLI
+              run: npm install -g @ionic/cli
+
+            - name: Install Capacitor (if required)
+              run: npm install @capacitor/core @capacitor/cli
+
+            - name: Verify ionic.config.json
+              run: cat ionic.config.json
 
             - name: Build application
-              run: npx ionic build --prod
-
-            - name: Sync with Capacitor
-              run: npx cap sync
+              run: ionic build --prod
 
             - name: Run unit tests
               run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
