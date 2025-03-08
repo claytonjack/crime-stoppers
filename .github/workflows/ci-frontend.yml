@@ -27,7 +27,7 @@ jobs:
 
             - name: Serve application
               working-directory: ./frontend
-              run: npx ng serve --disable-host-check
+              run: nohup npx ng serve --disable-host-check --port 8100
 
     test:
         runs-on: ubuntu-latest
