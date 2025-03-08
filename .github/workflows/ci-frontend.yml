@@ -29,7 +29,7 @@ jobs:
               working-directory: ./frontend
               run: nohup npx ng serve --disable-host-check --port 8100 &
 
-            - name: Run npm audit
+            - name: Run npm audit security check
               run: npm audit --audit-level=high
 
             - name: Run Jasmine unit tests
@@ -42,4 +42,6 @@ jobs:
 
             - name: Run Lighthouse tests
               working-directory: ./frontend
-              run: npx lhci autorun
+              run: |
+                  npm install -g @lhci/cli
+                  lhci autorun
