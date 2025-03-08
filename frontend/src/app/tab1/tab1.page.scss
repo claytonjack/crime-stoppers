@@ -1,18 +1,19 @@
-ion-card {
-  width: 100%;
-  margin: 10px 0;
-  display: block;
+ion-button {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-ion-card {
-  width: 100%;
-  margin: 10px 0;
-  display: block;
+ion-segment-button {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-ion-button[expand="full"] {
-  width: 100%;
-  --padding-start: 0;
-  --padding-end: 0;
-  margin-bottom: 10px;
+ion-content,
+.ion-padding > div,
+.swiper-container,
+app-about-us,
+app-tip-procedure {
+  border-radius: 14px;
+  overflow: hidden;
 }

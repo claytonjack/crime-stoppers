@@ -1,4 +1,4 @@
-<ion-modal [inert]="!isOpen" (willDismiss)="onWillDismiss()">
+<ion-modal [inert]="!isOpen" (willDismiss)="onWillDismiss()" autoHide="true">
 	<ng-template>
 		<ion-header>
 			<ion-toolbar>
@@ -26,7 +26,7 @@
 				To aid investigations, provide comprehensive details. Your anonymity is guaranteed.
 			</p>
 
-			<ion-button expand="full" (click)="continueTip()">Continue to Submit a Tip</ion-button>
+			<ion-button shape="round" expand="full" (click)="continueTip()">Continue to Tip</ion-button>
 		</ion-content>
 	</ng-template>
 </ion-modal>

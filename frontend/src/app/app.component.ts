@@ -33,6 +33,10 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 })
 export class AppComponent {
   constructor() {
+    this.registerIcons();
+  }
+
+  private registerIcons() {
     addIcons({
       menu,
       home,

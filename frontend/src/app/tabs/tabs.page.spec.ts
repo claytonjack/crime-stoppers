@@ -10,7 +10,7 @@ describe('TabsPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TabsPage],
-      providers: [provideRouter([])]
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

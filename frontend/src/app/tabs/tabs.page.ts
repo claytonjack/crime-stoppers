@@ -8,8 +8,6 @@ import {
   IonFab,
   IonFabButton,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { home, newspaper, map, help } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -28,7 +26,5 @@ import { home, newspaper, map, help } from 'ionicons/icons';
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() {
-    addIcons({ home, newspaper, map, help });
-  }
+  constructor() {}
 }

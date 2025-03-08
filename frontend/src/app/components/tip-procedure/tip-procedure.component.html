@@ -1,5 +1,5 @@
 <ion-accordion-group>
-	<ion-accordion *ngFor="let step of steps" class="tip-accordion">
+	<ion-accordion *ngFor="let step of steps">
 		<ion-item slot="header" class="tip-item">
 			<ion-icon [name]="step.icon" slot="start" class="tip-icon"></ion-icon>
 			<ion-label>{{ step.title }}</ion-label>
