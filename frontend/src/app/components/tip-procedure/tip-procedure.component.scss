@@ -1,0 +1,17 @@
+.tip-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --inner-padding-end: 0;
+
+  ion-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+}
+
+.tip-icon {
+  font-size: 28px;
+  color: var(--ion-color-primary);
+  margin-right: 16px;
+}

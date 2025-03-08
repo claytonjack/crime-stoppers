@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/cypress",
+    "sourceMap": false,
+    "target": "es2015",
+    "lib": ["es2018", "dom"],
+    "types": ["cypress", "node"]
+  },
+  "include": ["./**/*.ts"],
+  "exclude": []
+}

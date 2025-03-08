@@ -13,7 +13,6 @@ import {
   IonContent,
   IonButtons,
   IonButton,
-  IonIcon,
   IonModal,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';

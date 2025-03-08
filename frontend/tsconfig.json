@@ -24,12 +24,15 @@
       "@services/*": ["src/app/services/*"],
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"]
-    }
+    },
+    "types": ["jasmine", "node"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "cypress"]
 }

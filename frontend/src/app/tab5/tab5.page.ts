@@ -13,8 +13,6 @@ import {
   IonButton,
   IonMenuToggle,
   IonIcon,
-  IonCard,
-  IonModal,
   ActionSheetController,
   AlertController,
 } from '@ionic/angular/standalone';
@@ -41,8 +39,6 @@ import {
     IonButton,
     IonMenuToggle,
     IonIcon,
-    IonCard,
-    IonModal,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

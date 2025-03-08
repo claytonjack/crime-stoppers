@@ -1,39 +1,11 @@
-<!-- about-us.component.html -->
-<ion-card class="about-card">
-	<ion-card-content class="ion-no-padding">
-		<ion-list lines="none">
-			<ion-item class="about-item">
-				<ion-icon slot="start" name="eye-outline" class="about-icon"></ion-icon>
-				<ion-label class="ion-text-wrap">
-					<h2>Our Vision</h2>
-					<p>A crime-free Halton Region</p>
-				</ion-label>
-			</ion-item>
-
-			<ion-item class="about-item">
-				<ion-icon slot="start" name="compass-outline" class="about-icon"></ion-icon>
-				<ion-label class="ion-text-wrap">
-					<h2>Our Mission</h2>
-					<p>Reduce crime through community education and anonymous tip solutions, offering rewards up to $2,000 for
-						successful tips.</p>
-				</ion-label>
-			</ion-item>
-
-			<ion-item class="about-item">
-				<ion-icon slot="start" name="globe-outline" class="about-icon"></ion-icon>
-				<ion-label class="ion-text-wrap">
-					<h2>35+ Years Serving Halton</h2>
-					<p>Part of a global network of 1,800 programs, working with police, media, and citizens to solve crimes.</p>
-				</ion-label>
-			</ion-item>
-
-			<ion-item class="about-item">
-				<ion-icon slot="start" name="shield-checkmark-outline" class="about-icon"></ion-icon>
-				<ion-label class="ion-text-wrap">
-					<h2>Guaranteed Anonymity</h2>
-					<p>No names, no call display, no court appearances. Just community-powered crime prevention.</p>
-				</ion-label>
-			</ion-item>
-		</ion-list>
-	</ion-card-content>
-</ion-card>
+<ion-list lines="none">
+	<div *ngFor="let item of aboutItems" class="about-item">
+		<ion-item class="about-header">
+			<ion-icon [name]="item.icon" slot="start" class="about-icon"></ion-icon>
+			<ion-label>{{ item.title }}</ion-label>
+		</ion-item>
+		<div class="ion-padding about-content">
+			{{ item.details }}
+		</div>
+	</div>
+</ion-list>
