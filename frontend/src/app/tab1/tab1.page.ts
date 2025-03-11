@@ -70,14 +70,14 @@ export class Tab1Page {
       buttons: [
         {
           text: 'Submit Online',
-          icon: 'globe-outline',
+          icon: 'globe',
           handler: () => {
             this.openWebTip();
           },
         },
         {
           text: 'Call Tip Line',
-          icon: 'call-outline',
+          icon: 'call',
           handler: () => {
             window.open('tel:18002228477', '_system');
           },

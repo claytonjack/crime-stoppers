@@ -16,11 +16,7 @@ import {
   IonModal,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import {
-  informationCircleOutline,
-  callOutline,
-  globeOutline,
-} from 'ionicons/icons';
+import { information, call, globe } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tip-info',
@@ -60,9 +56,9 @@ export class TipInfoComponent {
 
   constructor() {
     addIcons({
-      informationCircleOutline,
-      callOutline,
-      globeOutline,
+      information,
+      call,
+      globe,
     });
   }
 
