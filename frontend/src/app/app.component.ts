@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { Router } from '@angular/router';
 import { SettingsManagerService } from './services/settings/settings-manager.service';
+import { IconsService } from './services/icons.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { SettingsManagerService } from './services/settings/settings-manager.ser
 export class AppComponent implements OnInit {
   constructor(
     private router: Router,
-    private settingsManager: SettingsManagerService
+    private settingsManager: SettingsManagerService,
+    private iconsService: IconsService
   ) {}
 
   ngOnInit() {
