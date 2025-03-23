@@ -33,5 +33,14 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+@import "@ionic/angular/css/palettes/dark.class.css";
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+:root {
+  /* Enable Ionic's dynamic font scaling */
+  --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+
+ion-icon {
+  color: var(--ion-color-primary);
+}

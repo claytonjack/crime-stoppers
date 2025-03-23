@@ -1,29 +1,12 @@
 import { Component } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButtons,
-  IonButton,
-  IonMenuToggle,
-  IonIcon,
-} from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButtons,
-    IonButton,
-    IonMenuToggle,
-    IonIcon,
-  ],
+  imports: [IonContent, HeaderComponent],
 })
 export class Tab2Page {
   constructor() {}

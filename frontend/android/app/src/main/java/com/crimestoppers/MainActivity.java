@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.crimestoppers;
 
 import com.getcapacitor.BridgeActivity;
 

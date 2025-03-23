@@ -22,4 +22,4 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
   ],
-});
+}).catch((err) => console.error(err));

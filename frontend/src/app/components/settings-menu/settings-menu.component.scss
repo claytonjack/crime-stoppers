@@ -1,0 +1,11 @@
+ion-range {
+  --bar-height: 4px;
+  --knob-size: 24px;
+  --pin-background: var(--ion-color-primary);
+  --pin-color: var(--ion-color-primary-contrast);
+  padding: 0 8px;
+}
+
+ion-card-header {
+  font-weight: bold;
+}

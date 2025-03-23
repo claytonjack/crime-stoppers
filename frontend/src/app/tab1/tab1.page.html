@@ -1,15 +1,4 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-toggle menu="side-menu">
-				<ion-button aria-label="Open side menu">
-					<ion-icon slot="icon-only" name="menu"></ion-icon>
-				</ion-button>
-			</ion-menu-toggle>
-		</ion-buttons>
-		<ion-title>Home</ion-title>
-	</ion-toolbar>
-</ion-header>
+<app-header title="Home"></app-header>
 
 <ion-content [fullscreen]="true">
 	<div class="ion-padding">
@@ -17,24 +6,9 @@
 
 		<div class="swiper-container">
 			<swiper-container class="mySwiper" pagination="true" navigation="true">
-				<swiper-slide>
+				<swiper-slide *ngFor="let slide of slides">
 					<div class="slide-content">
-						<ion-img src="assets/images/csh-logo-square.jpg" alt="Crime Stoppers Logo"></ion-img>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="slide-content">
-						<ion-img src="assets/images/csh-1.jpg" alt="Crime Stoppers Awareness Campaign"></ion-img>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="slide-content">
-						<ion-img src="assets/images/csh-2.jpg" alt="Crime Stoppers Police Event"></ion-img>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="slide-content">
-						<ion-img src="assets/images/csh-3.jpg" alt="Crime Stoppers Awareness Campaign"></ion-img>
+						<ion-img [src]="slide.src" [alt]="slide.alt"></ion-img>
 					</div>
 				</swiper-slide>
 			</swiper-container>

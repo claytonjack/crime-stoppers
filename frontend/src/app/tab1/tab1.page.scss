@@ -4,16 +4,16 @@ ion-button {
   font-weight: bold;
 }
 
-ion-segment-button {
-  font-size: 1.2rem;
-  font-weight: bold;
+ion-segment {
+  ion-segment-button {
+    font-size: inherit;
+  }
+}
+ion-content {
+  border-radius: 14px;
 }
 
-ion-content,
-.ion-padding > div,
-.swiper-container,
-app-about-us,
-app-tip-procedure {
+.swiper-container {
   border-radius: 14px;
   overflow: hidden;
 }
