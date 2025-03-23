@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   provideIonicAngular,
-  ActionSheetController,
+  ActionSheetController,  
 } from '@ionic/angular/standalone';
 import { Tab1Page } from './tab1.page';
 
@@ -26,6 +26,16 @@ describe('Tab1Page', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should have About Us selected by default', () => {
+    expect(component.selectedSegment).toBe('about-us');
+  });
+
+  it('should switch to Tip Procedure section', () => {
+    component.selectedSegment = 'tip-procedure';
+    fixture.detectChanges();
+    expect(component.selectedSegment).toBe('tip-procedure');
+  });
+
   it('should open the tip modal', () => {
     component.openTipModal();
     expect(component.isModalOpen).toBeTrue();
@@ -38,11 +48,39 @@ describe('Tab1Page', () => {
   });
 
   it('should present action sheet on openTipOptions', async () => {
-    const presentSpy = spyOn(actionSheetCtrl, 'create').and.returnValue({
-      present: jasmine.createSpy('present'),
-    } as any);
+    const presentSpy = jasmine.createSpy('present');
+    spyOn(actionSheetCtrl, 'create').and.returnValue(
+      Promise.resolve({
+        present: presentSpy,
+      } as any)
+    );
 
     await component.openTipOptions();
+    expect(actionSheetCtrl.create).toHaveBeenCalled();
     expect(presentSpy).toHaveBeenCalled();
+  });
+
+  it('should open the web tip form correctly', async () => {
+    const openSpy = spyOn(window, 'open');
+
+    await component.openWebTip();
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://www.p3tips.com/TipForm.aspx?ID=201',
+      '_system'
+    );
+  });
+
+  it('should open the phone dialer when selecting Call Tip Line', () => {
+    const openSpy = spyOn(window, 'open');
+
+    component.openTipOptions();
+    openSpy.calls.reset(); // Reset before simulating button click
+    component.openTipOptions();
+
+    expect(openSpy).toHaveBeenCalledWith('tel:18002228477', '_system');
+  });
+
+  it('should initialize with 4 slides in the Swiper component', () => {
+    expect(component.slides.length).toBe(4);
   });
 });
