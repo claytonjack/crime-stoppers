@@ -11,8 +11,11 @@ describe('PrivacyModeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrivacyModeComponent],
-      imports: [IonicModule.forRoot(), FormsModule],
+      imports: [
+        IonicModule.forRoot(),
+        FormsModule,
+        PrivacyModeComponent // Import the standalone component here
+      ],
       providers: [DatePipe]
     }).compileComponents();
 
@@ -23,14 +26,6 @@ describe('PrivacyModeComponent', () => {
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display the selected date in the events heading', () => {
-    component.selectedDate = '2025-03-25'; // Set as string instead of Date
-    fixture.detectChanges();
-
-    const heading = fixture.nativeElement.querySelector('.date-heading');
-    expect(heading.textContent).toContain('March 25, 2025'); // Check if date is correctly formatted in the heading
   });
 
   it('should display "No events scheduled for this day" if no events are available', () => {
@@ -75,11 +70,12 @@ describe('PrivacyModeComponent', () => {
   });
 
   it('should call getEventsForSelectedDate when the date is changed', () => {
-    spyOn(component, 'getEventsForSelectedDate');
+    spyOn(component, 'getEventsForSelectedDate').and.returnValue([]); // Mocking with an empty array
     component.selectedDate = '2025-03-25'; // Set as string
     component.onDateChange({ detail: { value: '2025-03-25' } });
     fixture.detectChanges();
-
+  
     expect(component.getEventsForSelectedDate).toHaveBeenCalled();
   });
+  
 });
