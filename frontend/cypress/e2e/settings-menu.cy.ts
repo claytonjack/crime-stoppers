@@ -24,7 +24,7 @@ describe('Settings Menu', () => {
   });
 
   it('should display reset button', () => {
-    cy.contains('Reset to Default').should('exist');
+    cy.contains('Reset Settings').should('exist');
   });
 
   it('should toggle between theme options', () => {
