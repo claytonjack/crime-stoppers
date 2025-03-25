@@ -25,12 +25,16 @@ jobs:
               working-directory: ./frontend
               run: npm ci --no-progress --prefer-offline
 
+            - name: Run ESLint
+              working-directory: ./frontend
+              run: npx eslint --ext .ts,.html src/
+
             - name: Serve application
               working-directory: ./frontend
               run: nohup npx ng serve --disable-host-check --port 8100 &
 
             - name: Run npm audit security check
-              run: npm audit --audit-level=high
+              run: npm audit --audit-level=medium
 
             - name: Run Jasmine unit tests
               working-directory: ./frontend

@@ -1,11 +1,11 @@
 <ion-accordion-group>
 	<ion-accordion *ngFor="let step of steps">
-		<ion-item slot="header" class="tip-item">
-			<ion-icon [name]="step.icon" slot="start" class="tip-icon"></ion-icon>
+		<ion-item slot="header" class="info-header">
+			<ion-icon [name]="step.icon" slot="start" class="item-icon"></ion-icon>
 			<ion-label>{{ step.title }}</ion-label>
 		</ion-item>
 
-		<div class="ion-padding tip-content" slot="content">
+		<div class="info-content" slot="content">
 			{{ step.details }}
 		</div>
 	</ion-accordion>

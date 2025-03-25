@@ -36,11 +36,85 @@
 @import "@ionic/angular/css/palettes/dark.class.css";
 /* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
+/**
+ * Global App Styling
+ * -----------------------------------------------------
+ * Common styles shared across the application
+ */
+
 :root {
-  /* Enable Ionic's dynamic font scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
 
 ion-icon {
   color: var(--ion-color-primary);
+}
+
+ion-button {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  --color: var(--ion-color-text);
+}
+
+ion-card-header {
+  font-weight: bold;
+}
+
+ion-list {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+ion-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+ion-content {
+  border-radius: 14px;
+}
+
+.item-icon {
+  font-size: 1.6rem;
+  color: var(--ion-color-primary);
+  margin-right: 16px;
+}
+
+.item-content {
+  font-size: 1.1rem;
+  padding: 8px 16px;
+}
+
+.swiper-container,
+ion-datetime,
+.card-rounded {
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(var(--ion-color-dark-rgb), 0.08);
+}
+
+.info-item {
+  margin-bottom: 4px;
+}
+
+.info-header {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --inner-padding-end: 0;
+}
+
+.info-content {
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  margin-top: -8px;
+}
+
+ion-accordion {
+  margin-bottom: 4px;
+}
+
+ion-accordion-group {
+  margin-bottom: 16px;
 }

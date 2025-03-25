@@ -1,32 +1,50 @@
 import { Injectable } from '@angular/core';
-import { Preferences } from '@capacitor/preferences';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrivacyModeService {
-  private readonly PRIVACY_MODE_KEY = 'app_privacy_mode';
-  private privacyModeSubject = new BehaviorSubject<boolean>(false);
+  private _privacyModeEnabled = false;
+  private _lastRoute = '/tabs/tab1';
 
-  public privacyMode$: Observable<boolean> =
-    this.privacyModeSubject.asObservable();
+  constructor(private router: Router) {}
 
-  constructor() {
-    this.loadSavedPrivacyMode();
+  get isEnabled(): boolean {
+    return this._privacyModeEnabled;
   }
 
-  async loadSavedPrivacyMode(): Promise<void> {
-    const { value } = await Preferences.get({ key: this.PRIVACY_MODE_KEY });
-    const isPrivacyMode = value === 'true';
-    this.privacyModeSubject.next(value ? isPrivacyMode : false);
+  updatePrivacyMode(enabled: boolean): void {
+    if (
+      !this._privacyModeEnabled &&
+      enabled &&
+      this.router.url !== '/privacy-mode' &&
+      this.router.url !== '/settings'
+    ) {
+      this._lastRoute = this.router.url;
+    }
+
+    this._privacyModeEnabled = enabled;
+
+    if (enabled) {
+      document.body.classList.add('privacy-mode');
+      if (
+        this.router.url !== '/privacy-mode' &&
+        this.router.url !== '/settings'
+      ) {
+        this.router.navigate(['/privacy-mode']);
+      }
+    } else {
+      document.body.classList.remove('privacy-mode');
+      if (this.router.url === '/privacy-mode') {
+        window.location.href = this._lastRoute;
+      }
+    }
   }
 
-  async setPrivacyMode(enabled: boolean): Promise<void> {
-    await Preferences.set({
-      key: this.PRIVACY_MODE_KEY,
-      value: enabled.toString(),
-    });
-    this.privacyModeSubject.next(enabled);
+  togglePrivacyMode(): boolean {
+    const newState = !this._privacyModeEnabled;
+    this.updatePrivacyMode(newState);
+    return newState;
   }
 }

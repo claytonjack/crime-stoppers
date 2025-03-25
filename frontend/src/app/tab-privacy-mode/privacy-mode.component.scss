@@ -1,11 +1,3 @@
-ion-datetime {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin: 0;
-}
-
 .events-container {
   margin-top: 24px;
 }
@@ -28,13 +20,4 @@ ion-datetime {
   padding: 24px;
   background: var(--ion-color-light);
   border-radius: 8px;
-}
-
-ion-card-title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-ion-icon {
-  color: var(--ion-color-primary);
 }

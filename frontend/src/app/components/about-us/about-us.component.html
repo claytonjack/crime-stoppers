@@ -1,10 +1,10 @@
 <ion-list lines="none">
-	<div *ngFor="let item of aboutItems" class="about-item">
-		<ion-item class="about-header">
-			<ion-icon [name]="item.icon" slot="start" class="about-icon"></ion-icon>
+	<div *ngFor="let item of aboutItems" class="info-item">
+		<ion-item class="info-header">
+			<ion-icon [name]="item.icon" slot="start" class="item-icon"></ion-icon>
 			<ion-label>{{ item.title }}</ion-label>
 		</ion-item>
-		<div class="ion-padding about-content">
+		<div class="info-content">
 			{{ item.details }}
 		</div>
 	</div>

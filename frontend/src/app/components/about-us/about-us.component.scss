@@ -1,8 +1,3 @@
-ion-list {
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
 .about-item {
   margin-bottom: 4px;
 }
@@ -13,25 +8,4 @@ ion-list {
   --inner-padding-end: 0;
 }
 
-.about-icon {
-  font-size: 1.6rem;
-  color: var(--ion-color-primary);
-  margin-right: 16px;
-}
-
-.about-content {
-  font-size: 1.1rem;
-  padding: 8px 16px;
-  margin-top: -8px;
-}
-
-ion-label {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-
-ion-item {
-  font-size: 1.2rem;
-  --min-height: 40px;
-}
+/* Rest can be removed as it's in global.scss */

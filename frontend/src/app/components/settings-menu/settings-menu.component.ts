@@ -53,7 +53,7 @@ import { Router } from '@angular/router';
 export class SettingsMenuComponent implements OnInit {
   currentTheme: ThemeType = 'system';
   currentFontSize: FontSizeOption = 'medium';
-  fontSizeValue: number = 1; // Default to medium (1)
+  fontSizeValue: number = 1;
   privacyMode: boolean = false;
 
   constructor(
@@ -122,6 +122,7 @@ export class SettingsMenuComponent implements OnInit {
 
   onPrivacyModeChange(event: CustomEvent) {
     const enabled = event.detail.checked;
+
     this.settingsManager.setPrivacyMode(enabled);
 
     if (enabled) {
@@ -133,9 +134,5 @@ export class SettingsMenuComponent implements OnInit {
 
   resetSettings() {
     this.settingsManager.resetAllSettings();
-
-    if (this.privacyMode) {
-      this.router.navigate(['/']);
-    }
   }
 }

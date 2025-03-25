@@ -33,10 +33,8 @@ import { Router, RouterModule } from '@angular/router';
     IonLabel,
   ],
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent {
   constructor(private menuCtrl: MenuController, private router: Router) {}
-
-  ngOnInit() {}
 
   async goToSettings() {
     await this.menuCtrl.close('side-menu');

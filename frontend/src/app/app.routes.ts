@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
+import { PrivacyModeGuard } from './guards/privacy-mode.guard';
 
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [PrivacyModeGuard],
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },
   {
