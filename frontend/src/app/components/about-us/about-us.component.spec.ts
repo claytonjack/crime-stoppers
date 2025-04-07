@@ -26,14 +26,14 @@ describe('AboutUsComponent', () => {
 
   it('should render the same number of about items as in the component', () => {
     fixture.detectChanges();
-    const items = fixture.debugElement.queryAll(By.css('.about-item'));
+    const items = fixture.debugElement.queryAll(By.css('.info-item'));
     expect(items.length).toBe(component.aboutItems.length);
   });
 
   it('should display titles for each about item', () => {
     fixture.detectChanges();
     const labels = fixture.debugElement.queryAll(
-      By.css('.about-header ion-label')
+      By.css('.info-header ion-label')
     );
     expect(labels.length).toBe(component.aboutItems.length);
 
@@ -44,7 +44,7 @@ describe('AboutUsComponent', () => {
 
   it('should display content for each about item', () => {
     fixture.detectChanges();
-    const details = fixture.debugElement.queryAll(By.css('.about-content'));
+    const details = fixture.debugElement.queryAll(By.css('.info-content'));
     expect(details.length).toBe(component.aboutItems.length);
 
     details.forEach((detail, index) => {

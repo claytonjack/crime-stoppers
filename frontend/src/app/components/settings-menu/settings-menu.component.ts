@@ -134,5 +134,6 @@ export class SettingsMenuComponent implements OnInit {
 
   resetSettings() {
     this.settingsManager.resetAllSettings();
+    this.router.navigate(['/']);
   }
 }
