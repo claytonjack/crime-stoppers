@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AboutUsComponent } from './about-us.component';
+import { By } from '@angular/platform-browser';
 
 describe('AboutUsComponent', () => {
   let component: AboutUsComponent;
@@ -16,7 +16,39 @@ describe('AboutUsComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have at least one about item', () => {
+    expect(component.aboutItems.length).toBeGreaterThan(0);
+  });
+
+  it('should render the same number of about items as in the component', () => {
+    fixture.detectChanges();
+    const items = fixture.debugElement.queryAll(By.css('.about-item'));
+    expect(items.length).toBe(component.aboutItems.length);
+  });
+
+  it('should display titles for each about item', () => {
+    fixture.detectChanges();
+    const labels = fixture.debugElement.queryAll(
+      By.css('.about-header ion-label')
+    );
+    expect(labels.length).toBe(component.aboutItems.length);
+
+    labels.forEach((label, index) => {
+      expect(label.nativeElement.textContent.trim()).toBeTruthy(); // Ensures non-empty title
+    });
+  });
+
+  it('should display content for each about item', () => {
+    fixture.detectChanges();
+    const details = fixture.debugElement.queryAll(By.css('.about-content'));
+    expect(details.length).toBe(component.aboutItems.length);
+
+    details.forEach((detail, index) => {
+      expect(detail.nativeElement.textContent.trim()).toBeTruthy(); // Ensures non-empty details
+    });
   });
 });
