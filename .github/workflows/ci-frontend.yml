@@ -34,7 +34,7 @@ jobs:
               run: nohup npx ng serve --disable-host-check --port 8100 &
 
             - name: Run npm audit security check
-              run: npm audit --audit-level=medium
+              run: npm audit --audit-level=high
 
             - name: Run Jasmine unit tests
               working-directory: ./frontend
