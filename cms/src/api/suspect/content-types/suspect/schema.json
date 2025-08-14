@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "suspects",
+  "info": {
+    "singularName": "suspect",
+    "pluralName": "suspects",
+    "displayName": "Suspect",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "residence": {
+      "type": "string"
+    },
+    "age": {
+      "type": "string"
+    },
+    "height": {
+      "type": "string"
+    },
+    "weight": {
+      "type": "string"
+    },
+    "details": {
+      "type": "text"
+    },
+    "reward": {
+      "type": "text"
+    },
+    "contact": {
+      "type": "text"
+    },
+    "main": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  }
+}

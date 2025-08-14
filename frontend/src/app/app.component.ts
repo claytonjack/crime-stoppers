@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { SettingsManagerService } from './services/settings/settings-manager.service';
-import { IconsService } from './services/icons.service';
+import { SideMenuComponent } from './core/components/side-menu/side-menu.component';
+import { IconsService } from './core/services/icons.service';
+import { ThemeService } from './features/settings/services/theme/theme.service';
+import { FontSizeService } from './features/settings/services/font-size/font-size.service';
+import { PrivacyModeService } from './features/privacy-mode/services/privacy-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +15,9 @@ import { IconsService } from './services/icons.service';
 })
 export class AppComponent {
   constructor(
-    private settingsManager: SettingsManagerService,
-    private iconsService: IconsService
+    private iconsService: IconsService,
+    private themeService: ThemeService,
+    private fontSizeService: FontSizeService,
+    private privacyModeService: PrivacyModeService
   ) {}
-
-  // No ngOnInit needed anymore - routing guard and privacy service handle everything
 }

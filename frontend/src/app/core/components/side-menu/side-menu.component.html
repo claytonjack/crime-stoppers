@@ -1,0 +1,32 @@
+<ion-menu menuId="side-menu" contentId="main-content" [swipeGesture]="true" autoHide="true">
+	<ion-header>
+		<ion-toolbar color="primary">
+			<ion-title>Menu</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<ion-content [fullscreen]="true">
+		<ion-list>
+			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToSuspects()" detail>
+				<ion-icon slot="start" name="people-outline"></ion-icon>
+				<ion-label>Most Wanted</ion-label>
+			</ion-item>
+			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToCrimeStats()" detail>
+				<ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
+				<ion-label>Crime Stats</ion-label>
+			</ion-item>
+			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToCommunityWatch()" detail>
+				<ion-icon slot="start" name="eye-outline"></ion-icon>
+				<ion-label>Community Watch</ion-label>
+			</ion-item>
+			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToContact()" detail>
+				<ion-icon slot="start" name="call-outline"></ion-icon>
+				<ion-label>Contact Us</ion-label>
+			</ion-item>
+
+			<ion-item button (click)="goToSettings()" detail>
+				<ion-icon slot="start" name="settings-outline"></ion-icon>
+				<ion-label>Settings</ion-label>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-menu>

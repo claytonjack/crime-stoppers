@@ -1,0 +1,54 @@
+.privacy-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.privacy-card {
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.privacy-card ion-card-header h3 {
+  color: #4caf50;
+  margin: 0;
+}
+
+.privacy-card ion-card-content {
+  padding: 16px;
+}
+
+.privacy-card p {
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.date-heading {
+  text-align: center;
+  margin: 20px 0;
+  color: var(--ion-color-primary);
+}
+
+.event-card {
+  margin-top: 20px;
+}
+
+.no-events {
+  text-align: center;
+  color: var(--ion-color-medium);
+  font-style: italic;
+}
+
+.privacy-controls {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.privacy-controls:active,
+.privacy-controls.show {
+  opacity: 1;
+}

@@ -1,0 +1,67 @@
+<app-header title="Most Wanted"></app-header>
+
+<ion-content [fullscreen]="true">
+	<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<div class="ion-padding">
+		<!-- Loading skeleton -->
+		<div *ngIf="isLoading">
+			<ion-card *ngFor="let item of [1,2,3]">
+				<ion-card-content>
+					<div class="suspect-card-loading">
+						<ion-skeleton-text animated style="width: 80px; height: 80px; border-radius: 8px;"></ion-skeleton-text>
+						<div class="suspect-info-loading">
+							<ion-skeleton-text animated style="width: 60%; height: 20px; margin-bottom: 8px;"></ion-skeleton-text>
+							<ion-skeleton-text animated style="width: 40%; height: 16px; margin-bottom: 4px;"></ion-skeleton-text>
+							<ion-skeleton-text animated style="width: 50%; height: 16px;"></ion-skeleton-text>
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+		<!-- Suspects list -->
+		<div *ngIf="!isLoading && suspects.length > 0">
+			<ion-card *ngFor="let suspect of suspects" button (click)="viewSuspectDetails(suspect)" class="suspect-card">
+				<ion-card-content>
+					<div class="suspect-card-content">
+						<div class="suspect-image">
+							<img [src]="getImageUrl(suspect)" [alt]="suspect.Name" (error)="onImageError($event)" />
+						</div>
+						<div class="suspect-info">
+							<h2 class="suspect-name">{{ suspect.Name }}</h2>
+							<p class="suspect-residence" *ngIf="suspect.Residence">
+								<ion-icon name="location"></ion-icon>
+								{{ suspect.Residence }}
+							</p>
+							<p class="suspect-age" *ngIf="suspect.Age">
+								<ion-icon name="person"></ion-icon>
+								Age: {{ suspect.Age }}
+							</p>
+							<p class="suspect-reward" *ngIf="suspect.Reward">
+								<ion-icon name="cash"></ion-icon>
+								Reward: {{ suspect.Reward }}
+							</p>
+						</div>
+						<div class="suspect-actions">
+							<ion-icon name="chevron-forward"></ion-icon>
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+		<!-- Empty state -->
+		<div *ngIf="!isLoading && suspects.length === 0" class="empty-state">
+			<ion-icon name="people" size="large"></ion-icon>
+			<h2>No Suspects Found</h2>
+			<p>There are currently no most wanted suspects to display.</p>
+			<ion-button fill="outline" (click)="loadSuspects()">
+				<ion-icon slot="start" name="refresh"></ion-icon>
+				Refresh
+			</ion-button>
+		</div>
+	</div>
+</ion-content>

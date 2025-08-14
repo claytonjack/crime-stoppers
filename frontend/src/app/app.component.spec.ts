@@ -26,7 +26,6 @@ import {
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    // Register icons before test execution
     addIcons({
       menu,
       home,

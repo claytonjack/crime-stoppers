@@ -1,0 +1,44 @@
+<app-header title="Settings"></app-header>
+
+<ion-content [fullscreen]="true">
+	<ion-header collapse="condense">
+		<ion-toolbar>
+			<ion-title size="large">Settings</ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+	<!-- Theme Setting -->
+	<ion-list [inset]="true">
+		<ion-item button detail="false" (click)="onThemeClick()">
+			<ion-icon name="sunny" slot="start"></ion-icon>
+			<ion-label>Theme</ion-label>
+			<ion-label slot="end">{{ theme$ | async | themeName }}</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<!-- Font Size Setting -->
+	<ion-list [inset]="true">
+		<ion-item button detail="false" (click)="onFontSizeClick()">
+			<ion-icon name="text" slot="start"></ion-icon>
+			<ion-label>Font Size</ion-label>
+			<ion-label slot="end">{{ fontSize$ | async | fontSizeName }}</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<!-- Privacy Mode Setting -->
+	<ion-list [inset]="true">
+		<ion-item button detail="false" (click)="onPrivacyModeClick()">
+			<ion-icon name="eye" slot="start"></ion-icon>
+			<ion-label>Privacy Mode</ion-label>
+			<ion-label slot="end">{{ privacyMode$ | async | privacyModeName }}</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<!-- Reset Button -->
+	<ion-list [inset]="true">
+		<ion-item button detail="false" (click)="onResetSettings()">
+			<ion-icon name="refresh" slot="start"></ion-icon>
+			<ion-label>Reset Settings</ion-label>
+		</ion-item>
+	</ion-list>
+</ion-content>

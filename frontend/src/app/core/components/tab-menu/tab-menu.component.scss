@@ -1,0 +1,71 @@
+ion-fab {
+  z-index: 1000;
+}
+
+ion-fab-button {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    --background: var(--ion-color-primary-shade);
+  }
+}
+
+.fab-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary-contrast);
+}
+
+ion-fab-button ion-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary-contrast);
+}
+
+ion-tab-bar {
+  --background: var(--ion-color-light);
+  --border-color: var(--ion-color-medium);
+  --color: var(--ion-color-medium);
+  --color-selected: var(--ion-color-primary);
+
+  ion-tab-button {
+    --color: var(--ion-color-medium);
+    --color-selected: var(--ion-color-primary);
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    ion-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+
+  .fab-placeholder {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 576px) {
+  ion-tab-bar {
+    ion-tab-button {
+      ion-label {
+        font-size: 10px;
+      }
+
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .fab-icon {
+    font-size: 20px;
+  }
+
+  ion-fab-button ion-icon {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,129 @@
+<app-header title="Events"></app-header>
+
+<ion-content [fullscreen]="true">
+	<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<!-- Segment control -->
+	<div class="segment-container ion-padding-horizontal ion-padding-top">
+		<ion-segment [value]="selectedSegment" (ionChange)="onSegmentChange($event)">
+			<ion-segment-button value="upcoming">
+				<ion-label>Upcoming</ion-label>
+				<ion-badge *ngIf="upcomingEvents.length > 0" color="primary">{{ upcomingEvents.length }}</ion-badge>
+			</ion-segment-button>
+			<ion-segment-button value="past">
+				<ion-label>Past Events</ion-label>
+				<ion-badge *ngIf="pastEvents.length > 0" color="medium">{{ pastEvents.length }}</ion-badge>
+			</ion-segment-button>
+		</ion-segment>
+	</div>
+
+	<div class="ion-padding">
+		<!-- Loading skeleton -->
+		<div *ngIf="isLoading">
+			<ion-card *ngFor="let item of [1,2,3]">
+				<ion-card-content>
+					<div class="event-card-loading">
+						<ion-skeleton-text animated
+							style="width: 100%; height: 120px; border-radius: 8px; margin-bottom: 16px;"></ion-skeleton-text>
+						<ion-skeleton-text animated style="width: 70%; height: 20px; margin-bottom: 8px;"></ion-skeleton-text>
+						<ion-skeleton-text animated style="width: 50%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
+						<ion-skeleton-text animated style="width: 90%; height: 16px;"></ion-skeleton-text>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+		<!-- Upcoming Events -->
+		<div *ngIf="!isLoading && selectedSegment === 'upcoming'">
+			<div *ngIf="upcomingEvents.length > 0">
+				<ion-card *ngFor="let event of upcomingEvents" button (click)="viewEventDetails(event)" class="event-card"
+					[class.happening-now]="isEventHappening(event.Start_Time, event.End_Time)">
+
+					<!-- Live indicator -->
+					<div class="live-indicator" *ngIf="isEventHappening(event.Start_Time, event.End_Time)">
+						<ion-badge color="success">
+							<ion-icon name="radio"></ion-icon>
+							LIVE
+						</ion-badge>
+					</div>
+
+					<!-- Event image -->
+					<div class="event-image-container" *ngIf="event.Main_Image?.url">
+						<img [src]="getImageUrl(event)" [alt]="event.Title" (error)="onImageError($event)" class="event-image" />
+					</div>
+
+					<ion-card-content>
+						<h2 class="event-title">{{ event.Title }}</h2>
+
+						<p class="event-date">
+							<ion-icon name="calendar"></ion-icon>
+							{{ formatEventDate(event.Start_Time, event.End_Time) }}
+						</p>
+
+						<p class="event-body">{{ event.Body }}</p>
+
+						<div class="event-actions">
+							<ion-icon name="chevron-forward"></ion-icon>
+						</div>
+					</ion-card-content>
+				</ion-card>
+			</div>
+
+			<!-- Empty state for upcoming -->
+			<div *ngIf="upcomingEvents.length === 0" class="empty-state">
+				<ion-icon name="calendar" size="large"></ion-icon>
+				<h2>No Upcoming Events</h2>
+				<p>There are currently no upcoming events scheduled.</p>
+				<ion-button fill="outline" (click)="loadEvents()">
+					<ion-icon slot="start" name="refresh"></ion-icon>
+					Refresh
+				</ion-button>
+			</div>
+		</div>
+
+		<!-- Past Events -->
+		<div *ngIf="!isLoading && selectedSegment === 'past'">
+			<div *ngIf="pastEvents.length > 0">
+				<ion-card *ngFor="let event of pastEvents" button (click)="viewEventDetails(event)"
+					class="event-card past-event">
+
+					<!-- Event image -->
+					<div class="event-image-container" *ngIf="event.Main_Image?.url">
+						<img [src]="getImageUrl(event)" [alt]="event.Title" (error)="onImageError($event)" class="event-image" />
+						<div class="past-overlay">
+							<ion-icon name="checkmark-circle"></ion-icon>
+						</div>
+					</div>
+
+					<ion-card-content>
+						<h2 class="event-title">{{ event.Title }}</h2>
+
+						<p class="event-date">
+							<ion-icon name="calendar"></ion-icon>
+							{{ formatEventDate(event.Start_Time, event.End_Time) }}
+						</p>
+
+						<p class="event-body">{{ event.Body }}</p>
+
+						<div class="event-actions">
+							<ion-icon name="chevron-forward"></ion-icon>
+						</div>
+					</ion-card-content>
+				</ion-card>
+			</div>
+
+			<!-- Empty state for past -->
+			<div *ngIf="pastEvents.length === 0" class="empty-state">
+				<ion-icon name="time" size="large"></ion-icon>
+				<h2>No Past Events</h2>
+				<p>There are no past events to display.</p>
+				<ion-button fill="outline" (click)="loadEvents()">
+					<ion-icon slot="start" name="refresh"></ion-icon>
+					Refresh
+				</ion-button>
+			</div>
+		</div>
+	</div>
+</ion-content>
