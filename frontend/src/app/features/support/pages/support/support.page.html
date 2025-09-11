@@ -1,6 +1,134 @@
-<app-header title="Support"></app-header>
+<<app-header title="Support"></app-header>>
 
-<ion-content [fullscreen]="true">
-	<p>Donate Section</p>
-	<p>Volunteer Section</p>
+<ion-content [fullscreen]="true" class="ion-padding">
+<div class="ion-text-center ion-margin-bottom">
+  <h2>How Would You Like to Support?</h2>
+
+ <!-- Buttons that scroll to sections -->
+    <ion-button expand="block" color="danger" (click)="scrollTo('volunteer')">
+      <ion-icon name="heart-outline" slot="start"></ion-icon>
+      Volunteering
+    </ion-button>
+
+    <ion-button expand="block" color="danger" (click)="scrollTo('donate')">
+      <ion-icon name="heart-outline" slot="start"></ion-icon>
+      Donate
+    </ion-button>
+</div>
+
+<!-- Volunteer Section -->
+  <ion-card id="volunteer" class="ion-margin-bottom">
+    <img src="assets/images/volunteer.jpg" alt="Volunteers working together" />
+
+    <ion-card-header>
+      <ion-card-title>
+        <img src="assets/icon/volunteer.svg" alt="Volunteer" class="icon-small" />
+        Volunteer Opportunities
+      </ion-card-title>
+      <ion-card-subtitle>Join our community and make a difference</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>
+        One of the primary functions of our team of volunteers is to raise funds & increase 
+        awareness of the Crime Stoppers program throughout the Halton region.  
+        Our goal is to make volunteering an enjoyable experience within an environment of
+         like-minded community members, where your experience and skills are utilized.
+      </p>
+      <h3 class="ion-margin-top">Which Volunteer Positions are Available?</h3>
+    <ion-list inset>
+      <ion-item lines="inset">General Volunteer</ion-item>
+      <ion-item lines="inset">Community Watch Volunteer</ion-item>
+      <ion-item lines="inset">Board of Directors Volunteer</ion-item>
+      <ion-item lines="inset">Highschool/University Co-Op Placements</ion-item>
+    </ion-list>
+
+    <h3 class="ion-margin-top">What Do Crime Stoppers Volunteers Do?</h3>
+    <p>
+      Our volunteers can assist at community events, fundraisers, Delta Bingo shifts, awareness campaigns and help us spread the word on this unique organization. We offer resume/interview workshops to assist in your career, share a vast network of contacts to get you in contact with like-minded individuals, a chance to serve your community with pride as we share safety initiatives throughout Halton.
+    </p>
+    
+      <h3 class="ion-margin-top">Apply Now</h3>
+
+      <!-- PDF Preview Buttons -->
+      <ion-button expand="block" color="primary" (click)="previewForm('2025_volunteer_application.pdf')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
+        Volunteer Application
+      </ion-button>
+
+      <ion-button expand="block" color="primary" (click)="previewForm('2025_youth_application.pdf')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
+        Volunteer Youth Application
+      </ion-button>
+
+      <ion-button expand="block" color="primary" (click)="previewForm('2018_board_of_directors_application.pdf')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
+        Board of Directors Application
+      </ion-button>
+
+
+      <ion-text color="medium">
+        <p class="ion-margin-top">
+          Please submit your completed application along with your resume/CV to 
+			<a href="mailto:info&#64;haltoncrimestoppers.ca">info&#64;haltoncrimestoppers.ca</a>
+        </p>
+        <p>
+          <strong>Applicants must work or reside in or have a substantive interest in the Halton Region.</strong>
+          Our Board of Directors meets every month for approximately 2 hours.  
+          All personal information will be kept in the strictest confidence.
+        </p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Donation Section -->
+  <ion-card id="donate">
+    <img src="assets/images/donate.jpg" alt="Hands holding heart donation" />
+
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="heart-outline" slot="start" color="danger"></ion-icon>
+        Make a Donation
+      </ion-card-title>
+      <ion-card-subtitle>Your support keeps us strong</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>
+        Halton Crime Stoppers is a registered not-for-profit that does not receive government funding. 
+        We rely on community generosity — thank you for supporting us.
+      </p>
+      <p><strong>Charitable Registration Number:</strong> 134475375RR0001</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Embedded CanadaHelps Form -->
+  <div class="donation-widget ion-margin-top">
+    <iframe
+      src="https://www.canadahelps.org/en/dn/93928"
+      title="Donate Now"
+      width="100%"
+      height="800"
+      style="border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);"
+    ></iframe>
+  </div>
+
+  <!-- PDF Preview Modal -->
+  <ion-modal #pdfModal>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>PDF Preview</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="pdfModal.dismiss()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <iframe *ngIf="pdfUrl" [src]="pdfUrl | safeUrl" width="100%" height="600px" style="border:none;"></iframe>
+      <ion-button expand="block" color="secondary" class="ion-margin-top" (click)="downloadFile()">
+        Download PDF
+      </ion-button>
+    </ion-content>
+  </ion-modal>
+
 </ion-content>
