@@ -8,6 +8,9 @@ project(':capacitor-community-app-icon').projectDir = new File('../../node_modul
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../../node_modules/@capacitor/app/android')
 
+include ':capacitor-filesystem'
+project(':capacitor-filesystem').projectDir = new File('../../node_modules/@capacitor/filesystem/android')
+
 include ':capacitor-haptics'
 project(':capacitor-haptics').projectDir = new File('../../node_modules/@capacitor/haptics/android')
 
@@ -25,3 +28,6 @@ project(':capacitor-screen-reader').projectDir = new File('../../node_modules/@c
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../../node_modules/@capacitor/status-bar/android')
+
+include ':evva-capacitor-secure-storage-plugin'
+project(':evva-capacitor-secure-storage-plugin').projectDir = new File('../../node_modules/@evva/capacitor-secure-storage-plugin/android')

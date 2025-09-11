@@ -1,21 +1,37 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, IonButton, IonItem, IonLabel, IonListHeader, IonList, IonCardContent, IonCardHeader, IonCardTitle, IonCard, IonText, IonCardSubtitle, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonModal, IonCardSubtitle, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonButton, IonButtons, IonToolbar, IonHeader, IonTitle, IonText, IonItem, IonList } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgIf } from '@angular/common';
-import { SafeUrlPipe } from '../../../../core/services/safe-url-pipe'
+import { SafeUrlPipe } from '../../../../core/services/safe-url-pipe';
+import { SecureStorage } from '@aparajita/capacitor-secure-storage';
+import { Capacitor } from '@capacitor/core';
+import { IonIcon } from "../../../../../../../node_modules/@ionic/angular/standalone/directives/icon";
+
 @Component({
   selector: 'app-support',
   templateUrl: 'support.page.html',
   styleUrls: ['support.page.scss'],
   standalone: true,
   imports: [
-    IonContent, HeaderComponent, IonButton, IonItem, IonLabel,
-    IonListHeader, IonList, IonCardContent, IonCardHeader,
-    IonCardTitle, IonCard, IonText, IonCardSubtitle, IonIcon,
-    HttpClientModule, NgIf, SafeUrlPipe,
-    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons,
-
+    IonContent,
+    HeaderComponent,
+    NgIf,
+    SafeUrlPipe,
+    IonModal,
+    IonCardSubtitle,
+    IonCardContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonTitle,
+    IonText,
+    IonItem,
+    IonList
 ],
 })
 export class SupportPage {
@@ -32,15 +48,57 @@ export class SupportPage {
     }
   }
 
-  previewForm(file: string) {
-    // Local PDF path inside assets/files
-    this.pdfUrl = `assets/files/${file}`;
-    this.pdfModal.present();
+  async previewForm(filename: string) {
+    try {
+      // SecureStorage 
+      const stored = await SecureStorage.get(filename);
+      let base64: string | null = null;
+
+      if (stored) {
+        base64 = String(stored);
+      } else {
+        // fetch from assets and save
+        const response = await fetch(`/assets/files/${filename}`);
+        const blob = await response.blob();
+
+        base64 = await this.blobToBase64(blob);
+
+        await SecureStorage.set(filename, base64);
+      }
+
+
+      if (!base64) throw new Error('No PDF data found');
+
+      // Convert base64 → Blob → URL
+      const blob = this.base64ToBlob(base64);
+      this.pdfUrl = URL.createObjectURL(blob);
+
+      await this.pdfModal.present();
+    } catch (err) {
+      console.error(err);
+      alert('Could not open PDF.');
+    }
   }
 
-  downloadFile() {
+  async downloadFile() {
     if (!this.pdfUrl) return;
-    // Directly open the local PDF for download
     window.open(this.pdfUrl, '_blank');
+  }
+
+  private base64ToBlob(base64: string): Blob {
+    const byteString = atob(base64.split(',')[1] || base64);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+    return new Blob([ab], { type: 'application/pdf' });
+  }
+
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   }
 }
