@@ -24,8 +24,6 @@ export class SupportPage {
 
   pdfUrl: string | null = null;
 
-  constructor(private http: HttpClient) { }
-
   scrollTo(section: string) {
     const el = document.getElementById(section);
     if (el) {
@@ -35,19 +33,14 @@ export class SupportPage {
   }
 
   previewForm(file: string) {
-    this.http.get<{ previewUrl: string, downloadUrl: string }>(`http://localhost:3000/api/request-download/${file}`)
-      .subscribe({
-        next: (res) => {
-          this.pdfUrl = `http://localhost:3000${res.previewUrl}`;
-          this.pdfModal.present();
-        },
-        error: () => alert('Could not open file preview.')
-      });
+    // Local PDF path inside assets/files
+    this.pdfUrl = `assets/files/${file}`;
+    this.pdfModal.present();
   }
 
   downloadFile() {
     if (!this.pdfUrl) return;
-    const downloadUrl = this.pdfUrl.replace('/preview/', '/download/');
-    window.open(downloadUrl, '_blank');
+    // Directly open the local PDF for download
+    window.open(this.pdfUrl, '_blank');
   }
 }
