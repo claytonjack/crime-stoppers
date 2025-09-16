@@ -7,8 +7,10 @@
 
 	<div class="ion-padding">
 		<!-- Loading skeleton -->
-		<div *ngIf="isLoading">
-			<ion-card *ngFor="let item of [1,2,3]">
+		@if (isLoading) {
+		<div>
+			@for (item of [1,2,3]; track item) {
+			<ion-card>
 				<ion-card-content>
 					<div class="alert-card-loading">
 						<ion-skeleton-text animated
@@ -19,43 +21,51 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
+			}
 		</div>
+		}
 
 		<!-- Alerts list -->
-		<div *ngIf="!isLoading && alerts.length > 0">
-			<ion-card *ngFor="let alert of alerts" button (click)="viewAlertDetails(alert)" class="alert-card">
-
+		@if (!isLoading && alerts.length > 0) {
+		<div>
+			@for (alert of alerts; track alert) {
+			<ion-card button (click)="viewAlertDetails(alert)" class="alert-card">
 				<!-- Alert image -->
-				<div class="alert-image-container" *ngIf="alert.Main_Image?.url">
+				@if (alert.Main_Image?.url) {
+				<div class="alert-image-container">
 					<img [src]="getImageUrl(alert)" [alt]="alert.Title" (error)="onImageError($event)" class="alert-image" />
 				</div>
-
+				}
 				<ion-card-content>
 					<div class="alert-header">
 						<h2 class="alert-title">{{ alert.Title }}</h2>
 						<ion-chip [color]="getSourceColor(alert.Source)" outline>
-							<ion-icon name="shield-checkmark" *ngIf="alert.Source === 'Halton Police'"></ion-icon>
-							<ion-icon name="people" *ngIf="alert.Source === 'Crime Stoppers'"></ion-icon>
+							@if (alert.Source === 'Halton Police') {
+							<ion-icon name="shield-checkmark"></ion-icon>
+							}
+							@if (alert.Source === 'Crime Stoppers') {
+							<ion-icon name="people"></ion-icon>
+							}
 							<ion-label>{{ alert.Source }}</ion-label>
 						</ion-chip>
 					</div>
-
 					<p class="alert-date">
 						<ion-icon name="time"></ion-icon>
 						{{ formatDate(alert.publishedAt) }}
 					</p>
-
 					<p class="alert-body">{{ alert.Body }}</p>
-
 					<div class="alert-actions">
 						<ion-icon name="chevron-forward"></ion-icon>
 					</div>
 				</ion-card-content>
 			</ion-card>
+			}
 		</div>
+		}
 
 		<!-- Empty state -->
-		<div *ngIf="!isLoading && alerts.length === 0" class="empty-state">
+		@if (!isLoading && alerts.length === 0) {
+		<div class="empty-state">
 			<ion-icon name="newspaper" size="large"></ion-icon>
 			<h2>No Alerts Available</h2>
 			<p>There are currently no crime alerts to display.</p>
@@ -64,5 +74,6 @@
 				Refresh
 			</ion-button>
 		</div>
+		}
 	</div>
 </ion-content>

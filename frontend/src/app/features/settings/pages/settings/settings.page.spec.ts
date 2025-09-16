@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SettingsPage } from './settings.page';
-import { SettingsManagerService } from '../../services/settings-manager.service';
+import { SettingsPageService } from '../../services/settings-page/settings-page.service';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { of } from 'rxjs';
@@ -8,36 +8,42 @@ import { of } from 'rxjs';
 describe('SettingsPage', () => {
   let component: SettingsPage;
   let fixture: ComponentFixture<SettingsPage>;
-  let settingsManagerSpy: jasmine.SpyObj<SettingsManagerService>;
+  let settingsPageServiceSpy: jasmine.SpyObj<SettingsPageService>;
   let routerSpy: jasmine.SpyObj<Router>;
   let navControllerSpy: jasmine.SpyObj<NavController>;
 
   beforeEach(waitForAsync(() => {
-    settingsManagerSpy = jasmine.createSpyObj('SettingsManagerService', [
-      'setTheme',
-      'setFontSize',
-      'setPrivacyMode',
-      'resetAllSettings',
-      'settings$',
+    // Create a spy object for SettingsPageService with its current methods
+    settingsPageServiceSpy = jasmine.createSpyObj('SettingsPageService', [
+      'presentThemeActionSheet',
+      'presentFontSizeActionSheet',
+      'presentPrivacyModeActionSheet',
+      'presentResetSettingsAlert',
     ]);
+
+    // Mock the Observable properties from the service
+    Object.defineProperty(settingsPageServiceSpy, 'theme$', {
+      get: () => of('system'),
+    });
+    Object.defineProperty(settingsPageServiceSpy, 'fontSize$', {
+      get: () => of('medium'),
+    });
+    Object.defineProperty(settingsPageServiceSpy, 'privacyMode$', {
+      get: () => of(false),
+    });
+
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     navControllerSpy = jasmine.createSpyObj('NavController', [
       'navigateForward',
       'navigateBack',
     ]);
 
-    settingsManagerSpy.settings$ = of({
-      theme: 'system',
-      fontSize: 'medium',
-      privacyMode: false,
-    });
-
     TestBed.configureTestingModule({
       imports: [SettingsPage],
       providers: [
-        { provide: SettingsManagerService, useValue: settingsManagerSpy },
+        { provide: SettingsPageService, useValue: settingsPageServiceSpy },
         { provide: Router, useValue: routerSpy },
-        { provide: NavController, useValue: navControllerSpy }, // Mock NavController
+        { provide: NavController, useValue: navControllerSpy },
       ],
     }).compileComponents();
 
@@ -50,36 +56,27 @@ describe('SettingsPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call setTheme on theme change', () => {
-    const event = { detail: { value: 'dark' } } as CustomEvent;
-    component.onThemeChange(event);
-    expect(settingsManagerSpy.setTheme).toHaveBeenCalledWith('dark');
+  it('should call presentThemeActionSheet on onThemeClick', async () => {
+    await component.onThemeClick();
+    expect(settingsPageServiceSpy.presentThemeActionSheet).toHaveBeenCalled();
   });
 
-  it('should call setFontSize on font size change', () => {
-    const event = { detail: { value: 2 } } as CustomEvent;
-    component.onFontSizeRangeChange(event);
-    expect(settingsManagerSpy.setFontSize).toHaveBeenCalledWith('large');
+  it('should call presentFontSizeActionSheet on onFontSizeClick', async () => {
+    await component.onFontSizeClick();
+    expect(
+      settingsPageServiceSpy.presentFontSizeActionSheet
+    ).toHaveBeenCalled();
   });
 
-  it('should navigate to privacy mode when enabled', () => {
-    const event = { detail: { checked: true } } as CustomEvent;
-    component.onPrivacyModeChange(event);
-    expect(settingsManagerSpy.setPrivacyMode).toHaveBeenCalledWith(true);
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/privacy-mode']);
+  it('should call presentPrivacyModeActionSheet on onPrivacyModeClick', async () => {
+    await component.onPrivacyModeClick();
+    expect(
+      settingsPageServiceSpy.presentPrivacyModeActionSheet
+    ).toHaveBeenCalled();
   });
 
-  it('should navigate to home when privacy mode is disabled', () => {
-    const event = { detail: { checked: false } } as CustomEvent;
-    component.onPrivacyModeChange(event);
-    expect(settingsManagerSpy.setPrivacyMode).toHaveBeenCalledWith(false);
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
-  });
-
-  it('should reset settings when resetSettings is called', () => {
-    component.privacyMode = true;
-    component.resetSettings();
-    expect(settingsManagerSpy.resetAllSettings).toHaveBeenCalled();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
+  it('should call presentResetSettingsAlert on onResetSettings', async () => {
+    await component.onResetSettings();
+    expect(settingsPageServiceSpy.presentResetSettingsAlert).toHaveBeenCalled();
   });
 });

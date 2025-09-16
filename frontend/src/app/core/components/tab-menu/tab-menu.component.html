@@ -1,33 +1,33 @@
+@if (!isPrivacyModeEnabled) {
 <ion-tabs>
 	<!-- Floating Action Button as Home Tab -->
-	<ion-fab slot="fixed" vertical="bottom" horizontal="center" *ngIf="!isPrivacyModeEnabled">
+	<ion-fab slot="fixed" vertical="bottom" horizontal="center">
 		<ion-fab-button href="/home">
-			<ion-icon name="home" class="fab-icon"></ion-icon>
+			<ng-icon name="bootstrapHouseFill" class="fab-icon"></ng-icon>
 		</ion-fab-button>
 	</ion-fab>
 
-	<ion-tab-bar slot="bottom" *ngIf="!isPrivacyModeEnabled">
+	<ion-tab-bar slot="bottom">
 		<ion-tab-button tab="alerts" href="/alerts">
-			<ion-icon name="newspaper"></ion-icon>
+			<ng-icon name="bootstrapMegaphoneFill"></ng-icon>
 			<ion-label>Alerts</ion-label>
 		</ion-tab-button>
-
 		<ion-tab-button tab="events" href="/events">
-			<ion-icon name="calendar"></ion-icon>
+			<ng-icon name="bootstrapCalendarFill"></ng-icon>
 			<ion-label>Events</ion-label>
 		</ion-tab-button>
-
 		<!-- Invisible tab button to Maintain Spacing when using FAB -->
 		<ion-tab-button disabled class="fab-placeholder"></ion-tab-button>
-
 		<ion-tab-button tab="crime-map" href="/crime-map">
-			<ion-icon name="map"></ion-icon>
+			<ng-icon name="bootstrapMapFill"></ng-icon>
 			<ion-label>Map</ion-label>
 		</ion-tab-button>
-
-		<ion-tab-button tab="support" href="/support">
-			<ion-icon name="accessibility"></ion-icon>
-			<ion-label>Support</ion-label>
+		<ion-tab-button tab="crime-stats" href="/crime-stats">
+			<ng-icon name="bootstrapBarChartFill"></ng-icon>
+			<ion-label>Stats</ion-label>
 		</ion-tab-button>
 	</ion-tab-bar>
 </ion-tabs>
+} @else {
+<ion-router-outlet></ion-router-outlet>
+}

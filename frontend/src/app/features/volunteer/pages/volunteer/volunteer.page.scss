@@ -1,0 +1,33 @@
+// ===== VOLUNTEER PAGE STYLES =====
+
+.info-item {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.info-header {
+  --background: transparent;
+  --border-style: none;
+}
+
+.info-content {
+  padding: 0 16px 0px 16px;
+  background: transparent;
+}
+
+.hero-content {
+  text-align: center;
+  color: var(--app-text-color);
+}
+
+h2 {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  color: var(--app-accent-color);
+  font-weight: 600;
+}

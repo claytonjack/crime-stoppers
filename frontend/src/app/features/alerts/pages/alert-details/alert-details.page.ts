@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseImport } from '../../../../core/base-import';
 import { StrapiService, Alert } from '../../../../core/services/strapi.service';
@@ -35,17 +35,15 @@ import {
   styleUrls: ['./alert-details.page.scss'],
 })
 export class AlertDetailsPage implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly strapiService = inject(StrapiService);
+  private readonly loadingController = inject(LoadingController);
+  private readonly alertController = inject(AlertController);
+
   alert: Alert | null = null;
   isLoading = false;
   documentId: string = '';
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private strapiService: StrapiService,
-    private loadingController: LoadingController,
-    private alertController: AlertController
-  ) {}
 
   ngOnInit() {
     this.documentId = this.route.snapshot.paramMap.get('documentId') || '';

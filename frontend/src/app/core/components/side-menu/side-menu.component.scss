@@ -1,0 +1,141 @@
+// ================================
+// SIDE MENU DESIGN
+// ================================
+
+.side-menu-content {
+  --background: var(--app-background-color);
+  background: var(--background);
+}
+
+// ================================
+// HEADER SECTION
+// ================================
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 25px;
+  background: linear-gradient(135deg, var(--app-accent-color), #3171e0);
+  position: relative;
+  text-align: center;
+
+  .logo-container {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+
+    .app-icon {
+      width: 67px;
+      height: 67px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  h3 {
+    color: white;
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+// ================================
+// MENU ITEMS SECTION
+// ================================
+
+.menu-items {
+  padding: 20px 0;
+
+  ion-list-header {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--app-text-color);
+    opacity: 0.6;
+    margin: 16px 20px 8px;
+  }
+
+  ion-item {
+    --background: var(--app-secondary-color);
+    --color: var(--app-text-color);
+    --border-style: none;
+    --inner-border-width: 0;
+    --padding-start: 24px;
+    --padding-end: 20px;
+    --min-height: 64px;
+    margin: 8px 16px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+
+    &:hover {
+      transform: scale(1.02);
+      background: var(--app-secondary-color);
+      opacity: 0.8;
+    }
+
+    ion-icon[slot="start"] {
+      background: var(--app-accent-color);
+      color: white;
+      border-radius: var(--border-radius-md);
+      padding: 8px;
+      margin-right: 16px;
+    }
+
+    ion-icon[slot="end"] {
+      color: var(--app-text-color);
+      opacity: 0.6;
+      margin-left: auto;
+    }
+
+    ion-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--app-text-color);
+    }
+  }
+}
+
+// ================================
+// RESPONSIVE DESIGN
+// ================================
+
+@media (max-width: 768px) {
+  .menu-header {
+    padding: 25px 16px 20px;
+
+    .logo-container {
+      width: 65px;
+      height: 65px;
+
+      .app-icon {
+        width: 57px;
+        height: 57px;
+      }
+    }
+
+    h3 {
+      font-size: 19px;
+    }
+  }
+
+  .menu-items {
+    ion-item {
+      --min-height: 56px;
+
+      ion-label {
+        font-size: 16px;
+      }
+    }
+  }
+}

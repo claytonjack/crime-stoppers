@@ -1,0 +1,119 @@
+<app-header title="Volunteer"></app-header>
+
+<ion-content [fullscreen]="true">
+	<ion-grid>
+		<!-- Why Join Our Team -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>Why Join Our Team?</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<div class="info-content hero-content">
+						Volunteering with Crime Stoppers Halton offers you the opportunity to make a real impact in your community
+						while developing valuable skills and connections. You'll join a supportive team where your contributions
+						matter, gain meaningful experience, and help create a safer Halton region for everyone.
+					</div>
+				</div>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<ion-text>
+					<p>Note: You must work, reside in, or have a substantial interest in the Halton Region to be
+						considered.</p>
+				</ion-text>
+			</ion-col>
+		</ion-row>
+
+		<!-- How to Apply -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>How to Apply</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Step 1: Download Form</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Select the button below to download the form related to your age group or skill set
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Step 2: Complete the Application</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Fill out all sections of the application form completely and accurately
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Step 3: Submit Your Application</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Email your completed application and personal resume to <strong>info@haltoncrimestoppers.ca</strong>
+					</div>
+				</div>
+			</ion-col>
+		</ion-row>
+
+		<!-- Apply Now -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>Apply Now</h2>
+			</ion-col>
+		</ion-row>
+
+		<ion-row>
+			<ion-col size="12">
+				<div class="ion-text-center ion-margin-bottom">
+					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_volunteer_application___fillable_013519.pdf_182433.pdf')">
+						Adult Volunteer
+					</ion-button>
+					<div class="info-content">
+						Assist with community events, fundraising activities, and awareness campaigns
+					</div>
+				</div>
+			</ion-col>
+			<ion-col size="12">
+				<div class="ion-text-center ion-margin-bottom">
+					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_youth_volunteer_application___fillable_013546.pdf_182502.pdf')">
+						Youth Volunteer
+					</ion-button>
+					<div class="info-content">
+						High school and university students can gain valuable experience through co-op placements
+					</div>
+				</div>
+			</ion-col>
+			<ion-col size="12">
+				<div class="ion-text-center ion-margin-bottom">
+					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2018_board_of_directors_application___fillable_013608.pdf')">
+						Board Member
+					</ion-button>
+					<div class="info-content">
+						Provide leadership and strategic guidance through our Board of Directors
+					</div>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

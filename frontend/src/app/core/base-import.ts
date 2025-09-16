@@ -9,5 +9,3 @@ export const BaseImport = [
   HeaderComponent,
   IonContent,
 ];
-
-export * from './services';

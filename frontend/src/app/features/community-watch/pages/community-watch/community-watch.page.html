@@ -1,8 +1,145 @@
 <app-header title="Community Watch"></app-header>
 
 <ion-content [fullscreen]="true">
-	<div class="ion-padding">
-		<p>Donate Section</p>
-		<p>Volunteer Section</p>
-	</div>
+	<ion-grid>
+		<!-- Hero -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>Prevent | Report | Community</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<div class="info-content hero-content">
+						Join your neighbours in Oakville's Ward 3 for the Community Watch pilot, a partnership between
+						<strong>Crime Stoppers of Halton</strong>, <strong>Halton Regional Police</strong>, and the
+						<strong>Halton Police Board</strong> working together to build a safer and stronger community.
+					</div>
+				</div>
+			</ion-col>
+		</ion-row>
+
+		<!-- Quick Actions -->
+		<ion-row>
+			<ion-col size="12" size-md="6" class="ion-text-center">
+				<ion-button fill="outline" size="large" class="btn-elevated"
+					href="https://lp.constantcontactpages.com/sl/guJGNOk" target="_blank" rel="noopener noreferrer">
+					Subscribe to Newsletter
+				</ion-button>
+			</ion-col>
+			<ion-col size="12" size-md="6" class="ion-text-center">
+				<ion-button fill="outline" size="large" class="btn-elevated"
+					(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/crime_stoppers_of_halton___cw_inspection_report_151830.pdf')">
+					Download<br>Inspection Report
+				</ion-button>
+			</ion-col>
+		</ion-row>
+
+		<!-- Program Benefits -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>Program Benefits</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Stay Informed</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Regular email updates with local safety tips and crime trends.
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Anonymous Reporting</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Confidential way to report suspicious activities.
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Visibility Materials</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Free window clings & lawn signs (Tue/Wed 8â€"4 at HRP HQ).
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>CamSafe Registration</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Connect security cameras to help solve crimes.
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Partner Discounts</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Savings on security products and services.
+					</div>
+				</div>
+				<ion-item-divider></ion-item-divider>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12">
+				<div class="info-item">
+					<ion-item class="info-header">
+						<ion-label>Build Connections</ion-label>
+					</ion-item>
+					<div class="info-content">
+						Meet neighbours and strengthen community bonds.
+					</div>
+				</div>
+			</ion-col>
+		</ion-row> <!-- Partners -->
+		<ion-row>
+			<ion-col size="12" class="ion-text-center">
+				<h2>Our Partners</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="12" class="ion-padding">
+				<div class="swiper-container">
+					<swiper-container class="mySwiper" pagination="true" navigation="true" rewind="true" a11y="true" lazy="true"
+						preload-images="false" autoplay="true" autoplay-delay="5000">
+						@for (slide of partnerSlides; track slide; let i = $index) {
+						<swiper-slide>
+							<div class="slide-content">
+								<ion-img [src]="slide.src" [alt]="slide.alt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
+									[attr.loading]="i === 0 ? 'eager' : 'lazy'"></ion-img>
+							</div>
+						</swiper-slide>
+						}
+					</swiper-container>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 </ion-content>

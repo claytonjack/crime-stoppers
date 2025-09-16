@@ -1,20 +1,117 @@
-ion-button {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: white;
+// ===== HOME PAGE LAYOUT =====
+// Minimal styling - let Ionic handle most of the work
+
+.cta-section {
+  margin-bottom: var(--spacing-md);
 }
 
-ion-segment {
-  ion-segment-button {
-    font-size: inherit;
+.tip-button {
+  --background: linear-gradient(
+    135deg,
+    var(--app-accent-color),
+    var(--app-accent-color)
+  );
+  --color: white;
+  --border-radius: var(--border-radius-lg);
+  --box-shadow: var(--shadow-accent);
+  --padding-start: 12px;
+  --padding-end: 12px;
+
+  ng-icon {
+    font-size: 1.5rem;
+  }
+
+  ng-icon[slot="start"] {
+    margin-right: auto;
+  }
+
+  ng-icon[slot="end"] {
+    margin-left: auto;
+  }
+
+  .button-text {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 var(--spacing-xs);
+
+    .main-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .sub-text {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      padding-top: 0.4rem;
+    }
   }
 }
 
-ion-content {
-  border-radius: 14px;
+// ===== ABOUT US SECTION =====
+
+.about-us-list {
+  background: transparent;
+  padding: 0;
 }
 
-.swiper-container {
-  border-radius: 14px;
+.about-item {
+  margin-bottom: 4px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.about-header {
+  --background: transparent;
+  --border-style: none;
+}
+
+.about-content {
+  padding: 0 16px 14px 16px;
+  background: transparent;
+}
+
+.about-icon {
+  color: var(--app-accent-color);
+}
+
+// ===== TIP PROCEDURE SECTION =====
+
+.tip-procedure-accordion {
+  border: none;
+  background: transparent;
+  border-color: var(--app-secondary-color);
+
+  ion-accordion {
+    border: none;
+    background: transparent;
+  }
+}
+
+.procedure-header {
+  --background: transparent;
+  --border-style: none;
+}
+
+.procedure-content {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  line-height: 1.5;
+}
+
+.procedure-icon {
+  color: var(--app-accent-color);
+}
+
+// ===== SEGMENT SELECTOR STYLING =====
+
+ion-segment {
+  ion-segment-button {
+    --color: rgba(var(--app-text-color-rgb), 0.6);
+    --color-checked: var(--app-accent-color);
+  }
 }

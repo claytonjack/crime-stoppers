@@ -25,6 +25,9 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+/* Import theme variables and mixins */
+@import "theme/variables.scss";
+
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
@@ -33,7 +36,7 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-@import "@ionic/angular/css/palettes/dark.class.css";
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
 /**
@@ -46,15 +49,61 @@
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
 
+ion-app {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/**
+ * Global Background and Theme Support
+ * -----------------------------------------------------
+ */
+html,
+body {
+  background: var(--app-background-color);
+  color: var(--app-text-color);
+  transition: var(--transition-normal);
+}
+
+ion-app {
+  background: var(--app-background-color);
+  color: var(--app-text-color);
+}
+
+ion-router-outlet {
+  background: var(--app-background-color);
+}
+
+ion-content {
+  --background: var(--app-background-color);
+  --color: var(--app-text-color);
+}
+
+ion-card,
+ion-item,
+ion-list {
+  --background: var(--ion-card-background, var(--app-background-color));
+  --color: var(--app-text-color);
+}
+
+ion-card-title {
+  color: var(--app-card-title-color, var(--app-text-color));
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 ion-icon {
-  color: var(--ion-color-primary);
+  color: var(--app-accent-color);
 }
 
 ion-button {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.1rem;
+  font-weight: 600;
   --color: var(--ion-color-text);
+  --border-radius: var(--radius-md);
 }
 
 ion-card-header {
@@ -64,57 +113,88 @@ ion-card-header {
 ion-list {
   --padding-start: 0;
   --padding-end: 0;
+  background: transparent;
 }
 
 ion-label {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-ion-content {
-  border-radius: 14px;
-}
-
-.item-icon {
-  font-size: 1.6rem;
-  color: var(--ion-color-primary);
-  margin-right: 16px;
-}
-
-.item-content {
   font-size: 1.1rem;
-  padding: 8px 16px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-2xs);
 }
 
-.swiper-container,
-ion-datetime,
+ion-action-sheet {
+  --background: var(--app-secondary-color) !important;
+  --color: var(--app-text-color) !important;
+  --button-color: var(--app-text-color) !important;
+  --button-background: var(--app-background-color) !important;
+}
+
+.swiper-container {
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  background: rgba(var(--app-accent-color-rgb), 0.015);
+  border: 1px solid rgba(var(--app-accent-color-rgb), 0.06);
+  margin-bottom: var(--spacing-md);
+
+  .mySwiper {
+    border-radius: var(--border-radius-md);
+  }
+
+  .slide-content {
+    overflow: hidden;
+
+    ion-img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+}
+
+.partner-swiper,
+.mySwiper {
+  --swiper-navigation-size: 18px;
+}
+
+.ion-palette-dark .swiper-container {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-sm);
+}
+
 .card-rounded {
-  border-radius: 8px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(var(--ion-color-dark-rgb), 0.08);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  background: var(--ion-card-background, var(--app-background-color));
+  color: var(--app-text-color);
+  margin-bottom: var(--spacing-md);
 }
 
-.info-item {
-  margin-bottom: 4px;
+.ion-palette-dark .card-rounded {
+  box-shadow: var(--shadow-md);
 }
 
-.info-header {
+.btn-elevated {
+  box-shadow: var(--shadow-accent);
+  transition: var(--transition-normal);
+  border-radius: var(--border-radius-lg);
+  width: 250px;
+  height: 48px;
   --padding-start: 16px;
   --padding-end: 16px;
-  --inner-padding-end: 0;
+  text-transform: none;
 }
 
-.info-content {
-  font-size: 1.1rem;
-  padding: 8px 16px;
-  margin-top: -8px;
+.btn-elevated:hover {
+  box-shadow: var(--shadow-accent-hover);
+  transform: translateY(-2px);
 }
 
-ion-accordion {
-  margin-bottom: 4px;
+.btn-elevated:active {
+  transform: translateY(0);
+  transition-duration: 0.1s;
 }
-
-ion-accordion-group {
-  margin-bottom: 16px;
+ng-icon {
+  font-size: 20px;
 }

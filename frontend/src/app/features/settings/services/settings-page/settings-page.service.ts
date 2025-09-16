@@ -1,21 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import {
+  ActionSheetController,
+  AlertController,
+} from '@ionic/angular/standalone';
 import { ThemeService } from '../theme/theme.service';
 import { FontSizeService } from '../font-size/font-size.service';
 import { PrivacyModeService } from '../../../privacy-mode/services/privacy-mode.service';
-import { DialogService } from '../../../../core/services/dialog.service';
 import { ThemeType, FontSizeOption } from '../../models/settings.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsPageService {
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly fontSizeService: FontSizeService,
-    private readonly privacyModeService: PrivacyModeService,
-    private readonly dialogService: DialogService
-  ) {}
+  private readonly themeService = inject(ThemeService);
+  private readonly fontSizeService = inject(FontSizeService);
+  private readonly privacyModeService = inject(PrivacyModeService);
+  private readonly actionSheetController = inject(ActionSheetController);
+  private readonly alertController = inject(AlertController);
 
   public get theme$(): Observable<ThemeType> {
     return this.themeService.theme$;
@@ -30,7 +32,7 @@ export class SettingsPageService {
   }
 
   public async presentThemeActionSheet(): Promise<void> {
-    await this.dialogService.presentActionSheet({
+    const actionSheet = await this.actionSheetController.create({
       header: 'Select Theme',
       buttons: [
         {
@@ -53,10 +55,11 @@ export class SettingsPageService {
         },
       ],
     });
+    await actionSheet.present();
   }
 
   public async presentFontSizeActionSheet(): Promise<void> {
-    await this.dialogService.presentActionSheet({
+    const actionSheet = await this.actionSheetController.create({
       header: 'Select Font Size',
       buttons: [
         {
@@ -79,10 +82,11 @@ export class SettingsPageService {
         },
       ],
     });
+    await actionSheet.present();
   }
 
   public async presentPrivacyModeActionSheet(): Promise<void> {
-    await this.dialogService.presentActionSheet({
+    const actionSheet = await this.actionSheetController.create({
       header: 'Privacy Mode',
       buttons: [
         {
@@ -99,10 +103,11 @@ export class SettingsPageService {
         },
       ],
     });
+    await actionSheet.present();
   }
 
   public async presentResetSettingsAlert(): Promise<void> {
-    await this.dialogService.presentAlert({
+    const alert = await this.alertController.create({
       header: 'Reset Settings',
       message:
         'Are you sure you want to reset all settings to their default values?',
@@ -120,6 +125,7 @@ export class SettingsPageService {
         },
       ],
     });
+    await alert.present();
   }
 
   public setTheme(theme: ThemeType): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -26,12 +26,12 @@ import { PrivacyModeService } from '../../services/privacy-mode.service';
   ],
 })
 export class PrivacyModePage implements OnInit {
+  private readonly privacyModeService = inject(PrivacyModeService);
+
   selectedDate: string = '';
   privacyModeEnabled = false;
 
-  constructor(private privacyModeService: PrivacyModeService) {
-    this.selectedDate = new Date().toISOString().split('T')[0];
-  }
+  constructor() {}
 
   ngOnInit() {
     this.privacyModeEnabled = this.privacyModeService.isEnabled;

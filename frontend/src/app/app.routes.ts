@@ -2,14 +2,8 @@ import { Routes } from '@angular/router';
 import { PrivacyModeGuard } from './features/privacy-mode/guards/privacy-mode.guard';
 import { TabMenuComponent } from './core/components/tab-menu/tab-menu.component';
 
-/**
- * Application Routes Configuration
- * All routes are defined in this single file for centralized management.
- */
 export const routes: Routes = [
-  // ===========================================
-  // Public Routes (Outside Main Layout)
-  // ===========================================
+  // Privacy Mode Route
   {
     path: 'privacy-mode',
     loadComponent: () =>
@@ -18,17 +12,13 @@ export const routes: Routes = [
       ).then((m) => m.PrivacyModePage),
   },
 
-  // ===========================================
-  // Main Application Layout (Tab-based Navigation)
-  // ===========================================
+  // Main Application Routes
   {
     path: '',
     canActivate: [PrivacyModeGuard],
     component: TabMenuComponent,
     children: [
-      // ==============
-      // Tab Navigation
-      // ==============
+      // Tab Pages
       {
         path: 'home',
         loadComponent: () =>
@@ -51,16 +41,14 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'support',
+        path: 'crime-stats',
         loadComponent: () =>
-          import('./features/support/pages/support/support.page').then(
-            (m) => m.SupportPage
-          ),
+          import(
+            './features/crime-stats/pages/crime-stats/crime-stats.page'
+          ).then((m) => m.CrimeStatsPage),
       },
 
-      // ===============
       // Detail Pages
-      // ===============
       {
         path: 'alert-details/:documentId',
         loadComponent: () =>
@@ -83,9 +71,7 @@ export const routes: Routes = [
           ).then((m) => m.SuspectDetailsPage),
       },
 
-      // ===============
       // Side Menu Pages
-      // ===============
       {
         path: 'events',
         loadComponent: () =>
@@ -101,11 +87,18 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'crime-stats',
+        path: 'volunteer',
         loadComponent: () =>
-          import(
-            './features/crime-stats/pages/crime-stats/crime-stats.page'
-          ).then((m) => m.CrimeStatsPage),
+          import('./features/volunteer/pages/volunteer/volunteer.page').then(
+            (m) => m.VolunteerPage
+          ),
+      },
+      {
+        path: 'donate',
+        loadComponent: () =>
+          import('./features/donate/pages/donate/donate.page').then(
+            (m) => m.DonatePage
+          ),
       },
       {
         path: 'community-watch',
@@ -129,9 +122,7 @@ export const routes: Routes = [
           ),
       },
 
-      // ===============
       // Default Route
-      // ===============
       {
         path: '',
         redirectTo: '/home',
@@ -140,9 +131,7 @@ export const routes: Routes = [
     ],
   },
 
-  // ===========================================
   // Fallback Route
-  // ===========================================
   {
     path: '**',
     redirectTo: '/home',

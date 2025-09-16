@@ -1,33 +1,79 @@
 <app-header title="Home"></app-header>
 
-<ion-content [fullscreen]="true">
-	<div class="ion-padding">
-		<ion-button expand="full" shape="round" (click)="openTipModal()">
-			Submit a Tip!
+<ion-content [fullscreen]="true" class="ion-padding">
+	<!-- Call to Action Button Section -->
+	<div class="cta-section">
+		<ion-button expand="block" size="large" class="tip-button" (click)="openTipModal()">
+			<ng-icon name="bootstrapLightbulbFill" slot="start"></ng-icon>
+			<div class="button-text">
+				<div class="main-text">Submit a Tip</div>
+				<div class="sub-text">Anonymous • Secure • Rewarded</div>
+			</div>
+			<ng-icon name="bootstrapChevronRight" slot="end"></ng-icon>
 		</ion-button>
+	</div>
 
+	<!-- Gallery Section -->
+	<div class="gallery-section">
 		<div class="swiper-container">
 			<swiper-container class="mySwiper" pagination="true" navigation="true">
-				<swiper-slide *ngFor="let slide of slides; let i = index">
+				@for (slide of slides; track slide; let i = $index) {
+				<swiper-slide>
 					<div class="slide-content">
 						<ion-img [src]="slide.src" [alt]="slide.alt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
 							[attr.loading]="i === 0 ? 'eager' : 'lazy'"></ion-img>
 					</div>
 				</swiper-slide>
+				}
 			</swiper-container>
 		</div>
+	</div>
 
-		<ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged()">
-			<ion-segment-button value="about-us">About Us</ion-segment-button>
-			<ion-segment-button value="tip-procedure">Tip Procedure</ion-segment-button>
-		</ion-segment>
-
-		<div *ngIf="selectedSegment === 'about-us'">
-			<app-about-us></app-about-us>
+	<!-- Information Section -->
+	<div class="info-section">
+		<div class="segment-container">
+			<ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged()">
+				<ion-segment-button value="about-us">About Us</ion-segment-button>
+				<ion-segment-button value="tip-procedure">Tip Procedure</ion-segment-button>
+			</ion-segment>
 		</div>
 
-		<div *ngIf="selectedSegment === 'tip-procedure'">
-			<app-tip-procedure></app-tip-procedure>
+		<div class="content-container">
+			@if (selectedSegment === 'about-us') {
+			<div class="content-panel">
+				<ion-list lines="none" class="about-us-list">
+					@for (item of aboutItems; track item) {
+					<div class="about-item">
+						<ion-item class="about-header">
+							<ng-icon [name]="item.icon" slot="start" class="about-icon"></ng-icon>
+							<ion-label>{{ item.title }}</ion-label>
+						</ion-item>
+						<div class="about-content">
+							{{ item.details }}
+						</div>
+					</div>
+					}
+				</ion-list>
+			</div>
+			}
+
+			@if (selectedSegment === 'tip-procedure') {
+			<div class="content-panel">
+				<ion-accordion-group multiple="true" class="tip-procedure-accordion">
+					@for (step of procedureSteps; track step) {
+					<ion-accordion>
+						<ion-item slot="header" class="procedure-header">
+							<ng-icon [name]="step.icon" slot="start" class="procedure-icon"></ng-icon>
+							<ion-label>{{ step.title }}</ion-label>
+						</ion-item>
+						<div class="procedure-content" slot="content">
+							{{ step.details }}
+						</div>
+					</ion-accordion>
+					}
+				</ion-accordion-group>
+			</div>
+			}
 		</div>
 	</div>
 

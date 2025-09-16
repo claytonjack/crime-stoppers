@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseImport } from '../../../../core/base-import';
 import { StrapiService, Event } from '../../../../core/services/strapi.service';
@@ -39,18 +39,16 @@ import {
   ],
 })
 export class EventsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
+  private readonly router = inject(Router);
+  private readonly loadingController = inject(LoadingController);
+  private readonly alertController = inject(AlertController);
+
   events: Event[] = [];
   upcomingEvents: Event[] = [];
   pastEvents: Event[] = [];
   selectedSegment: string = 'upcoming';
   isLoading = false;
-
-  constructor(
-    private strapiService: StrapiService,
-    private router: Router,
-    private loadingController: LoadingController,
-    private alertController: AlertController
-  ) {}
 
   ngOnInit() {
     this.loadEvents();

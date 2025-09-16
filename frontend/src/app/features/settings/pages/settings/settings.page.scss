@@ -1,16 +1,213 @@
-ion-list {
-  margin-bottom: 16px;
+// ================================
+// MODERN SETTINGS PAGE DESIGN
+// ================================
+
+.settings-container {
+  padding: 20px 16px;
+  background: var(--app-background-color);
 }
 
-ion-item {
-  --min-height: 56px;
+.settings-section {
+  margin-bottom: 32px;
 
-  ion-label {
-    font-size: 1rem;
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--app-text-color);
+    margin: 0 0 16px 4px;
+    letter-spacing: -0.02em;
+  }
+}
+
+.settings-card {
+  background: var(--app-secondary-color);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid rgba(var(--app-accent-color-rgb), 0.1);
+
+  ion-item {
+    --background: transparent;
+    --color: var(--app-text-color);
+    --border-style: none;
+    --inner-border-width: 0;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: 80px;
+
+    transition: var(--transition-normal);
+    cursor: pointer;
+
+    &:hover {
+      --background: rgba(var(--app-accent-color-rgb), 0.05);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      --background: rgba(var(--app-accent-color-rgb), 0.1);
+    }
+
+    // Add subtle separator between items (except last)
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(var(--app-text-color-rgb), 0.1);
+    }
+  }
+}
+
+.setting-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+
+  ion-icon {
+    color: white;
+  }
+
+  &.theme-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  &.font-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  &.app-icon {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  }
+
+  &.language-icon {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  }
+
+  &.screen-reader-icon {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+
+  &.privacy-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  &.auth-icon {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  }
+
+  &.reset-icon {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  }
+}
+
+ion-label {
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--app-text-color);
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--app-text-color);
+    opacity: 0.7;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+}
+
+.setting-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--app-accent-color);
+    white-space: nowrap;
   }
 
   ion-icon {
-    font-size: 1.4rem;
-    color: var(--ion-color-primary);
+    font-size: 18px;
+    color: var(--app-text-color);
+    opacity: 0.6;
+  }
+}
+
+// ================================
+// RESPONSIVE DESIGN
+// ================================
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 16px 12px;
+  }
+
+  .settings-section {
+    margin-bottom: 24px;
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .settings-card {
+    border-radius: var(--border-radius-lg);
+
+    ion-item {
+      --min-height: 72px;
+      --padding-start: 16px;
+      --padding-end: 16px;
+    }
+  }
+
+  .setting-icon-container {
+    width: 44px;
+    height: 44px;
+    margin-right: 12px;
+  }
+
+  ion-label {
+    h4 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .setting-value {
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+// ================================
+// ANIMATION ENHANCEMENTS
+// ================================
+
+@media (prefers-reduced-motion: no-preference) {
+  .settings-card {
+    ion-item {
+      &:hover {
+        box-shadow: var(--shadow-xl);
+      }
+    }
+  }
+
+  .setting-icon-container {
+    transition: var(--transition-fast);
+
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 }

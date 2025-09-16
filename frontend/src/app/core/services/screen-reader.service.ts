@@ -3,7 +3,7 @@ import { ScreenReader } from '@capacitor/screen-reader';
 
 @Injectable({ providedIn: 'root' })
 export class ScreenReaderService {
-  private userPrefersSpeech = true; // can be tied to a setting later
+  private userPrefersSpeech = true;
 
   async isScreenReaderEnabled(): Promise<boolean> {
     const { value } = await ScreenReader.isEnabled();

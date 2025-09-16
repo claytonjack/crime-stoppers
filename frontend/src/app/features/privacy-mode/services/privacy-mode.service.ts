@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
@@ -7,6 +7,7 @@ import { Preferences } from '@capacitor/preferences';
   providedIn: 'root',
 })
 export class PrivacyModeService {
+  private readonly router = inject(Router);
   private readonly PRIVACY_MODE_KEY = 'app_privacy_mode';
   private readonly DEFAULT_PRIVACY_MODE = false;
 
@@ -19,7 +20,7 @@ export class PrivacyModeService {
 
   private _lastRoute = '/home';
 
-  constructor(private router: Router) {
+  constructor() {
     this.loadPrivacyMode();
   }
 
@@ -47,15 +48,17 @@ export class PrivacyModeService {
     if (
       !this.privacyModeSubject.value &&
       enabled &&
-      this.router.url !== '/privacy-mode' &&
-      this.router.url !== '/settings'
+      this.router.url !== '/privacy-mode'
     ) {
       this._lastRoute = this.router.url;
     }
 
     if (enabled) {
       document.body.classList.add('privacy-mode');
-      if (this.router.url !== '/privacy-mode') {
+      if (
+        this.router.url !== '/privacy-mode' &&
+        this.router.url !== '/settings'
+      ) {
         this.router.navigate(['/privacy-mode']);
       }
     } else {

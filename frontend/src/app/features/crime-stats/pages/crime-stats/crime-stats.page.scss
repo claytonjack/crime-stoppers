@@ -1,0 +1,159 @@
+// ===== CRIME STATS PAGE STYLES =====
+// Simplified using global utility classes
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  flex-direction: column;
+
+  ion-spinner {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  flex-direction: column;
+
+  .error-text {
+    color: var(--ion-color-danger);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+  }
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin: var(--spacing-md) 0;
+
+  canvas {
+    max-height: 400px;
+  }
+}
+
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-style: italic;
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--spacing-md);
+
+  h3 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--app-accent-color);
+    font-weight: bold;
+  }
+
+  p {
+    margin: var(--spacing-sm) 0 0 0;
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+  }
+
+  .ytd-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+    font-style: italic;
+    margin-top: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+  }
+}
+
+.city-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+
+  ion-chip {
+    cursor: pointer;
+    transition: var(--transition-normal);
+
+    &.city-button {
+      --background: var(--ion-color-light);
+      --color: var(--ion-color-dark);
+
+      &:hover {
+        --background: var(--app-accent-color);
+        --color: var(--app-accent-color-contrast);
+      }
+    }
+
+    &.city-button-active {
+      --background: var(--app-accent-color);
+      --color: var(--app-accent-color-contrast);
+      font-weight: bold;
+    }
+
+    .city-count {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-left: var(--spacing-xs);
+    }
+  }
+}
+
+ion-card {
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  background: var(--ion-card-background, var(--app-background-color));
+  color: var(--app-text-color);
+  margin-bottom: var(--spacing-md);
+}
+
+ion-card-title {
+  color: var(--app-accent-color);
+  font-weight: 600;
+}
+
+// Accordion styling
+ion-accordion-group {
+  margin-bottom: var(--spacing-md);
+
+  ion-accordion {
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    background: var(--ion-card-background, var(--app-background-color));
+    color: var(--app-text-color);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-sm);
+
+    ion-item {
+      --background: var(--ion-color-light);
+      --color: var(--app-accent-color);
+      font-weight: 600;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .chart-container {
+    height: 300px;
+
+    canvas {
+      max-height: 300px;
+    }
+  }
+
+  .stat-item h3 {
+    font-size: 1.5rem;
+  }
+}

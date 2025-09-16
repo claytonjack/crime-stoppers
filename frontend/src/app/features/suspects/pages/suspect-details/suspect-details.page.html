@@ -1,8 +1,26 @@
 <app-header [title]="suspect?.Name || 'Suspect Details'"></app-header>
 
 <ion-content [fullscreen]="true">
+	<!-- Breadcrumbs -->
+	<div class="ion-padding-horizontal ion-padding-top">
+		<ion-breadcrumbs>
+			<ion-breadcrumb (click)="navigateToHome()">
+				<ion-icon name="home" slot="start"></ion-icon>
+				Home
+			</ion-breadcrumb>
+			<ion-breadcrumb (click)="navigateToSuspects()">
+				<ion-icon name="people" slot="start"></ion-icon>
+				Most Wanted
+			</ion-breadcrumb>
+			<ion-breadcrumb active="true">
+				<ion-icon name="person" slot="start"></ion-icon>
+				{{ suspect?.Name || 'Suspect Details' }}
+			</ion-breadcrumb>
+		</ion-breadcrumbs>
+	</div>
 	<!-- Loading state -->
-	<div *ngIf="isLoading" class="ion-padding">
+	@if (isLoading) {
+	<div class="ion-padding">
 		<ion-card>
 			<ion-card-content>
 				<div class="details-loading">
@@ -17,9 +35,11 @@
 			</ion-card-content>
 		</ion-card>
 	</div>
+	}
 
 	<!-- Suspect details -->
-	<div *ngIf="!isLoading && suspect" class="ion-padding">
+	@if (!isLoading && suspect) {
+	<div class="ion-padding">
 		<!-- Main suspect image and basic info -->
 		<ion-card class="suspect-main-card">
 			<div class="suspect-image-container">
@@ -29,21 +49,25 @@
 				<div class="suspect-main-info">
 					<h1 class="suspect-name">{{ suspect.Name }}</h1>
 					<div class="suspect-basic-info">
-						<div class="info-item" *ngIf="suspect.Residence">
+						@if (suspect.Residence) {
+						<div class="info-item">
 							<ion-icon name="location"></ion-icon>
 							<span>{{ suspect.Residence }}</span>
 						</div>
-						<div class="info-item" *ngIf="suspect.Age">
+						}
+						@if (suspect.Age) {
+						<div class="info-item">
 							<ion-icon name="person"></ion-icon>
 							<span>Age: {{ suspect.Age }}</span>
 						</div>
+						}
 					</div>
 				</div>
 			</ion-card-content>
 		</ion-card>
-
 		<!-- Physical description -->
-		<ion-card *ngIf="suspect.Height || suspect.Weight">
+		@if (suspect.Height || suspect.Weight) {
+		<ion-card>
 			<ion-card-header>
 				<ion-card-title>
 					<ion-icon name="body-outline"></ion-icon>
@@ -53,25 +77,30 @@
 			<ion-card-content>
 				<ion-grid>
 					<ion-row>
-						<ion-col size="6" *ngIf="suspect.Height">
+						@if (suspect.Height) {
+						<ion-col size="6">
 							<div class="detail-item">
 								<strong>Height:</strong>
 								<span>{{ suspect.Height }}</span>
 							</div>
 						</ion-col>
-						<ion-col size="6" *ngIf="suspect.Weight">
+						}
+						@if (suspect.Weight) {
+						<ion-col size="6">
 							<div class="detail-item">
 								<strong>Weight:</strong>
 								<span>{{ suspect.Weight }}</span>
 							</div>
 						</ion-col>
+						}
 					</ion-row>
 				</ion-grid>
 			</ion-card-content>
 		</ion-card>
-
+		}
 		<!-- Reward information -->
-		<ion-card *ngIf="suspect.Reward" class="reward-card">
+		@if (suspect.Reward) {
+		<ion-card class="reward-card">
 			<ion-card-content>
 				<div class="reward-content">
 					<ion-icon name="cash" color="success"></ion-icon>
@@ -82,9 +111,10 @@
 				</div>
 			</ion-card-content>
 		</ion-card>
-
+		}
 		<!-- Details -->
-		<ion-card *ngIf="suspect.Details">
+		@if (suspect.Details) {
+		<ion-card>
 			<ion-card-header>
 				<ion-card-title>
 					<ion-icon name="information-circle"></ion-icon>
@@ -95,9 +125,10 @@
 				<p class="suspect-details">{{ suspect.Details }}</p>
 			</ion-card-content>
 		</ion-card>
-
+		}
 		<!-- Contact section -->
-		<ion-card *ngIf="suspect.Contact" class="contact-card">
+		@if (suspect.Contact) {
+		<ion-card class="contact-card">
 			<ion-card-header>
 				<ion-card-title>
 					<ion-icon name="call"></ion-icon>
@@ -112,7 +143,7 @@
 				</ion-button>
 			</ion-card-content>
 		</ion-card>
-
+		}
 		<!-- Action buttons -->
 		<div class="action-buttons">
 			<ion-button expand="block" fill="outline" color="medium" (click)="goBack()">
@@ -121,9 +152,11 @@
 			</ion-button>
 		</div>
 	</div>
+	}
 
 	<!-- Error state -->
-	<div *ngIf="!isLoading && !suspect" class="error-state ion-padding">
+	@if (!isLoading && !suspect) {
+	<div class="error-state ion-padding">
 		<ion-icon name="alert-circle" size="large" color="danger"></ion-icon>
 		<h2>Suspect Not Found</h2>
 		<p>The requested suspect information could not be loaded.</p>
@@ -132,4 +165,5 @@
 			Back to List
 		</ion-button>
 	</div>
+	}
 </ion-content>

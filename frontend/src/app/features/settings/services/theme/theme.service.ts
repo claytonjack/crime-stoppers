@@ -85,6 +85,10 @@ export class ThemeService {
     } else {
       document.documentElement.classList.remove('ion-palette-dark');
     }
+
+    document.documentElement.style.setProperty('--theme-applied', theme);
+
+    console.log(`Theme applied: ${theme}, Dark mode: ${shouldUseDarkTheme}`);
   }
 
   private shouldUseDarkTheme(theme: ThemeType): boolean {

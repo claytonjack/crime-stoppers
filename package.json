@@ -1,14 +1,23 @@
 {
-  "name": "crime-stoppers",
-  "version": "1.0.0",
-  "description": "Cross platform mobile app",
-  "private": true,
-  "workspaces": ["frontend", "backend"],
-  "scripts": {
-    "start:frontend": "npm run start --workspace=frontend",
-    "start:backend": "npm run dev --workspace=backend",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Code Against Crime",
-  "license": "MIT"
+	"name": "crime-stoppers",
+	"version": "1.3.0",
+	"description": "Cross platform mobile app",
+	"private": true,
+	"workspaces": [
+		"frontend"
+	],
+	"scripts": {
+		"start:frontend": "npm run start --workspace=frontend",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Code Against Crime",
+	"license": "MIT",
+	"dependencies": {
+		"@ng-icons/core": "^32.1.0",
+		"@swimlane/ngx-charts": "^23.0.0",
+		"d3": "^7.9.0"
+	},
+	"devDependencies": {
+		"@capacitor/assets": "^3.0.5"
+	}
 }

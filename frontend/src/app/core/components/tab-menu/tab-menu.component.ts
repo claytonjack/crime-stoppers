@@ -1,13 +1,14 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIcon } from '@ng-icons/core';
+
 import {
   IonTabs,
   IonTabBar,
   IonTabButton,
-  IonIcon,
   IonLabel,
   IonFab,
   IonFabButton,
+  IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
 
@@ -17,20 +18,19 @@ import { PrivacyModeService } from '../../../features/privacy-mode/services/priv
   styleUrls: ['./tab-menu.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonTabs,
     IonTabBar,
     IonTabButton,
-    IonIcon,
     IonLabel,
     IonFab,
     IonFabButton,
+    IonRouterOutlet,
+    NgIcon,
   ],
 })
 export class TabMenuComponent {
   public environmentInjector = inject(EnvironmentInjector);
-
-  constructor(private privacyModeService: PrivacyModeService) {}
+  private readonly privacyModeService = inject(PrivacyModeService);
 
   get isPrivacyModeEnabled(): boolean {
     return this.privacyModeService.isEnabled;

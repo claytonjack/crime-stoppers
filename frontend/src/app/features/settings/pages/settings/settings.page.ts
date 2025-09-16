@@ -1,30 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgIcon } from '@ng-icons/core';
 import { BaseImport } from '../../../../core/base-import';
 import {
   IonContent,
   IonItem,
   IonLabel,
-  IonIcon,
-  IonList,
   IonHeader,
   IonToolbar,
   IonTitle,
 } from '@ionic/angular/standalone';
 import { SettingsPageService } from '../../services/settings-page/settings-page.service';
-import { ThemeNamePipe } from '../../pipes/theme-name/theme-name.pipe';
-import { FontSizeNamePipe } from '../../pipes/font-size-name/font-size-name.pipe';
-import { PrivacyModeNamePipe } from '../../pipes/privacy-mode-name/privacy-mode-name.pipe';
 import { Router } from '@angular/router';
-import { addIcons } from 'ionicons';
-import {
-  sunny,
-  text,
-  eye,
-  refresh,
-  settings,
-  chevronForward,
-} from 'ionicons/icons';
+import { map } from 'rxjs/operators';
+import { ThemeType, FontSizeOption } from '../../models/settings.model';
 
 export const settingsPageSelector = 'app-settings';
 
@@ -42,32 +31,50 @@ export const settingsPageSelector = 'app-settings';
     IonContent,
     IonItem,
     IonLabel,
-    IonIcon,
-    IonList,
-    ThemeNamePipe,
-    FontSizeNamePipe,
-    PrivacyModeNamePipe,
+    NgIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPage {
+  private readonly settingsPageService = inject(SettingsPageService);
+  private readonly router = inject(Router);
+
+  private readonly displayNames = {
+    theme: {
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System',
+    } as Record<ThemeType, string>,
+    fontSize: {
+      small: 'Small',
+      medium: 'Medium',
+      large: 'Large',
+    } as Record<FontSizeOption, string>,
+    privacyMode: {
+      true: 'Enabled',
+      false: 'Disabled',
+    },
+  };
+
   public readonly theme$ = this.settingsPageService.theme$;
   public readonly fontSize$ = this.settingsPageService.fontSize$;
   public readonly privacyMode$ = this.settingsPageService.privacyMode$;
 
-  constructor(
-    private readonly settingsPageService: SettingsPageService,
-    private readonly router: Router
-  ) {
-    addIcons({
-      sunny,
-      chevronForward,
-      text,
-      eye,
-      refresh,
-      settings,
-    });
-  }
+  public readonly themeDisplayName$ = this.theme$.pipe(
+    map((theme) => this.displayNames.theme[theme] || 'System')
+  );
+
+  public readonly fontSizeDisplayName$ = this.fontSize$.pipe(
+    map((fontSize) => this.displayNames.fontSize[fontSize] || 'Medium')
+  );
+
+  public readonly privacyModeDisplayName$ = this.privacyMode$.pipe(
+    map(
+      (enabled) =>
+        this.displayNames.privacyMode[enabled.toString() as 'true' | 'false'] ||
+        'Disabled'
+    )
+  );
 
   public async onThemeClick(): Promise<void> {
     await this.settingsPageService.presentThemeActionSheet();
@@ -83,5 +90,21 @@ export class SettingsPage {
 
   public async onResetSettings(): Promise<void> {
     await this.settingsPageService.presentResetSettingsAlert();
+  }
+
+  public async onLanguageClick(): Promise<void> {
+    console.log('Language settings clicked');
+  }
+
+  public async onScreenReaderClick(): Promise<void> {
+    console.log('Screen reader settings clicked');
+  }
+
+  public async onLoginAuthClick(): Promise<void> {
+    console.log('Login authentication settings clicked');
+  }
+
+  public async onAppIconClick(): Promise<void> {
+    console.log('App icon settings clicked');
   }
 }

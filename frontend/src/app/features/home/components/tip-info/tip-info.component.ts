@@ -5,7 +5,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonHeader,
   IonToolbar,
@@ -15,8 +15,6 @@ import {
   IonButton,
   IonModal,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { information, call, globe } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tip-info',
@@ -24,7 +22,6 @@ import { information, call, globe } from 'ionicons/icons';
   styleUrls: ['./tip-info.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -53,14 +50,6 @@ export class TipInfoComponent {
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() submitTip = new EventEmitter<void>();
-
-  constructor() {
-    addIcons({
-      information,
-      call,
-      globe,
-    });
-  }
 
   close() {
     this.closeModal.emit();

@@ -3,37 +3,58 @@ ion-fab {
 }
 
 ion-fab-button {
-  --background: var(--ion-color-primary);
-  --color: var(--ion-color-primary-contrast);
+  --background: var(--app-accent-color);
+  --color: var(--app-accent-color-contrast);
   --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 
   &:hover {
-    --background: var(--ion-color-primary-shade);
+    --background: var(--app-accent-color);
   }
 }
 
 .fab-icon {
-  font-size: 24px;
-  color: var(--ion-color-primary-contrast);
+  color: var(--app-accent-color-contrast);
+  font-size: 28px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 ion-fab-button ion-icon {
-  font-size: 24px;
-  color: var(--ion-color-primary-contrast);
+  color: var(--app-accent-color-contrast);
 }
 
 ion-tab-bar {
-  --background: var(--ion-color-light);
-  --border-color: var(--ion-color-medium);
-  --color: var(--ion-color-medium);
-  --color-selected: var(--ion-color-primary);
+  --background: var(--app-secondary-color);
+  --border-color: var(--app-text-color);
+  --color: var(--app-text-color);
+  --color-selected: var(--app-accent-color);
 
   ion-tab-button {
-    --color: var(--ion-color-medium);
-    --color-selected: var(--ion-color-primary);
+    --color: var(--app-text-color);
+    --color-selected: var(--app-accent-color);
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
 
-    ion-icon {
+    &.tab-selected {
+      opacity: 1;
+      transform: scale(1.05);
+
+      ng-icon {
+        color: var(--app-accent-color);
+      }
+
+      ion-label {
+        color: var(--app-accent-color);
+      }
+    }
+
+    ng-icon {
       font-size: 20px;
+      transition: all 0.2s ease-in-out;
+      margin-bottom: 3px;
     }
 
     ion-label {
@@ -45,27 +66,5 @@ ion-tab-bar {
   .fab-placeholder {
     opacity: 0;
     pointer-events: none;
-  }
-}
-
-@media (max-width: 576px) {
-  ion-tab-bar {
-    ion-tab-button {
-      ion-label {
-        font-size: 10px;
-      }
-
-      ion-icon {
-        font-size: 18px;
-      }
-    }
-  }
-
-  .fab-icon {
-    font-size: 20px;
-  }
-
-  ion-fab-button ion-icon {
-    font-size: 20px;
   }
 }

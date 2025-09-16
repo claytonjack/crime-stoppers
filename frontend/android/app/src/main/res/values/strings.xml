@@ -4,4 +4,6 @@
     <string name="title_activity_main">CSH</string>
     <string name="package_name">com.crimestoppers</string>
     <string name="custom_url_scheme">com.crimestoppers</string>
+    <string name="app_full_name">Crime Stoppers of Halton</string>
+    <string name="app_description">Anonymous crime reporting for Halton Region</string>
 </resources>

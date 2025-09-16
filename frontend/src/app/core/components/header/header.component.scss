@@ -1,0 +1,54 @@
+// ================================
+// HEADER COMPONENT STYLING
+// ================================
+
+ion-header {
+  background: var(--app-secondary-color);
+
+  ion-toolbar {
+    --background: var(--app-secondary-color);
+    --color: var(--app-text-color);
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    width: 100%;
+    margin: 0;
+
+    ion-title {
+      color: var(--app-text-color);
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    ion-buttons {
+      ion-button {
+        --color: var(--app-text-color);
+        ion-icon {
+          color: var(--app-text-color);
+        }
+      }
+    }
+  }
+}
+
+// ================================
+// RESPONSIVE DESIGN
+// ================================
+
+@media (max-width: 768px) {
+  ion-header {
+    ion-toolbar {
+      ion-title {
+        font-size: 1.1rem;
+      }
+
+      ion-buttons {
+        ion-button {
+          ion-icon {
+            color: var(--app-text-color);
+          }
+        }
+      }
+    }
+  }
+}

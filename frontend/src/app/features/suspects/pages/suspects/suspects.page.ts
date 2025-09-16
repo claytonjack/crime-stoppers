@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseImport } from '../../../../core/base-import';
 import {
@@ -15,6 +15,8 @@ import {
   IonSkeletonText,
   IonIcon,
   IonButton,
+  IonBreadcrumbs,
+  IonBreadcrumb,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -28,21 +30,21 @@ import {
     IonCard,
     IonRefresherContent,
     IonRefresher,
+    IonBreadcrumbs,
+    IonBreadcrumb,
     ...BaseImport,
   ],
   templateUrl: './suspects.page.html',
   styleUrls: ['./suspects.page.scss'],
 })
 export class SuspectsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
+  private readonly router = inject(Router);
+  private readonly loadingController = inject(LoadingController);
+  private readonly alertController = inject(AlertController);
+
   suspects: Suspect[] = [];
   isLoading = false;
-
-  constructor(
-    private strapiService: StrapiService,
-    private router: Router,
-    private loadingController: LoadingController,
-    private alertController: AlertController
-  ) {}
 
   ngOnInit() {
     this.loadSuspects();
@@ -79,6 +81,10 @@ export class SuspectsPage implements OnInit {
 
   viewSuspectDetails(suspect: Suspect) {
     this.router.navigate(['/suspect-details', suspect.documentId]);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/home']);
   }
 
   getImageUrl(suspect: Suspect): string {

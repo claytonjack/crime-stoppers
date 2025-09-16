@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { NgIcon } from '@ng-icons/core';
 import {
   IonHeader,
   IonToolbar,
@@ -6,7 +7,6 @@ import {
   IonButtons,
   IonButton,
   IonMenuToggle,
-  IonIcon,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -21,7 +21,7 @@ import {
     IonButtons,
     IonButton,
     IonMenuToggle,
-    IonIcon,
+    NgIcon,
   ],
 })
 export class HeaderComponent {

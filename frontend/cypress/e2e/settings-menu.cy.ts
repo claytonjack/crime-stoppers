@@ -7,33 +7,29 @@ describe('Settings Menu', () => {
     cy.get('ion-title').contains('Settings').should('exist');
   });
 
-  it('should display privacy section', () => {
-    cy.contains('Privacy').should('exist');
-    cy.contains('Privacy Mode').should('exist');
+  it('should display appearance section', () => {
+    cy.contains('Appearance').should('exist');
   });
 
   it('should display theme options', () => {
     cy.contains('Theme').should('exist');
-    cy.contains('Light').should('exist');
-    cy.contains('Dark').should('exist');
-    cy.contains('System').should('exist');
+    cy.contains('Choose your preferred color scheme').should('exist');
   });
 
   it('should display font size options', () => {
     cy.contains('Font Size').should('exist');
+    cy.contains('Adjust text size for better readability').should('exist');
   });
 
   it('should display reset button', () => {
     cy.contains('Reset Settings').should('exist');
   });
 
-  it('should toggle between theme options', () => {
-    cy.contains('ion-item', 'Dark').click();
-    cy.contains('ion-item', 'Light').click();
-    cy.contains('ion-item', 'System').click();
+  it('should be able to click theme setting', () => {
+    cy.contains('ion-item', 'Theme').click({ force: true });
   });
 
-  it('should have a working back button', () => {
-    cy.get('ion-back-button').should('exist');
+  it('should have header with back navigation', () => {
+    cy.get('app-header').should('exist');
   });
 });

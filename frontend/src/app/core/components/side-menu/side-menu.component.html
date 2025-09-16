@@ -1,32 +1,64 @@
 <ion-menu menuId="side-menu" contentId="main-content" [swipeGesture]="true" autoHide="true">
-	<ion-header>
-		<ion-toolbar color="primary">
-			<ion-title>Menu</ion-title>
-		</ion-toolbar>
-	</ion-header>
-	<ion-content [fullscreen]="true">
-		<ion-list>
-			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToSuspects()" detail>
-				<ion-icon slot="start" name="people-outline"></ion-icon>
-				<ion-label>Most Wanted</ion-label>
-			</ion-item>
-			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToCrimeStats()" detail>
-				<ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
-				<ion-label>Crime Stats</ion-label>
-			</ion-item>
-			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToCommunityWatch()" detail>
-				<ion-icon slot="start" name="eye-outline"></ion-icon>
-				<ion-label>Community Watch</ion-label>
-			</ion-item>
-			<ion-item *ngIf="!isPrivacyModeEnabled" button (click)="goToContact()" detail>
-				<ion-icon slot="start" name="call-outline"></ion-icon>
-				<ion-label>Contact Us</ion-label>
-			</ion-item>
+	<ion-content [fullscreen]="true" class="side-menu-content">
+		<!-- Header Section -->
+		<div class="menu-header">
+			<div class="logo-container">
+				<img src="assets/icons/icon-white.png" alt="Crime Stoppers Logo" class="app-icon" />
+			</div>
+			<h3>Crime Stoppers of Halton</h3>
+		</div>
 
-			<ion-item button (click)="goToSettings()" detail>
-				<ion-icon slot="start" name="settings-outline"></ion-icon>
-				<ion-label>Settings</ion-label>
+		<!-- Menu Items -->
+		<div class="menu-items">
+			@if (!isPrivacyModeEnabled) {
+			<ion-item button (click)="goToSuspects()">
+				<ng-icon slot="start" name="bootstrapPersonBoundingBox"></ng-icon>
+				<ion-label>Most Wanted</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
 			</ion-item>
-		</ion-list>
+			}
+
+			@if (!isPrivacyModeEnabled) {
+			<!-- Crime Stats moved to bottom tab bar -->
+			}
+
+			@if (!isPrivacyModeEnabled) {
+			<ion-item button (click)="goToCommunityWatch()">
+				<ng-icon slot="start" name="bootstrapEye"></ng-icon>
+				<ion-label>Community Watch</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
+			</ion-item>
+			}
+
+			@if (!isPrivacyModeEnabled) {
+			<ion-item button routerLink="/donate" (click)="closeMenu()">
+				<ng-icon slot="start" name="bootstrapCash"></ng-icon>
+				<ion-label>Donate</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
+			</ion-item>
+			}
+
+			@if (!isPrivacyModeEnabled) {
+			<ion-item button routerLink="/volunteer" (click)="closeMenu()">
+				<ng-icon slot="start" name="bootstrapPeople"></ng-icon>
+				<ion-label>Volunteer</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
+			</ion-item>
+			}
+
+			@if (!isPrivacyModeEnabled) {
+			<ion-item button (click)="goToContact()">
+				<ng-icon slot="start" name="bootstrapEnvelope"></ng-icon>
+				<ion-label>Contact Us</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
+			</ion-item>
+			}
+
+			<ion-item button (click)="goToSettings()">
+				<ng-icon slot="start" name="bootstrapGear"></ng-icon>
+				<ion-label>Settings</ion-label>
+				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
+			</ion-item>
+		</div>
 	</ion-content>
 </ion-menu>

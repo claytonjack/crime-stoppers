@@ -1,4 +1,4 @@
-describe('Privacy Mode - Calendar Tab', () => {
+describe('Privacy Mode', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8100/privacy-mode');
   });

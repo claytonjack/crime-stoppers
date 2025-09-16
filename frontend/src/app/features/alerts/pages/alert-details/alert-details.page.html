@@ -2,7 +2,8 @@
 
 <ion-content [fullscreen]="true">
 	<!-- Loading state -->
-	<div *ngIf="isLoading" class="ion-padding">
+	@if (isLoading) {
+	<div class="ion-padding">
 		<ion-card>
 			<ion-card-content>
 				<div class="details-loading">
@@ -15,14 +16,17 @@
 			</ion-card-content>
 		</ion-card>
 	</div>
+	}
 
 	<!-- Alert details -->
-	<div *ngIf="!isLoading && alert">
+	@if (!isLoading && alert) {
+	<div>
 		<!-- Main alert image -->
-		<div class="alert-image-container" *ngIf="alert.Main_Image?.url">
+		@if (alert.Main_Image?.url) {
+		<div class="alert-image-container">
 			<img [src]="getImageUrl()" [alt]="alert.Title" (error)="onImageError($event)" class="alert-main-image" />
 		</div>
-
+		}
 		<div class="ion-padding">
 			<!-- Alert header -->
 			<ion-card class="alert-main-card">
@@ -30,12 +34,15 @@
 					<div class="alert-header">
 						<h1 class="alert-title">{{ alert.Title }}</h1>
 						<ion-chip [color]="getSourceColor(alert.Source)" outline>
-							<ion-icon name="shield-checkmark" *ngIf="alert.Source === 'Halton Police'"></ion-icon>
-							<ion-icon name="people" *ngIf="alert.Source === 'Crime Stoppers'"></ion-icon>
+							@if (alert.Source === 'Halton Police') {
+							<ion-icon name="shield-checkmark"></ion-icon>
+							}
+							@if (alert.Source === 'Crime Stoppers') {
+							<ion-icon name="people"></ion-icon>
+							}
 							<ion-label>{{ alert.Source }}</ion-label>
 						</ion-chip>
 					</div>
-
 					<div class="alert-meta">
 						<div class="meta-item">
 							<ion-icon name="time"></ion-icon>
@@ -44,7 +51,6 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-
 			<!-- Alert content -->
 			<ion-card>
 				<ion-card-header>
@@ -57,14 +63,17 @@
 					<div class="alert-body" [innerHTML]="alert.Body"></div>
 				</ion-card-content>
 			</ion-card>
-
 			<!-- Source information -->
 			<ion-card class="source-card" [class.halton-police]="alert.Source === 'Halton Police'"
 				[class.crime-stoppers]="alert.Source === 'Crime Stoppers'">
 				<ion-card-content>
 					<div class="source-content">
-						<ion-icon name="shield-checkmark" *ngIf="alert.Source === 'Halton Police'"></ion-icon>
-						<ion-icon name="people" *ngIf="alert.Source === 'Crime Stoppers'"></ion-icon>
+						@if (alert.Source === 'Halton Police') {
+						<ion-icon name="shield-checkmark"></ion-icon>
+						}
+						@if (alert.Source === 'Crime Stoppers') {
+						<ion-icon name="people"></ion-icon>
+						}
 						<div>
 							<h3>Source</h3>
 							<p>{{ alert.Source }}</p>
@@ -72,7 +81,6 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-
 			<!-- Action buttons -->
 			<div class="action-buttons">
 				<ion-button expand="block" fill="outline" color="medium" (click)="goBack()">
@@ -82,9 +90,11 @@
 			</div>
 		</div>
 	</div>
+	}
 
 	<!-- Error state -->
-	<div *ngIf="!isLoading && !alert" class="error-state ion-padding">
+	@if (!isLoading && !alert) {
+	<div class="error-state ion-padding">
 		<ion-icon name="alert-circle" size="large" color="danger"></ion-icon>
 		<h2>Alert Not Found</h2>
 		<p>The requested alert information could not be loaded.</p>
@@ -93,4 +103,5 @@
 			Back to Alerts
 		</ion-button>
 	</div>
+	}
 </ion-content>

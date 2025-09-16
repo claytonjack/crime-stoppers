@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseImport } from '../../../../core/base-import';
 import {
@@ -18,6 +18,8 @@ import {
   IonCardTitle,
   IonCol,
   IonButton,
+  IonBreadcrumbs,
+  IonBreadcrumb,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -34,23 +36,23 @@ import {
     IonIcon,
     IonCardContent,
     IonCard,
+    IonBreadcrumbs,
+    IonBreadcrumb,
     ...BaseImport,
   ],
   templateUrl: './suspect-details.page.html',
   styleUrls: ['./suspect-details.page.scss'],
 })
 export class SuspectDetailsPage implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly strapiService = inject(StrapiService);
+  private readonly loadingController = inject(LoadingController);
+  private readonly alertController = inject(AlertController);
+
   suspect: Suspect | null = null;
   isLoading = false;
   documentId: string = '';
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private strapiService: StrapiService,
-    private loadingController: LoadingController,
-    private alertController: AlertController
-  ) {}
 
   ngOnInit() {
     this.documentId = this.route.snapshot.paramMap.get('documentId') || '';
@@ -115,6 +117,14 @@ export class SuspectDetailsPage implements OnInit {
   }
 
   goBack() {
+    this.router.navigate(['/suspects']);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/home']);
+  }
+
+  navigateToSuspects() {
     this.router.navigate(['/suspects']);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseImport } from '../../../../core/base-import';
 import { StrapiService, Alert } from '../../../../core/services/strapi.service';
@@ -35,15 +35,13 @@ import {
   ],
 })
 export class AlertsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
+  private readonly router = inject(Router);
+  private readonly loadingController = inject(LoadingController);
+  private readonly alertController = inject(AlertController);
+
   alerts: Alert[] = [];
   isLoading = false;
-
-  constructor(
-    private strapiService: StrapiService,
-    private router: Router,
-    private loadingController: LoadingController,
-    private alertController: AlertController
-  ) {}
 
   ngOnInit() {
     this.loadAlerts();

@@ -6,9 +6,22 @@
 	</ion-refresher>
 
 	<div class="ion-padding">
+		<!-- Breadcrumbs -->
+		<ion-breadcrumbs>
+			<ion-breadcrumb (click)="navigateToHome()">
+				<ion-icon name="home" slot="start"></ion-icon>
+				Home
+			</ion-breadcrumb>
+			<ion-breadcrumb active="true">
+				<ion-icon name="people" slot="start"></ion-icon>
+				Most Wanted
+			</ion-breadcrumb>
+		</ion-breadcrumbs>
 		<!-- Loading skeleton -->
-		<div *ngIf="isLoading">
-			<ion-card *ngFor="let item of [1,2,3]">
+		@if (isLoading) {
+		<div>
+			@for (item of [1,2,3]; track item) {
+			<ion-card>
 				<ion-card-content>
 					<div class="suspect-card-loading">
 						<ion-skeleton-text animated style="width: 80px; height: 80px; border-radius: 8px;"></ion-skeleton-text>
@@ -20,11 +33,15 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
+			}
 		</div>
+		}
 
 		<!-- Suspects list -->
-		<div *ngIf="!isLoading && suspects.length > 0">
-			<ion-card *ngFor="let suspect of suspects" button (click)="viewSuspectDetails(suspect)" class="suspect-card">
+		@if (!isLoading && suspects.length > 0) {
+		<div>
+			@for (suspect of suspects; track suspect) {
+			<ion-card button (click)="viewSuspectDetails(suspect)" class="suspect-card">
 				<ion-card-content>
 					<div class="suspect-card-content">
 						<div class="suspect-image">
@@ -32,18 +49,24 @@
 						</div>
 						<div class="suspect-info">
 							<h2 class="suspect-name">{{ suspect.Name }}</h2>
-							<p class="suspect-residence" *ngIf="suspect.Residence">
+							@if (suspect.Residence) {
+							<p class="suspect-residence">
 								<ion-icon name="location"></ion-icon>
 								{{ suspect.Residence }}
 							</p>
-							<p class="suspect-age" *ngIf="suspect.Age">
+							}
+							@if (suspect.Age) {
+							<p class="suspect-age">
 								<ion-icon name="person"></ion-icon>
 								Age: {{ suspect.Age }}
 							</p>
-							<p class="suspect-reward" *ngIf="suspect.Reward">
+							}
+							@if (suspect.Reward) {
+							<p class="suspect-reward">
 								<ion-icon name="cash"></ion-icon>
 								Reward: {{ suspect.Reward }}
 							</p>
+							}
 						</div>
 						<div class="suspect-actions">
 							<ion-icon name="chevron-forward"></ion-icon>
@@ -51,10 +74,13 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
+			}
 		</div>
+		}
 
 		<!-- Empty state -->
-		<div *ngIf="!isLoading && suspects.length === 0" class="empty-state">
+		@if (!isLoading && suspects.length === 0) {
+		<div class="empty-state">
 			<ion-icon name="people" size="large"></ion-icon>
 			<h2>No Suspects Found</h2>
 			<p>There are currently no most wanted suspects to display.</p>
@@ -63,5 +89,6 @@
 				Refresh
 			</ion-button>
 		</div>
+		}
 	</div>
 </ion-content>

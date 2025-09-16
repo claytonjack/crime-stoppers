@@ -7,38 +7,140 @@
 		</ion-toolbar>
 	</ion-header>
 
-	<!-- Theme Setting -->
-	<ion-list [inset]="true">
-		<ion-item button detail="false" (click)="onThemeClick()">
-			<ion-icon name="sunny" slot="start"></ion-icon>
-			<ion-label>Theme</ion-label>
-			<ion-label slot="end">{{ theme$ | async | themeName }}</ion-label>
-		</ion-item>
-	</ion-list>
+	<div class="settings-container">
+		<!-- Appearance Section -->
+		<div class="settings-section">
+			<h3 class="section-title">Appearance</h3>
+			<div class="settings-card">
+				<ion-item button (click)="onThemeClick()" lines="none">
+					<div class="setting-icon-container theme-icon" slot="start">
+						<ng-icon name="bootstrapPalette"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Theme</h4>
+						<p>Choose your preferred color scheme</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>{{ themeDisplayName$ | async }}</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
 
-	<!-- Font Size Setting -->
-	<ion-list [inset]="true">
-		<ion-item button detail="false" (click)="onFontSizeClick()">
-			<ion-icon name="text" slot="start"></ion-icon>
-			<ion-label>Font Size</ion-label>
-			<ion-label slot="end">{{ fontSize$ | async | fontSizeName }}</ion-label>
-		</ion-item>
-	</ion-list>
+				<ion-item button (click)="onFontSizeClick()" lines="none">
+					<div class="setting-icon-container font-icon" slot="start">
+						<ng-icon name="bootstrapType"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Font Size</h4>
+						<p>Adjust text size for better readability</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>{{ fontSizeDisplayName$ | async }}</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
 
-	<!-- Privacy Mode Setting -->
-	<ion-list [inset]="true">
-		<ion-item button detail="false" (click)="onPrivacyModeClick()">
-			<ion-icon name="eye" slot="start"></ion-icon>
-			<ion-label>Privacy Mode</ion-label>
-			<ion-label slot="end">{{ privacyMode$ | async | privacyModeName }}</ion-label>
-		</ion-item>
-	</ion-list>
+				<ion-item button (click)="onAppIconClick()" lines="none">
+					<div class="setting-icon-container app-icon" slot="start">
+						<ng-icon name="bootstrapPhone"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>App Icon</h4>
+						<p>*WIP*</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>Default</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+			</div>
+		</div>
 
-	<!-- Reset Button -->
-	<ion-list [inset]="true">
-		<ion-item button detail="false" (click)="onResetSettings()">
-			<ion-icon name="refresh" slot="start"></ion-icon>
-			<ion-label>Reset Settings</ion-label>
-		</ion-item>
-	</ion-list>
+		<!-- Accessibility Section -->
+		<div class="settings-section">
+			<h3 class="section-title">Accessibility</h3>
+			<div class="settings-card">
+				<ion-item button (click)="onLanguageClick()" lines="none">
+					<div class="setting-icon-container language-icon" slot="start">
+						<ng-icon name="bootstrapTranslate"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Language</h4>
+						<p>*WIP*</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>English</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+
+				<ion-item button (click)="onScreenReaderClick()" lines="none">
+					<div class="setting-icon-container screen-reader-icon" slot="start">
+						<ng-icon name="bootstrapSoundwave"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Screen Reader</h4>
+						<p>*WIP*</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>Enabled</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+			</div>
+		</div>
+
+		<!-- Security Section -->
+		<div class="settings-section">
+			<h3 class="section-title">Security</h3>
+			<div class="settings-card">
+				<ion-item button (click)="onPrivacyModeClick()" lines="none">
+					<div class="setting-icon-container privacy-icon" slot="start">
+						<ng-icon name="bootstrapIncognito"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Privacy Mode</h4>
+						<p>Control data collection and visibility</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>{{ privacyModeDisplayName$ | async }}</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+
+				<ion-item button (click)="onLoginAuthClick()" lines="none">
+					<div class="setting-icon-container auth-icon" slot="start">
+						<ng-icon name="bootstrapFingerprint"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Authentication</h4>
+						<p>*WIP*</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>Disabled</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+			</div>
+		</div>
+
+		<!-- System Section -->
+		<div class="settings-section">
+			<h3 class="section-title">System</h3>
+			<div class="settings-card">
+				<ion-item button (click)="onResetSettings()" lines="none">
+					<div class="setting-icon-container reset-icon" slot="start">
+						<ng-icon name="bootstrapArrowClockwise"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Reset Settings</h4>
+						<p>Restore all settings to default values</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+			</div>
+		</div>
+	</div>
 </ion-content>
