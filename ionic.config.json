@@ -1,0 +1,7 @@
+{
+  "name": "crime-stoppers",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

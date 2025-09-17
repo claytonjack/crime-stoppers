@@ -1,0 +1,45 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ci-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-progress --prefer-offline
+
+      - name: Run ESLint
+        run: npx eslint --ext .ts,.html src/
+
+      - name: Serve application
+        run: nohup npx ng serve --disable-host-check --port 8100 &
+
+      - name: Run npm audit security check
+        run: npm audit --audit-level=high
+
+      - name: Run Jasmine unit tests
+        run: npx ng test --watch=false --browsers=ChromeHeadless --no-progress
+
+      - name: Run Cypress tests
+        run: npx cypress run --browser chrome
+
+      - name: Run Lighthouse tests
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun
