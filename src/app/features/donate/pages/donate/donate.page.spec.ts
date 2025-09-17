@@ -30,7 +30,9 @@ describe('DonatePage', () => {
   });
 
   it('should render all info section headers', () => {
-    const headers = fixture.debugElement.queryAll(By.css('.info-header ion-label'));
+    const headers = fixture.debugElement.queryAll(
+      By.css('.info-header ion-label')
+    );
     const expectedHeaders = [
       'Direct Community Impact',
       '100% Community Funded',
@@ -38,28 +40,37 @@ describe('DonatePage', () => {
       'Trusted & Transparent',
       'Tax Deductible',
     ];
-    const renderedHeaders = headers.map(h => h.nativeElement.textContent.trim());
+    const renderedHeaders = headers.map((h) =>
+      h.nativeElement.textContent.trim()
+    );
     expect(renderedHeaders).toEqual(expectedHeaders);
   });
 
   it('should render info section content', () => {
     const contents = fixture.debugElement.queryAll(By.css('.info-content'));
     expect(contents.length).toBeGreaterThan(0);
-    expect(contents[0].nativeElement.textContent).toContain('Your donation helps solve crimes');
-    expect(contents[3].nativeElement.textContent).toContain('Registered charity with full accountability');
+    expect(contents[0].nativeElement.textContent).toContain(
+      'Your donation helps solve crimes'
+    );
+    expect(contents[3].nativeElement.textContent).toContain(
+      'Registered charity with full accountability'
+    );
   });
 
   it('should render the donation form iframe', () => {
     const iframe = fixture.debugElement.query(By.css('iframe'))?.nativeElement;
     expect(iframe).toBeTruthy();
-    expect(iframe.getAttribute('src')).toBe('https://www.canadahelps.org/en/dn/93928');
+    expect(iframe.getAttribute('src')).toBe(
+      'https://www.canadahelps.org/en/dn/93928'
+    );
     expect(iframe.getAttribute('title')).toBe('Donate Now');
     expect(iframe.getAttribute('width')).toBe('100%');
     expect(iframe.getAttribute('height')).toBe('800');
   });
 
   it('should render the "Donate Now" section header', () => {
-    const donateHeader = fixture.debugElement.queryAll(By.css('h2'))[1]?.nativeElement;
+    const donateHeader = fixture.debugElement.queryAll(By.css('h2'))[1]
+      ?.nativeElement;
     expect(donateHeader.textContent).toContain('Donate Now');
   });
 });

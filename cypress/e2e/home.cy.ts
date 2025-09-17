@@ -27,7 +27,7 @@ describe('Home', () => {
 
   it('should display content in the selected section', () => {
     cy.get('ion-segment-button[value="tip-procedure"]').click();
-    cy.get('.content-panel').should('be.visible');
+    cy.get('.content-panel').scrollIntoView().should('be.visible');
   });
 
   it('should open the Tip modal when clicking Submit a Tip', () => {

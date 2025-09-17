@@ -13,13 +13,15 @@ describe('CommunityWatchPage', () => {
   beforeEach(waitForAsync(() => {
     // Mock InAppBrowser plugin
     inAppBrowserSpy = {
-      openInSystemBrowser: jasmine.createSpy('openInSystemBrowser').and.returnValue(Promise.resolve()),
+      openInSystemBrowser: jasmine
+        .createSpy('openInSystemBrowser')
+        .and.returnValue(Promise.resolve()),
     };
 
     TestBed.configureTestingModule({
       imports: [BrowserModule, CommunityWatchPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: InAppBrowser, useValue: inAppBrowserSpy }]
+      providers: [{ provide: InAppBrowser, useValue: inAppBrowserSpy }],
     }).compileComponents();
   }));
 
@@ -39,7 +41,9 @@ describe('CommunityWatchPage', () => {
   });
 
   it('should render program benefits sections', () => {
-    const benefitHeaders = fixture.debugElement.queryAll(By.css('.info-header ion-label'));
+    const benefitHeaders = fixture.debugElement.queryAll(
+      By.css('.info-header ion-label')
+    );
     const expectedHeaders = [
       'Stay Informed',
       'Anonymous Reporting',
@@ -48,7 +52,9 @@ describe('CommunityWatchPage', () => {
       'Partner Discounts',
       'Build Connections',
     ];
-    const renderedHeaders = benefitHeaders.map(el => el.nativeElement.textContent.trim());
+    const renderedHeaders = benefitHeaders.map((el) =>
+      el.nativeElement.textContent.trim()
+    );
     expect(renderedHeaders).toEqual(expectedHeaders);
   });
 
@@ -61,7 +67,10 @@ describe('CommunityWatchPage', () => {
   it('should open Home Inspection PDF in a new tab', () => {
     const spy = spyOn(window, 'open');
     component.openHomeInspection();
-    expect(spy).toHaveBeenCalledWith('assets/HomeInspectionReport.pdf', '_blank');
+    expect(spy).toHaveBeenCalledWith(
+      'assets/HomeInspectionReport.pdf',
+      '_blank'
+    );
   });
   it('should open PDF via openPdf', async () => {
     const spy = spyOn(component, 'openPdf');
@@ -73,13 +82,15 @@ describe('CommunityWatchPage', () => {
   it('should open Home Inspection PDF in a new tab', () => {
     const spy = spyOn(window, 'open');
     component.openHomeInspection();
-    expect(spy).toHaveBeenCalledWith('assets/HomeInspectionReport.pdf', '_blank');
+    expect(spy).toHaveBeenCalledWith(
+      'assets/HomeInspectionReport.pdf',
+      '_blank'
+    );
   });
 
   it('Subscribe button click should open URL', () => {
     const spy = spyOn(window, 'open');
 
-    // Directly call the href link
     const subscribeUrl = 'https://lp.constantcontactpages.com/sl/guJGNOk';
     window.open(subscribeUrl, '_blank');
 
