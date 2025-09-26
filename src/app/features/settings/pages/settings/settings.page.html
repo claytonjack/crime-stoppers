@@ -25,21 +25,6 @@
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
-
-				<ion-item button (click)="onFontSizeClick()" lines="none">
-					<div class="setting-icon-container font-icon" slot="start">
-						<ng-icon name="bootstrapType"></ng-icon>
-					</div>
-					<ion-label>
-						<h4>Font Size</h4>
-						<p>Adjust text size for better readability</p>
-					</ion-label>
-					<div class="setting-value" slot="end">
-						<span>{{ fontSizeDisplayName$ | async }}</span>
-						<ng-icon name="bootstrapChevronRight"></ng-icon>
-					</div>
-				</ion-item>
-
 				<ion-item button (click)="onAppIconClick()" lines="none">
 					<div class="setting-icon-container app-icon" slot="start">
 						<ng-icon name="bootstrapPhone"></ng-icon>
@@ -53,6 +38,7 @@
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
+
 			</div>
 		</div>
 
@@ -70,6 +56,20 @@
 					</ion-label>
 					<div class="setting-value" slot="end">
 						<span>English</span>
+						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					</div>
+				</ion-item>
+
+				<ion-item button (click)="onFontSizeClick()" lines="none">
+					<div class="setting-icon-container font-icon" slot="start">
+						<ng-icon name="bootstrapType"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Font Size</h4>
+						<p>Adjust text size for better readability</p>
+					</ion-label>
+					<div class="setting-value" slot="end">
+						<span>{{ fontSizeDisplayName$ | async }}</span>
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
@@ -128,6 +128,17 @@
 		<div class="settings-section">
 			<h3 class="section-title">System</h3>
 			<div class="settings-card">
+				<ion-item lines="none">
+					<div class="setting-icon-container notifications-icon" slot="start">
+						<ng-icon name="bootstrapPatchExclamation"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Notifications</h4>
+						<p>Enable or disable notifications</p>
+					</ion-label>
+					<ion-toggle slot="end" [checked]="notificationEnabled"
+						(ionChange)="onNotificationEnabledToggle($event)"></ion-toggle>
+				</ion-item>
 				<ion-item button (click)="onResetSettings()" lines="none">
 					<div class="setting-icon-container reset-icon" slot="start">
 						<ng-icon name="bootstrapArrowClockwise"></ng-icon>

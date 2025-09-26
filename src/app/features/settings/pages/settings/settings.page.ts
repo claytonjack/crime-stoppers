@@ -9,6 +9,7 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonToggle,
 } from '@ionic/angular/standalone';
 import { SettingsPageService } from '../../services/settings-page/settings-page.service';
 import { Router } from '@angular/router';
@@ -23,6 +24,7 @@ export const settingsPageSelector = 'app-settings';
   styleUrls: ['./settings.page.scss'],
   standalone: true,
   imports: [
+    IonToggle,
     ...BaseImport,
     IonTitle,
     IonToolbar,
@@ -55,6 +57,13 @@ export class SettingsPage {
       false: 'Disabled',
     },
   };
+
+  // For ion-toggle binding
+  public notificationEnabled = false;
+
+  public onNotificationEnabledToggle(event: any): void {
+    this.notificationEnabled = event.detail.checked;
+  }
 
   public readonly theme$ = this.settingsPageService.theme$;
   public readonly fontSize$ = this.settingsPageService.fontSize$;
@@ -105,6 +114,8 @@ export class SettingsPage {
   }
 
   public async onAppIconClick(): Promise<void> {
-    console.log('App icon settings clicked');
+    console.log('clicked');
+    await this.settingsPageService.presentAppIconAlert();
+    console.log('test----App icon settings clicked');
   }
 }
