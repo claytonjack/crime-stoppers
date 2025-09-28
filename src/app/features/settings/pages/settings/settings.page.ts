@@ -10,7 +10,6 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonToggle,
 } from '@ionic/angular/standalone';
 import { SettingsPageService } from '../../services/settings-page/settings-page.service';
 import { Router } from '@angular/router';
