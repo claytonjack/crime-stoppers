@@ -26,7 +26,6 @@ export const settingsPageSelector = 'app-settings';
   styleUrls: ['./settings.page.scss'],
   standalone: true,
   imports: [
-    IonToggle,
     ...BaseImport,
     IonTitle,
     IonToolbar,
@@ -124,13 +123,6 @@ export class SettingsPage {
     },
   };
 
-  // For ion-toggle binding
-  public notificationEnabled = false;
-
-  public onNotificationEnabledToggle(event: any): void {
-    this.notificationEnabled = event.detail.checked;
-  }
-
   public readonly theme$ = this.settingsPageService.theme$;
   public readonly fontSize$ = this.settingsPageService.fontSize$;
   public readonly privacyMode$ = this.settingsPageService.privacyMode$;
@@ -178,8 +170,6 @@ export class SettingsPage {
   public async onLoginAuthClick(): Promise<void> {
     console.log('Login authentication settings clicked');
   }
-
-  // App icon settings removed
 
   public async onNotificationsClick(): Promise<void> {
     console.log('Notifications settings clicked');
