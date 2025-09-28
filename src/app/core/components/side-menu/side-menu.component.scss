@@ -1,16 +1,11 @@
-// ================================
-// SIDE MENU DESIGN
-// ================================
-
 .side-menu-content {
   --background: var(--app-background-color);
   background: var(--background);
+  position: relative;
+  min-height: 100vh;
 }
 
-// ================================
 // HEADER SECTION
-// ================================
-
 .menu-header {
   display: flex;
   flex-direction: column;
@@ -30,14 +25,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-lg);
-
-    .app-icon {
-      width: 67px;
-      height: 67px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
   }
 
   h3 {
@@ -49,9 +36,7 @@
   }
 }
 
-// ================================
 // MENU ITEMS SECTION
-// ================================
 
 .menu-items {
   padding: 20px 0;
@@ -78,12 +63,6 @@
     box-shadow: var(--shadow-sm);
     transition: var(--transition-fast);
 
-    &:hover {
-      transform: scale(1.02);
-      background: var(--app-secondary-color);
-      opacity: 0.8;
-    }
-
     ion-icon[slot="start"] {
       background: var(--app-accent-color);
       color: white;
@@ -99,43 +78,33 @@
     }
 
     ion-label {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--app-text-color);
     }
   }
 }
 
-// ================================
-// RESPONSIVE DESIGN
-// ================================
+// TEST NOTIFICATIONS
+.test-notifications {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-@media (max-width: 768px) {
-  .menu-header {
-    padding: 25px 16px 20px;
-
-    .logo-container {
-      width: 65px;
-      height: 65px;
-
-      .app-icon {
-        width: 57px;
-        height: 57px;
-      }
-    }
-
-    h3 {
-      font-size: 19px;
-    }
-  }
-
-  .menu-items {
-    ion-item {
-      --min-height: 56px;
-
-      ion-label {
-        font-size: 16px;
-      }
-    }
-  }
+.notification-btn {
+  width: 50%;
+  margin: 4px 0;
+  padding: 8px 0;
+  background: var(--ion-color-warning);
+  color: #111;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--border-radius-lg);
+  display: block;
+  text-align: center;
 }

@@ -1,123 +1,120 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseImport } from '../../../../core/base-import';
-import { StrapiService, Event } from '../../../../core/services/strapi.service';
 import {
-  LoadingController,
-  AlertController,
+  Component,
+  OnInit,
+  inject,
+  signal,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import {
+  IonContent,
+  IonText,
+  IonSpinner,
+  IonModal,
+  IonImg,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   IonButton,
-  IonCardContent,
-  IonSkeletonText,
-  IonCard,
-  IonIcon,
-  IonChip,
-  IonLabel,
-  IonCardHeader,
-  IonCardTitle,
-  IonBadge,
+  ModalController,
+  AlertController,
 } from '@ionic/angular/standalone';
+import { NgIcon } from '@ng-icons/core';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { Event } from '../../models/event.model';
+import { StrapiResponse } from '../../../../core/models/strapi.model';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { CalendarService } from '../../calendar.service';
+
+// Import Swiper modules and components
+import { register } from 'swiper/element/bundle';
+import { SwiperContainer } from 'swiper/element';
+
+// Register Swiper web components
+register();
 
 @Component({
-  standalone: true,
   selector: 'app-event-details',
-  imports: [
-    IonBadge,
-    IonCardTitle,
-    IonCardHeader,
-    IonLabel,
-    IonChip,
-    IonIcon,
-    IonCard,
-    IonSkeletonText,
-    IonCardContent,
-    IonButton,
-    ...BaseImport,
-  ],
   templateUrl: './event-details.page.html',
   styleUrls: ['./event-details.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonContent,
+    IonText,
+    IonSpinner,
+    IonModal,
+    IonImg,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    NgIcon,
+    HeaderComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class EventDetailsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly strapiService = inject(StrapiService);
-  private readonly loadingController = inject(LoadingController);
+  private readonly location = inject(Location);
+  private readonly modalController = inject(ModalController);
+  private readonly calendarService = inject(CalendarService);
   private readonly alertController = inject(AlertController);
 
-  event: Event | null = null;
-  isLoading = false;
-  documentId: string = '';
+  readonly event = signal<Event | null>(null);
+  readonly isLoading = signal<boolean>(true);
+  readonly error = signal<string | null>(null);
+  readonly selectedImageIndex = signal<number>(0);
+  readonly isImageModalOpen = signal<boolean>(false);
 
   ngOnInit() {
-    this.documentId = this.route.snapshot.paramMap.get('documentId') || '';
-    if (this.documentId) {
-      this.loadEventDetails();
-    } else {
-      this.showErrorAndGoBack('Invalid event ID');
+    this.loadEvent();
+  }
+
+  private async loadEvent() {
+    const documentId = this.route.snapshot.paramMap.get('documentId');
+
+    if (!documentId) {
+      this.error.set('Invalid event ID');
+      this.isLoading.set(false);
+      return;
+    }
+
+    try {
+      const response = (await this.strapiService
+        .getEventByDocumentId(documentId)
+        .toPromise()) as StrapiResponse<Event>;
+
+      if (response?.data) {
+        this.event.set(response.data);
+      } else {
+        this.error.set('Event not found');
+      }
+    } catch (error) {
+      console.error('Error loading event:', error);
+      this.error.set('Failed to load event');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
-  async loadEventDetails() {
-    const loading = await this.loadingController.create({
-      message: 'Loading event details...',
-    });
-    await loading.present();
-
-    this.isLoading = true;
-
-    this.strapiService.getEventByDocumentId(this.documentId).subscribe({
-      next: (response) => {
-        this.event = response.data;
-        this.isLoading = false;
-        loading.dismiss();
-      },
-      error: async (error) => {
-        console.error('Error loading event details:', error);
-        this.isLoading = false;
-        loading.dismiss();
-        this.showErrorAndGoBack('Failed to load event details');
-      },
-    });
+  goBack() {
+    this.location.back();
   }
 
-  async showErrorAndGoBack(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: message,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.router.navigate(['/events']);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-
-  getImageUrl(): string {
-    if (this.event?.Main_Image?.url) {
-      return this.strapiService.getImageUrl(this.event.Main_Image.url);
-    }
-    return 'assets/images/placeholder-event.png';
-  }
-
-  onImageError(event: ErrorEvent) {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-event.png';
-    }
-  }
-
-  formatDateTime(dateString: string): string {
+  formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
     });
   }
 
@@ -130,45 +127,77 @@ export class EventDetailsPage implements OnInit {
     });
   }
 
-  formatDateOnly(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  formatDateTime(dateString: string): string {
+    return `${this.formatDate(dateString)} at ${this.formatTime(dateString)}`;
   }
 
-  isSameDay(start: string, end: string): boolean {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    return startDate.toDateString() === endDate.toDateString();
+  getImageUrl(imageUrl: string): string {
+    return this.strapiService.getImageUrl(imageUrl);
   }
 
-  isEventHappening(): boolean {
-    if (!this.event) return false;
-    const now = new Date();
-    const start = new Date(this.event.Start_Time);
-    const end = new Date(this.event.End_Time);
-    return now >= start && now <= end;
+  onImageClick(index: number) {
+    this.selectedImageIndex.set(index);
+    this.isImageModalOpen.set(true);
   }
 
-  isEventPast(): boolean {
-    if (!this.event) return false;
-    const now = new Date();
-    const end = new Date(this.event.End_Time);
-    return now > end;
+  closeImageModal() {
+    this.isImageModalOpen.set(false);
   }
 
-  isEventUpcoming(): boolean {
-    if (!this.event) return false;
-    const now = new Date();
-    const start = new Date(this.event.Start_Time);
-    return now < start;
+  onSwiperSlideChange(event: any) {
+    if (event.detail && event.detail[0]) {
+      this.selectedImageIndex.set(event.detail[0].activeIndex);
+    }
   }
 
-  goBack() {
-    this.router.navigate(['/events']);
+  async addToCalendar(evnt: Event | null) {
+    if (!evnt) return;
+
+    try {
+      const startDate = new Date(evnt.Event_Time);
+      const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+
+      const res = await this.calendarService.addEvent(
+        evnt.Title || 'Community Event',
+        evnt.Location || '',
+        '',
+        startDate,
+        endDate
+      );
+
+      let header = '';
+      let message = '';
+
+      if (res?.success) {
+        header = 'Saved to calendar';
+        message = 'This event was added to your calendar.';
+      } else {
+        header =
+          res?.reason === 'permission' ? 'Permission required' : 'Save failed';
+        message = res?.message || 'Could not save this event to your calendar.';
+      }
+
+      const alert = await this.alertController.create({
+        header,
+        message,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'ok',
+          },
+        ],
+        backdropDismiss: false,
+      });
+
+      await alert.present();
+    } catch (err) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'An unexpected error occurred while saving the event.',
+        buttons: ['Ok'],
+        backdropDismiss: false,
+      });
+      await alert.present();
+    }
   }
 }

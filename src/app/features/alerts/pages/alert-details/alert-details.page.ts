@@ -1,136 +1,145 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseImport } from '../../../../core/base-import';
-import { StrapiService, Alert } from '../../../../core/services/strapi.service';
 import {
-  LoadingController,
-  AlertController,
-  IonIcon,
-  IonCard,
-  IonSkeletonText,
-  IonCardContent,
-  IonChip,
-  IonLabel,
-  IonCardHeader,
-  IonCardTitle,
+  Component,
+  OnInit,
+  inject,
+  signal,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import {
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   IonButton,
+  IonBadge,
+  IonText,
+  IonSpinner,
+  IonModal,
+  IonImg,
+  ModalController,
 } from '@ionic/angular/standalone';
+import { NgIcon } from '@ng-icons/core';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { Alert } from '../../models/alert.model';
+import { StrapiResponse } from '../../../../core/models/strapi.model';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { register } from 'swiper/element/bundle';
+import { SwiperContainer } from 'swiper/element';
+register();
 
 @Component({
-  standalone: true,
   selector: 'app-alert-details',
-  imports: [
-    IonButton,
-    IonCardTitle,
-    IonCardHeader,
-    IonLabel,
-    IonChip,
-    IonCardContent,
-    IonSkeletonText,
-    IonCard,
-    IonIcon,
-    ...BaseImport,
-  ],
   templateUrl: './alert-details.page.html',
   styleUrls: ['./alert-details.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonBadge,
+    IonText,
+    IonSpinner,
+    IonModal,
+    IonImg,
+    NgIcon,
+    HeaderComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AlertDetailsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly strapiService = inject(StrapiService);
-  private readonly loadingController = inject(LoadingController);
-  private readonly alertController = inject(AlertController);
+  private readonly location = inject(Location);
+  private readonly modalController = inject(ModalController);
 
-  alert: Alert | null = null;
-  isLoading = false;
-  documentId: string = '';
+  readonly alert = signal<Alert | null>(null);
+  readonly isLoading = signal<boolean>(true);
+  readonly error = signal<string | null>(null);
+  readonly selectedImageIndex = signal<number>(0);
+  readonly isImageModalOpen = signal<boolean>(false);
 
   ngOnInit() {
-    this.documentId = this.route.snapshot.paramMap.get('documentId') || '';
-    if (this.documentId) {
-      this.loadAlertDetails();
-    } else {
-      this.showErrorAndGoBack('Invalid alert ID');
+    this.loadAlert();
+  }
+
+  private async loadAlert() {
+    const documentId = this.route.snapshot.paramMap.get('documentId');
+
+    if (!documentId) {
+      this.error.set('Invalid alert ID');
+      this.isLoading.set(false);
+      return;
+    }
+
+    try {
+      const response = (await this.strapiService
+        .getAlertByDocumentId(documentId)
+        .toPromise()) as StrapiResponse<Alert>;
+
+      if (response?.data) {
+        this.alert.set(response.data);
+      } else {
+        this.error.set('Alert not found');
+      }
+    } catch (error) {
+      console.error('Error loading alert:', error);
+      this.error.set('Failed to load alert');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
-  async loadAlertDetails() {
-    const loading = await this.loadingController.create({
-      message: 'Loading alert details...',
-    });
-    await loading.present();
-
-    this.isLoading = true;
-
-    this.strapiService.getAlertByDocumentId(this.documentId).subscribe({
-      next: (response) => {
-        this.alert = response.data;
-        this.isLoading = false;
-        loading.dismiss();
-      },
-      error: async (error) => {
-        console.error('Error loading alert details:', error);
-        this.isLoading = false;
-        loading.dismiss();
-        this.showErrorAndGoBack('Failed to load alert details');
-      },
-    });
-  }
-
-  async showErrorAndGoBack(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: message,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.router.navigate(['/alerts']);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-
-  getImageUrl(): string {
-    if (this.alert?.Main_Image?.url) {
-      return this.strapiService.getImageUrl(this.alert.Main_Image.url);
-    }
-    return 'assets/images/placeholder-alert.png';
-  }
-
-  onImageError(event: ErrorEvent) {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-alert.png';
-    }
+  goBack() {
+    this.location.back();
   }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
-      weekday: 'long',
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit',
+      hour: 'numeric',
       minute: '2-digit',
+      hour12: true,
     });
   }
 
-  getSourceColor(source: string): string {
-    switch (source) {
-      case 'Crime Stoppers':
-        return 'primary';
-      case 'Halton Police':
-        return 'secondary';
-      default:
-        return 'medium';
-    }
+  getSourceBadgeColor(source: string): string {
+    const colors: { [key: string]: string } = {
+      Police: 'primary',
+      Community: 'secondary',
+      Media: 'tertiary',
+      Official: 'success',
+    };
+    return colors[source] || 'medium';
   }
 
-  goBack() {
-    this.router.navigate(['/alerts']);
+  getImageUrl(imageUrl: string): string {
+    return this.strapiService.getImageUrl(imageUrl);
+  }
+
+  onImageClick(index: number) {
+    this.selectedImageIndex.set(index);
+    this.isImageModalOpen.set(true);
+  }
+
+  closeImageModal() {
+    this.isImageModalOpen.set(false);
+  }
+
+  onSwiperSlideChange(event: any) {
+    if (event.detail && event.detail[0]) {
+      this.selectedImageIndex.set(event.detail[0].activeIndex);
+    }
   }
 }

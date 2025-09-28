@@ -1,0 +1,14 @@
+.filter-footer {
+  padding: 16px;
+}
+
+ion-header,
+ion-toolbar {
+  --background: var(--app-secondary-color);
+}
+
+ion-title {
+  color: var(--app-text-color);
+  font-weight: 700;
+  font-size: 20px;
+}

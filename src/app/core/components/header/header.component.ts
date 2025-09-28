@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import {
   IonHeader,
@@ -26,4 +26,5 @@ import {
 })
 export class HeaderComponent {
   @Input() title: string = '';
+  @Input() showMenuButton: boolean = true;
 }

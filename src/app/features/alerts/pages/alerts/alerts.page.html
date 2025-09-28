@@ -1,79 +1,41 @@
-<app-header title="Crime Alerts"></app-header>
+<app-header title="Alerts" [showMenuButton]="true"></app-header>
 
-<ion-content [fullscreen]="true">
-	<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-		<ion-refresher-content></ion-refresher-content>
-	</ion-refresher>
-
-	<div class="ion-padding">
-		<!-- Loading skeleton -->
-		@if (isLoading) {
-		<div>
-			@for (item of [1,2,3]; track item) {
-			<ion-card>
-				<ion-card-content>
-					<div class="alert-card-loading">
-						<ion-skeleton-text animated
-							style="width: 100%; height: 120px; border-radius: 8px; margin-bottom: 16px;"></ion-skeleton-text>
-						<ion-skeleton-text animated style="width: 70%; height: 20px; margin-bottom: 8px;"></ion-skeleton-text>
-						<ion-skeleton-text animated style="width: 40%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
-						<ion-skeleton-text animated style="width: 90%; height: 16px;"></ion-skeleton-text>
-					</div>
-				</ion-card-content>
-			</ion-card>
-			}
-		</div>
-		}
-
-		<!-- Alerts list -->
-		@if (!isLoading && alerts.length > 0) {
-		<div>
-			@for (alert of alerts; track alert) {
-			<ion-card button (click)="viewAlertDetails(alert)" class="alert-card">
-				<!-- Alert image -->
-				@if (alert.Main_Image?.url) {
-				<div class="alert-image-container">
-					<img [src]="getImageUrl(alert)" [alt]="alert.Title" (error)="onImageError($event)" class="alert-image" />
-				</div>
-				}
-				<ion-card-content>
-					<div class="alert-header">
-						<h2 class="alert-title">{{ alert.Title }}</h2>
-						<ion-chip [color]="getSourceColor(alert.Source)" outline>
-							@if (alert.Source === 'Halton Police') {
-							<ion-icon name="shield-checkmark"></ion-icon>
-							}
-							@if (alert.Source === 'Crime Stoppers') {
-							<ion-icon name="people"></ion-icon>
-							}
-							<ion-label>{{ alert.Source }}</ion-label>
-						</ion-chip>
-					</div>
-					<p class="alert-date">
-						<ion-icon name="time"></ion-icon>
-						{{ formatDate(alert.publishedAt) }}
-					</p>
-					<p class="alert-body">{{ alert.Body }}</p>
-					<div class="alert-actions">
-						<ion-icon name="chevron-forward"></ion-icon>
-					</div>
-				</ion-card-content>
-			</ion-card>
-			}
-		</div>
-		}
-
-		<!-- Empty state -->
-		@if (!isLoading && alerts.length === 0) {
-		<div class="empty-state">
-			<ion-icon name="newspaper" size="large"></ion-icon>
-			<h2>No Alerts Available</h2>
-			<p>There are currently no crime alerts to display.</p>
-			<ion-button fill="outline" (click)="loadAlerts()">
-				<ion-icon slot="start" name="refresh"></ion-icon>
-				Refresh
-			</ion-button>
-		</div>
-		}
+<ion-content>
+	<div class="search-filter">
+		<ion-searchbar placeholder="Search alerts" [(ngModel)]="searchQuery"
+			(ionInput)="onSearchChange($event)"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+			<ng-icon name="bootstrapFilter"></ng-icon>
+		</ion-button>
 	</div>
+
+	<ion-list>
+		<ion-card *ngFor="let alert of filteredAlerts()" (click)="navigateToDetails(alert)">
+			<div class="card-image-wrapper" *ngIf="getImageUrl(alert)">
+				<ion-img class="card-image" [src]="getImageUrl(alert)"></ion-img>
+			</div>
+
+			<ion-card-header>
+				<ion-card-title>{{ alert.Title }}</ion-card-title>
+				<ion-card-subtitle class="card-subtitle">
+					<div class="icon-text-group">
+						<ng-icon name="bootstrapCalendarEvent" class="date-icon" inline="true"></ng-icon>
+						<span>{{ formatDate(alert.publishedAt || alert.createdAt) }}</span>
+					</div>
+					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="source-badge">
+						{{ alert.Source }}
+					</ion-badge>
+				</ion-card-subtitle>
+			</ion-card-header>
+
+			<ion-card-content>
+				<p class="card-body-text">{{ alert.Body | slice:0:150 }}...</p>
+			</ion-card-content>
+		</ion-card>
+	</ion-list>
+
+	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
+		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+
 </ion-content>

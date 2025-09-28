@@ -1,6 +1,5 @@
 <ion-menu menuId="side-menu" contentId="main-content" [swipeGesture]="true" autoHide="true">
 	<ion-content [fullscreen]="true" class="side-menu-content">
-		<!-- Header Section -->
 		<div class="menu-header">
 			<div class="logo-container">
 				<img src="assets/icons/icon-white.png" alt="Crime Stoppers Logo" class="app-icon" />
@@ -8,7 +7,6 @@
 			<h3>Crime Stoppers of Halton</h3>
 		</div>
 
-		<!-- Menu Items -->
 		<div class="menu-items">
 			@if (!isPrivacyModeEnabled) {
 			<ion-item button (click)="goToSuspects()">
@@ -19,7 +17,6 @@
 			}
 
 			@if (!isPrivacyModeEnabled) {
-			<!-- Crime Stats moved to bottom tab bar -->
 			}
 
 			@if (!isPrivacyModeEnabled) {
@@ -61,4 +58,9 @@
 			</ion-item>
 		</div>
 	</ion-content>
+	<div class="test-notifications">
+		<button class="notification-btn" (click)="testWeekly()">Weekly</button>
+		<button class="notification-btn" (click)="testMonthly()">Monthly</button>
+		<button class="notification-btn" (click)="testInactivity()">Inactivity</button>
+	</div>
 </ion-menu>

@@ -1,107 +1,107 @@
-<app-header [title]="alert?.Title || 'Alert Details'"></app-header>
+<app-header title="Alert Details" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
+	</ion-button>
+</app-header>
 
 <ion-content [fullscreen]="true">
-	<!-- Loading state -->
-	@if (isLoading) {
-	<div class="ion-padding">
-		<ion-card>
-			<ion-card-content>
-				<div class="details-loading">
-					<ion-skeleton-text animated
-						style="width: 100%; height: 200px; border-radius: 8px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 70%; height: 24px; margin-bottom: 12px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 50%; height: 18px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 100%; height: 120px;"></ion-skeleton-text>
-				</div>
-			</ion-card-content>
-		</ion-card>
+	@if (isLoading()) {
+	<div class="loading-container">
+		<ion-spinner name="crescent"></ion-spinner>
+		<ion-text>
+			<p>Loading alert...</p>
+		</ion-text>
 	</div>
 	}
 
-	<!-- Alert details -->
-	@if (!isLoading && alert) {
-	<div>
-		<!-- Main alert image -->
-		@if (alert.Main_Image?.url) {
-		<div class="alert-image-container">
-			<img [src]="getImageUrl()" [alt]="alert.Title" (error)="onImageError($event)" class="alert-main-image" />
+	@if (error() && !isLoading()) {
+	<div class="error-container">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ion-text color="danger">
+			<h3>Error</h3>
+			<p>{{ error() }}</p>
+		</ion-text>
+		<ion-button fill="outline" (click)="goBack()">
+			Go Back
+		</ion-button>
+	</div>
+	}
+
+	@if (alert() && !isLoading() && !error()) {
+	<div class="alert-content">
+		@if (alert()!.Images && alert()!.Images!.length > 0) {
+		<div class="images-section">
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="alert-swiper"
+				(swiperslidechange)="onSwiperSlideChange($event)">
+				@for (image of alert()!.Images!; track image.documentId; let i = $index) {
+				<swiper-slide>
+					<div class="slide-container">
+						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || alert()!.Title"
+							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+						</ion-img>
+					</div>
+				</swiper-slide>
+				}
+			</swiper-container>
+
+			@if (alert()!.Images!.length > 1) {
+			<div class="image-counter">
+				{{ selectedImageIndex() + 1 }} / {{ alert()!.Images!.length }}
+			</div>
+			}
 		</div>
 		}
-		<div class="ion-padding">
-			<!-- Alert header -->
-			<ion-card class="alert-main-card">
-				<ion-card-content>
-					<div class="alert-header">
-						<h1 class="alert-title">{{ alert.Title }}</h1>
-						<ion-chip [color]="getSourceColor(alert.Source)" outline>
-							@if (alert.Source === 'Halton Police') {
-							<ion-icon name="shield-checkmark"></ion-icon>
-							}
-							@if (alert.Source === 'Crime Stoppers') {
-							<ion-icon name="people"></ion-icon>
-							}
-							<ion-label>{{ alert.Source }}</ion-label>
-						</ion-chip>
-					</div>
-					<div class="alert-meta">
-						<div class="meta-item">
-							<ion-icon name="time"></ion-icon>
-							<span>Published: {{ formatDate(alert.publishedAt) }}</span>
+
+		<div class="info-section">
+			<div class="alert-card">
+				<div class="card-header-section">
+					<h1 class="alert-title">{{ alert()!.Title }}</h1>
+					<div class="date-source-container">
+						<div class="date-container">
+							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+							<span class="date-text">{{ formatDate(alert()!.publishedAt || alert()!.createdAt) }}</span>
 						</div>
+						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="source-badge">
+							{{ alert()!.Source }}
+						</ion-badge>
 					</div>
-				</ion-card-content>
-			</ion-card>
-			<!-- Alert content -->
-			<ion-card>
-				<ion-card-header>
-					<ion-card-title>
-						<ion-icon name="document-text"></ion-icon>
-						Alert Details
-					</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<div class="alert-body" [innerHTML]="alert.Body"></div>
-				</ion-card-content>
-			</ion-card>
-			<!-- Source information -->
-			<ion-card class="source-card" [class.halton-police]="alert.Source === 'Halton Police'"
-				[class.crime-stoppers]="alert.Source === 'Crime Stoppers'">
-				<ion-card-content>
-					<div class="source-content">
-						@if (alert.Source === 'Halton Police') {
-						<ion-icon name="shield-checkmark"></ion-icon>
-						}
-						@if (alert.Source === 'Crime Stoppers') {
-						<ion-icon name="people"></ion-icon>
-						}
-						<div>
-							<h3>Source</h3>
-							<p>{{ alert.Source }}</p>
-						</div>
+				</div>
+
+				<div class="card-content-section">
+					<div class="alert-body">
+						<ion-text>
+							<div [innerHTML]="alert()!.Body"></div>
+						</ion-text>
 					</div>
-				</ion-card-content>
-			</ion-card>
-			<!-- Action buttons -->
-			<div class="action-buttons">
-				<ion-button expand="block" fill="outline" color="medium" (click)="goBack()">
-					<ion-icon slot="start" name="arrow-back"></ion-icon>
-					Back to Alerts
-				</ion-button>
+				</div>
 			</div>
 		</div>
 	</div>
 	}
 
-	<!-- Error state -->
-	@if (!isLoading && !alert) {
-	<div class="error-state ion-padding">
-		<ion-icon name="alert-circle" size="large" color="danger"></ion-icon>
-		<h2>Alert Not Found</h2>
-		<p>The requested alert information could not be loaded.</p>
-		<ion-button fill="outline" (click)="goBack()">
-			<ion-icon slot="start" name="arrow-back"></ion-icon>
-			Back to Alerts
-		</ion-button>
-	</div>
-	}
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ alert()?.Images?.length || 0 }}</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="closeImageModal()">
+							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+
+			<ion-content>
+				@if (alert()?.Images && alert()!.Images![selectedImageIndex()]) {
+				<div class="modal-image-container">
+					<ion-img [src]="getImageUrl(alert()!.Images![selectedImageIndex()].url)"
+						[alt]="alert()!.Images![selectedImageIndex()].alternativeText || alert()!.Title" class="modal-image"
+						loading="lazy">
+					</ion-img>
+				</div>
+				}
+			</ion-content>
+		</ng-template>
+	</ion-modal>
 </ion-content>

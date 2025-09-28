@@ -8,7 +8,6 @@
 	</ion-header>
 
 	<div class="settings-container">
-		<!-- Appearance Section -->
 		<div class="settings-section">
 			<h3 class="section-title">Appearance</h3>
 			<div class="settings-card">
@@ -25,7 +24,6 @@
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
-
 				<ion-item button (click)="onFontSizeClick()" lines="none">
 					<div class="setting-icon-container font-icon" slot="start">
 						<ng-icon name="bootstrapType"></ng-icon>
@@ -40,23 +38,9 @@
 					</div>
 				</ion-item>
 
-				<ion-item button (click)="onAppIconClick()" lines="none">
-					<div class="setting-icon-container app-icon" slot="start">
-						<ng-icon name="bootstrapPhone"></ng-icon>
-					</div>
-					<ion-label>
-						<h4>App Icon</h4>
-						<p>*WIP*</p>
-					</ion-label>
-					<div class="setting-value" slot="end">
-						<span>Default</span>
-						<ng-icon name="bootstrapChevronRight"></ng-icon>
-					</div>
-				</ion-item>
 			</div>
 		</div>
 
-		<!-- Accessibility Section -->
 		<div class="settings-section">
 			<h3 class="section-title">Accessibility</h3>
 			<div class="settings-card">
@@ -74,6 +58,7 @@
 					</div>
 				</ion-item>
 
+
 				<ion-item button (click)="onScreenReaderClick()" lines="none">
 					<div class="setting-icon-container screen-reader-icon" slot="start">
 						<ng-icon name="bootstrapSoundwave"></ng-icon>
@@ -90,7 +75,6 @@
 			</div>
 		</div>
 
-		<!-- Security Section -->
 		<div class="settings-section">
 			<h3 class="section-title">Security</h3>
 			<div class="settings-card">
@@ -124,10 +108,20 @@
 			</div>
 		</div>
 
-		<!-- System Section -->
 		<div class="settings-section">
 			<h3 class="section-title">System</h3>
 			<div class="settings-card">
+				<ion-item lines="none">
+					<div class="setting-icon-container notifications-icon" slot="start">
+						<ng-icon name="bootstrapBell"></ng-icon>
+					</div>
+					<ion-label>
+						<h4>Notifications</h4>
+						<p>Enable or disable notifications</p>
+					</ion-label>
+					<ion-toggle slot="end" [checked]="notificationEnabled"
+						(ionChange)="onNotificationEnabledToggle($event)"></ion-toggle>
+				</ion-item>
 				<ion-item button (click)="onResetSettings()" lines="none">
 					<div class="setting-icon-container reset-icon" slot="start">
 						<ng-icon name="bootstrapArrowClockwise"></ng-icon>

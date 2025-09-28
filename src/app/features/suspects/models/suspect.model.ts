@@ -1,15 +1,20 @@
 import { StrapiImage } from '../../../core/models/strapi.model';
 
 export interface Suspect {
+  id: number;
   documentId: string;
-  locale: string;
   Name: string;
   Residence: string;
+  Scene: string;
+  Crime: string;
   Age: string;
   Height: string;
   Weight: string;
-  Details: string;
-  Reward: string;
-  Contact: string;
-  Main_Image?: StrapiImage;
+  Body: string;
+  Images?: StrapiImage[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string;
+  localizations?: any[];
 }

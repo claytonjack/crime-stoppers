@@ -1,3 +1,4 @@
+import { LocalNotificationsService } from '../../services/local-notifications.service';
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import {
@@ -23,6 +24,9 @@ export class SideMenuComponent {
   private readonly menuCtrl = inject(MenuController);
   private readonly router = inject(Router);
   private readonly privacyModeService = inject(PrivacyModeService);
+  private readonly localNotificationsService = inject(
+    LocalNotificationsService
+  );
 
   activePage = '';
 
@@ -36,6 +40,21 @@ export class SideMenuComponent {
 
   get isPrivacyModeEnabled(): boolean {
     return this.privacyModeService.isEnabled;
+  }
+
+  async testWeekly() {
+    await this.localNotificationsService.triggerWeeklyTest();
+    await this.menuCtrl.close('side-menu');
+  }
+
+  async testMonthly() {
+    await this.localNotificationsService.triggerMonthlyTest();
+    await this.menuCtrl.close('side-menu');
+  }
+
+  async testInactivity() {
+    await this.localNotificationsService.triggerInactivityTest();
+    await this.menuCtrl.close('side-menu');
   }
 
   async goToSuspects() {

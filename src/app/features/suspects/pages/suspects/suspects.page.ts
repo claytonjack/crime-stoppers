@@ -1,116 +1,119 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ViewChild,
+  signal,
+  computed,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseImport } from '../../../../core/base-import';
+import { NgIcon } from '@ng-icons/core';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { Suspect } from '../../models/suspect.model';
 import {
-  StrapiService,
-  Suspect,
-} from '../../../../core/services/strapi.service';
-import {
-  LoadingController,
-  AlertController,
-  IonRefresher,
-  IonRefresherContent,
+  IonImg,
+  IonCardHeader,
+  IonCardTitle,
+  IonList,
+  IonContent,
   IonCard,
-  IonCardContent,
-  IonSkeletonText,
-  IonIcon,
-  IonButton,
-  IonBreadcrumbs,
-  IonBreadcrumb,
+  IonCardSubtitle,
+  IonInfiniteScrollContent,
+  IonInfiniteScroll,
 } from '@ionic/angular/standalone';
 
 @Component({
-  standalone: true,
   selector: 'app-suspects',
-  imports: [
-    IonButton,
-    IonIcon,
-    IonSkeletonText,
-    IonCardContent,
-    IonCard,
-    IonRefresherContent,
-    IonRefresher,
-    IonBreadcrumbs,
-    IonBreadcrumb,
-    ...BaseImport,
-  ],
   templateUrl: './suspects.page.html',
   styleUrls: ['./suspects.page.scss'],
+  standalone: true,
+  imports: [
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonCardSubtitle,
+    IonCard,
+    IonContent,
+    IonList,
+    IonCardTitle,
+    IonCardHeader,
+    IonImg,
+    CommonModule,
+    FormsModule,
+    NgIcon,
+    HeaderComponent,
+  ],
 })
 export class SuspectsPage implements OnInit {
+  @ViewChild(IonInfiniteScroll, { static: true })
+  infiniteScroll!: IonInfiniteScroll;
+
   private readonly strapiService = inject(StrapiService);
   private readonly router = inject(Router);
-  private readonly loadingController = inject(LoadingController);
-  private readonly alertController = inject(AlertController);
 
-  suspects: Suspect[] = [];
-  isLoading = false;
+  private readonly allSuspects = signal<Suspect[]>([]);
+  readonly isLoading = signal<boolean>(false);
+  readonly hasMoreData = signal<boolean>(true);
+
+  readonly filteredSuspects = computed(() => {
+    return this.allSuspects();
+  });
+
+  async loadMore(event: any) {
+    try {
+      event?.target?.complete?.();
+      if (!this.hasMoreData()) {
+        if (event?.target) event.target.disabled = true;
+      }
+    } catch (err) {}
+  }
 
   ngOnInit() {
     this.loadSuspects();
   }
 
-  async loadSuspects() {
-    const loading = await this.loadingController.create({
-      message: 'Loading most wanted suspects...',
-    });
-    await loading.present();
-
-    this.isLoading = true;
-
-    this.strapiService.getSuspects().subscribe({
-      next: (response) => {
-        this.suspects = response.data;
-        this.isLoading = false;
-        loading.dismiss();
-      },
-      error: async (error) => {
-        console.error('Error loading suspects:', error);
-        this.isLoading = false;
-        loading.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: 'Failed to load suspects. Please try again later.',
-          buttons: ['OK'],
-        });
-        await alert.present();
-      },
-    });
+  private async loadSuspects(page: number = 1) {
+    if (this.isLoading()) return;
+    this.isLoading.set(true);
+    try {
+      const response = (await this.strapiService
+        .getSuspects()
+        .toPromise()) as StrapiResponse<Suspect[]>;
+      if (response?.data) {
+        const sortedSuspects = response.data.sort(
+          (a: Suspect, b: Suspect) =>
+            new Date(b.publishedAt || b.createdAt).getTime() -
+            new Date(a.publishedAt || a.createdAt).getTime()
+        );
+        if (page === 1) {
+          this.allSuspects.set(sortedSuspects);
+        } else {
+          this.allSuspects.update((current) => [...current, ...sortedSuspects]);
+        }
+        this.hasMoreData.set(false);
+      }
+    } catch (error) {}
+    this.isLoading.set(false);
   }
 
-  viewSuspectDetails(suspect: Suspect) {
+  navigateToDetails(suspect: Suspect) {
     this.router.navigate(['/suspect-details', suspect.documentId]);
   }
 
-  navigateToHome() {
-    this.router.navigate(['/home']);
-  }
-
   getImageUrl(suspect: Suspect): string {
-    if (suspect.Main_Image?.url) {
-      return this.strapiService.getImageUrl(suspect.Main_Image.url);
+    if (
+      suspect.Images &&
+      Array.isArray(suspect.Images) &&
+      suspect.Images.length > 0
+    ) {
+      const firstImage = suspect.Images[0];
+      if (firstImage && firstImage.url) {
+        return this.strapiService.getImageUrl(firstImage.url);
+      }
     }
-    return 'assets/images/placeholder-suspect.png';
-  }
-
-  onImageError(event: Event) {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-suspect.png';
-    }
-  }
-
-  async doRefresh(event: any) {
-    this.strapiService.getSuspects().subscribe({
-      next: (response) => {
-        this.suspects = response.data;
-        event.target.complete();
-      },
-      error: (error) => {
-        console.error('Error refreshing suspects:', error);
-        event.target.complete();
-      },
-    });
+    return '';
   }
 }

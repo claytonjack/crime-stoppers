@@ -1,169 +1,183 @@
-<app-header [title]="suspect?.Name || 'Suspect Details'"></app-header>
+<app-header title="Suspect Details" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
+	</ion-button>
+</app-header>
 
 <ion-content [fullscreen]="true">
-	<!-- Breadcrumbs -->
-	<div class="ion-padding-horizontal ion-padding-top">
-		<ion-breadcrumbs>
-			<ion-breadcrumb (click)="navigateToHome()">
-				<ion-icon name="home" slot="start"></ion-icon>
-				Home
-			</ion-breadcrumb>
-			<ion-breadcrumb (click)="navigateToSuspects()">
-				<ion-icon name="people" slot="start"></ion-icon>
-				Most Wanted
-			</ion-breadcrumb>
-			<ion-breadcrumb active="true">
-				<ion-icon name="person" slot="start"></ion-icon>
-				{{ suspect?.Name || 'Suspect Details' }}
-			</ion-breadcrumb>
-		</ion-breadcrumbs>
-	</div>
-	<!-- Loading state -->
-	@if (isLoading) {
-	<div class="ion-padding">
-		<ion-card>
-			<ion-card-content>
-				<div class="details-loading">
-					<ion-skeleton-text animated
-						style="width: 100%; height: 200px; border-radius: 8px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 70%; height: 24px; margin-bottom: 12px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 50%; height: 18px; margin-bottom: 8px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 60%; height: 18px; margin-bottom: 8px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 40%; height: 18px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 100%; height: 60px;"></ion-skeleton-text>
-				</div>
-			</ion-card-content>
-		</ion-card>
+	<!-- Loading State -->
+	@if (isLoading()) {
+	<div class="loading-container">
+		<ion-spinner name="crescent"></ion-spinner>
+		<ion-text>
+			<p>Loading suspect...</p>
+		</ion-text>
 	</div>
 	}
 
-	<!-- Suspect details -->
-	@if (!isLoading && suspect) {
-	<div class="ion-padding">
-		<!-- Main suspect image and basic info -->
-		<ion-card class="suspect-main-card">
-			<div class="suspect-image-container">
-				<img [src]="getImageUrl()" [alt]="suspect.Name" (error)="onImageError($event)" class="suspect-main-image" />
+	<!-- Error State -->
+	@if (error() && !isLoading()) {
+	<div class="error-container">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ion-text color="danger">
+			<h3>Error</h3>
+			<p>{{ error() }}</p>
+		</ion-text>
+		<ion-button fill="outline" (click)="goBack()">
+			Go Back
+		</ion-button>
+	</div>
+	}
+
+	<!-- Suspect Content -->
+	@if (suspect() && !isLoading() && !error()) {
+	<div class="suspect-content">
+		<!-- Images Carousel -->
+		@if (suspect()!.Images && suspect()!.Images!.length > 0) {
+		<div class="images-section">
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="suspect-swiper"
+				(swiperslidechange)="onSwiperSlideChange($event)">
+				@for (image of suspect()!.Images!; track image.documentId; let i = $index) {
+				<swiper-slide>
+					<div class="slide-container">
+						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || suspect()!.Name"
+							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+						</ion-img>
+					</div>
+				</swiper-slide>
+				}
+			</swiper-container>
+
+			<!-- Image Counter -->
+			@if (suspect()!.Images!.length > 1) {
+			<div class="image-counter">
+				{{ selectedImageIndex() + 1 }} / {{ suspect()!.Images!.length }}
 			</div>
-			<ion-card-content>
-				<div class="suspect-main-info">
-					<h1 class="suspect-name">{{ suspect.Name }}</h1>
+			}
+		</div>
+		}
+
+		<!-- Suspect Information Card -->
+		<div class="info-section">
+			<div class="suspect-card">
+				<div class="card-header-section">
+					<h1 class="suspect-title">{{ suspect()!.Name }}</h1>
 					<div class="suspect-basic-info">
-						@if (suspect.Residence) {
+						@if (suspect()!.Crime) {
 						<div class="info-item">
-							<ion-icon name="location"></ion-icon>
-							<span>{{ suspect.Residence }}</span>
+							<ng-icon name="bootstrapExclamationTriangle"></ng-icon>
+							<span class="info-label">Crime:</span>
+							<span class="info-value">{{ suspect()!.Crime }}</span>
 						</div>
 						}
-						@if (suspect.Age) {
+						@if (suspect()!.Scene) {
 						<div class="info-item">
-							<ion-icon name="person"></ion-icon>
-							<span>Age: {{ suspect.Age }}</span>
+							<ng-icon name="bootstrapPinAngle"></ng-icon>
+							<span class="info-label">Scene:</span>
+							<span class="info-value">{{ suspect()!.Scene }}</span>
+						</div>
+						}
+						@if (suspect()!.Residence) {
+						<div class="info-item">
+							<ng-icon name="bootstrapHouseDoor"></ng-icon>
+							<span class="info-label">Residence:</span>
+							<span class="info-value">{{ suspect()!.Residence }}</span>
+						</div>
+						}
+						@if (suspect()!.Age) {
+						<div class="info-item">
+							<ng-icon name="bootstrapCake2"></ng-icon>
+							<span class="info-label">Age:</span>
+							<span class="info-value">{{ suspect()!.Age }}</span>
+						</div>
+						}
+						@if (suspect()!.Height) {
+						<div class="info-item">
+							<ng-icon name="bootstrapArrowsExpand"></ng-icon>
+							<span class="info-label">Height:</span>
+							<span class="info-value">{{ suspect()!.Height }}</span>
+						</div>
+						}
+						@if (suspect()!.Weight) {
+						<div class="info-item">
+							<ng-icon name="bootstrapArrowsExpandVertical"></ng-icon>
+							<span class="info-label">Weight:</span>
+							<span class="info-value">{{ suspect()!.Weight }}</span>
 						</div>
 						}
 					</div>
 				</div>
-			</ion-card-content>
-		</ion-card>
-		<!-- Physical description -->
-		@if (suspect.Height || suspect.Weight) {
-		<ion-card>
-			<ion-card-header>
-				<ion-card-title>
-					<ion-icon name="body-outline"></ion-icon>
-					Physical Description
-				</ion-card-title>
-			</ion-card-header>
-			<ion-card-content>
-				<ion-grid>
-					<ion-row>
-						@if (suspect.Height) {
-						<ion-col size="6">
-							<div class="detail-item">
-								<strong>Height:</strong>
-								<span>{{ suspect.Height }}</span>
-							</div>
-						</ion-col>
-						}
-						@if (suspect.Weight) {
-						<ion-col size="6">
-							<div class="detail-item">
-								<strong>Weight:</strong>
-								<span>{{ suspect.Weight }}</span>
-							</div>
-						</ion-col>
-						}
-					</ion-row>
-				</ion-grid>
-			</ion-card-content>
-		</ion-card>
-		}
-		<!-- Reward information -->
-		@if (suspect.Reward) {
-		<ion-card class="reward-card">
-			<ion-card-content>
-				<div class="reward-content">
-					<ion-icon name="cash" color="success"></ion-icon>
-					<div>
-						<h3>Reward Offered</h3>
-						<p class="reward-amount">{{ suspect.Reward }}</p>
+
+				@if (suspect()!.Body) {
+				<div class="card-content-section">
+					<div class="suspect-body">
+						<ion-text>
+							<div [innerHTML]="suspect()!.Body"></div>
+						</ion-text>
 					</div>
 				</div>
-			</ion-card-content>
-		</ion-card>
-		}
-		<!-- Details -->
-		@if (suspect.Details) {
-		<ion-card>
-			<ion-card-header>
-				<ion-card-title>
-					<ion-icon name="information-circle"></ion-icon>
-					Details
-				</ion-card-title>
-			</ion-card-header>
-			<ion-card-content>
-				<p class="suspect-details">{{ suspect.Details }}</p>
-			</ion-card-content>
-		</ion-card>
-		}
-		<!-- Contact section -->
-		@if (suspect.Contact) {
-		<ion-card class="contact-card">
-			<ion-card-header>
-				<ion-card-title>
-					<ion-icon name="call"></ion-icon>
-					Report Information
-				</ion-card-title>
-			</ion-card-header>
-			<ion-card-content>
-				<p class="contact-info">{{ suspect.Contact }}</p>
-				<ion-button expand="block" fill="solid" color="primary" (click)="callContact()" class="contact-button">
-					<ion-icon slot="start" name="call"></ion-icon>
-					Contact Crime Stoppers
-				</ion-button>
-			</ion-card-content>
-		</ion-card>
-		}
-		<!-- Action buttons -->
-		<div class="action-buttons">
-			<ion-button expand="block" fill="outline" color="medium" (click)="goBack()">
-				<ion-icon slot="start" name="arrow-back"></ion-icon>
-				Back to List
-			</ion-button>
+				}
+			</div>
 		</div>
 	</div>
 	}
 
-	<!-- Error state -->
-	@if (!isLoading && !suspect) {
-	<div class="error-state ion-padding">
-		<ion-icon name="alert-circle" size="large" color="danger"></ion-icon>
-		<h2>Suspect Not Found</h2>
-		<p>The requested suspect information could not be loaded.</p>
-		<ion-button fill="outline" (click)="goBack()">
-			<ion-icon slot="start" name="arrow-back"></ion-icon>
-			Back to List
-		</ion-button>
+	<!-- Full-size Image Modal -->
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ suspect()?.Images?.length || 0 }}</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="closeImageModal()">
+							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+
+			<ion-content>
+				@if (suspect()?.Images && suspect()!.Images![selectedImageIndex()]) {
+				<div class="modal-image-container">
+					<ion-img [src]="getImageUrl(suspect()!.Images![selectedImageIndex()].url)"
+						[alt]="suspect()!.Images![selectedImageIndex()].alternativeText || suspect()!.Name" class="modal-image"
+						loading="lazy">
+					</ion-img>
+				</div>
+				}
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+	<!-- Reward and Contact Us (static sections) -->
+	<div class="bottom-static-section">
+		<ion-card class="reward-card">
+			<ion-card-header>
+				<ion-card-title>
+					<ng-icon name="bootstrapCash" style="margin-right:8px;"></ng-icon>
+					Reward
+				</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-text>
+					Cash rewards of up to <b>$2,000</b> are available for information leading to an arrest or the solving of a
+					crime.
+				</ion-text>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card class="contact-card">
+			<ion-card-header>
+				<ion-card-title>
+					<ng-icon name="bootstrapTelephone" style="margin-right:8px;"></ng-icon>
+					Contact Us
+				</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-text>
+					If seen, <b>do not approach the suspect</b>.<br>
+					Instead, Call <b>9-1-1</b> or contact Crime Stoppers: <a href="tel:1-800-222-8477">1-800-222-8477</a>
+				</ion-text>
+			</ion-card-content>
+		</ion-card>
 	</div>
-	}
 </ion-content>

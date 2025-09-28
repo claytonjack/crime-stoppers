@@ -1,0 +1,30 @@
+.modal-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 16px;
+  background: var(--ion-color-dark);
+}
+
+.bottom-static-section {
+  margin: 16px 0 0 0;
+  padding: 0 16px 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reward-card,
+.contact-card {
+  --ion-card-background: var(--ion-color-step-50, #f8f9fa);
+  --ion-card-title-color: var(--ion-color-primary);
+}
+
+.reward-card ion-card-title,
+.contact-card ion-card-title {
+  color: var(--app-accent-color);
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}

@@ -16,6 +16,8 @@ import {
   bootstrapList,
   bootstrapChevronRight,
   bootstrapChevronLeft,
+  bootstrapArrowLeft,
+  bootstrapX,
 
   // Tab Menu Icons
   bootstrapHouseFill,
@@ -41,30 +43,37 @@ import {
   bootstrapSoundwave,
   bootstrapIncognito,
   bootstrapFingerprint,
+  bootstrapBell,
   bootstrapArrowClockwise,
 
   // Home Icons
   bootstrapBook,
-  bootstrapShield,
+  bootstrapShieldCheck,
   bootstrapEmojiSmile,
   bootstrapLightbulbFill,
   bootstrapInfoCircleFill,
 
+  // Alert and Event Icons
+  bootstrapFunnel,
+  bootstrapCalendarEvent,
+  bootstrapGeoAlt,
+
+  // Suspect Icons
+  bootstrapExclamationTriangle,
+  bootstrapPinAngle,
+  bootstrapHouseDoor,
+  bootstrapCake2,
+  bootstrapArrowsExpand,
+  bootstrapArrowsExpandVertical,
+
   // Common UI Icons
   bootstrapInfoCircle,
-  bootstrapExclamationTriangle,
-  bootstrapCheckCircle,
-  bootstrapXCircle,
   bootstrapDownload,
   bootstrapShare,
   bootstrapSearch,
   bootstrapFilter,
   bootstrapThreeDotsVertical,
-  bootstrapGeoAlt,
   bootstrapPersonFill,
-  bootstrapCashStack,
-  bootstrapCreditCard,
-  bootstrapShieldCheck,
   bootstrapGlobe,
   bootstrapTelephone,
   bootstrapEyeSlash,
@@ -90,6 +99,8 @@ bootstrapApplication(AppComponent, {
       bootstrapList,
       bootstrapChevronRight,
       bootstrapChevronLeft,
+      bootstrapArrowLeft,
+      bootstrapX,
 
       // Tab Menu Icons
       bootstrapHouseFill,
@@ -115,30 +126,37 @@ bootstrapApplication(AppComponent, {
       bootstrapSoundwave,
       bootstrapIncognito,
       bootstrapFingerprint,
+      bootstrapBell,
       bootstrapArrowClockwise,
 
       // Home Icons
       bootstrapBook,
-      bootstrapShield,
+      bootstrapShieldCheck,
       bootstrapEmojiSmile,
       bootstrapLightbulbFill,
       bootstrapInfoCircleFill,
 
+      // Alert and Event Icons
+      bootstrapFunnel,
+      bootstrapCalendarEvent,
+      bootstrapGeoAlt,
+
+      // Suspect Icons
+      bootstrapExclamationTriangle,
+      bootstrapPinAngle,
+      bootstrapHouseDoor,
+      bootstrapCake2,
+      bootstrapArrowsExpand,
+      bootstrapArrowsExpandVertical,
+
       // Common UI Icons
       bootstrapInfoCircle,
-      bootstrapExclamationTriangle,
-      bootstrapCheckCircle,
-      bootstrapXCircle,
       bootstrapDownload,
       bootstrapShare,
       bootstrapSearch,
       bootstrapFilter,
       bootstrapThreeDotsVertical,
-      bootstrapGeoAlt,
       bootstrapPersonFill,
-      bootstrapCashStack,
-      bootstrapCreditCard,
-      bootstrapShieldCheck,
       bootstrapGlobe,
       bootstrapTelephone,
       bootstrapEyeSlash,

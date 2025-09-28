@@ -1,12 +1,18 @@
 <ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-buttons slot="start">
+			<ng-content select="[slot=start]"></ng-content>
+			@if (showMenuButton) {
 			<ion-menu-toggle menu="side-menu">
 				<ion-button aria-label="Open side menu">
 					<ng-icon slot="icon-only" name="bootstrapList"></ng-icon>
 				</ion-button>
 			</ion-menu-toggle>
+			}
 		</ion-buttons>
 		<ion-title>{{ title }}</ion-title>
+		<ion-buttons slot="end">
+			<ng-content select="[slot=end]"></ng-content>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>

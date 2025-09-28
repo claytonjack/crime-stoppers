@@ -1,127 +1,117 @@
-<app-header [title]="event?.Title || 'Event Details'"></app-header>
+<app-header title="Event Details" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
+	</ion-button>
+</app-header>
 
 <ion-content [fullscreen]="true">
-	<!-- Loading state -->
-	<div *ngIf="isLoading" class="ion-padding">
-		<ion-card>
-			<ion-card-content>
-				<div class="details-loading">
-					<ion-skeleton-text animated
-						style="width: 100%; height: 200px; border-radius: 8px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 70%; height: 24px; margin-bottom: 12px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 60%; height: 18px; margin-bottom: 16px;"></ion-skeleton-text>
-					<ion-skeleton-text animated style="width: 100%; height: 120px;"></ion-skeleton-text>
-				</div>
-			</ion-card-content>
-		</ion-card>
+	@if (isLoading()) {
+	<div class="loading-container">
+		<ion-spinner name="crescent"></ion-spinner>
+		<ion-text>
+			<p>Loading event...</p>
+		</ion-text>
 	</div>
+	}
 
-	<!-- Event details -->
-	<div *ngIf="!isLoading && event">
-		<!-- Main event image -->
-		<div class="event-image-container" *ngIf="event.Main_Image?.url">
-			<img [src]="getImageUrl()" [alt]="event.Title" (error)="onImageError($event)" class="event-main-image" />
+	@if (error() && !isLoading()) {
+	<div class="error-container">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ion-text color="danger">
+			<h3>Error</h3>
+			<p>{{ error() }}</p>
+		</ion-text>
+		<ion-button fill="outline" (click)="goBack()">
+			Go Back
+		</ion-button>
+	</div>
+	}
 
-			<!-- Live overlay for happening events -->
-			<div class="live-overlay" *ngIf="isEventHappening()">
-				<ion-badge color="success" class="live-badge">
-					<ion-icon name="radio"></ion-icon>
-					LIVE EVENT
-				</ion-badge>
+	@if (event() && !isLoading() && !error()) {
+	<div class="event-content">
+		@if (event()!.Images && event()!.Images!.length > 0) {
+		<div class="images-section">
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="event-swiper"
+				(swiperslidechange)="onSwiperSlideChange($event)">
+				@for (image of event()!.Images!; track image.documentId; let i = $index) {
+				<swiper-slide>
+					<div class="slide-container">
+						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || event()!.Title"
+							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+						</ion-img>
+					</div>
+				</swiper-slide>
+				}
+			</swiper-container>
+
+			@if (event()!.Images!.length > 1) {
+			<div class="image-counter">
+				{{ selectedImageIndex() + 1 }} / {{ event()!.Images!.length }}
+			</div>
+			}
+		</div>
+		}
+
+		<div class="info-section">
+			<div class="event-card">
+				<div class="card-header-section">
+					<h1 class="event-title">{{ event()!.Title }}</h1>
+
+					<div class="date-calendar-container">
+						<div class="date-time-container">
+							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+							<span class="date-time-text">{{ formatDateTime(event()!.Event_Time) }}</span>
+						</div>
+						<ion-badge class="calendar-badge" (click)="addToCalendar(event())">
+							Save Event
+						</ion-badge>
+					</div>
+
+					@if (event()!.Location) {
+					<div class="location-container">
+						<ng-icon name="bootstrapGeoAlt"></ng-icon>
+						<span class="location-text">{{ event()!.Location }}</span>
+					</div>
+					}
+				</div>
+
+				@if (event()!.Body) {
+				<div class="card-content-section">
+					<div class="event-body">
+						<ion-text>
+							<div [innerHTML]="event()!.Body"></div>
+						</ion-text>
+					</div>
+				</div>
+				}
 			</div>
 		</div>
+	</div>
+	}
 
-		<div class="ion-padding">
-			<!-- Event header -->
-			<ion-card class="event-main-card" [class.happening-now]="isEventHappening()">
-				<ion-card-content>
-					<div class="event-header">
-						<h1 class="event-title">{{ event.Title }}</h1>
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ event()?.Images?.length || 0 }}</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="closeImageModal()">
+							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
 
-						<!-- Status badge -->
-						<ion-chip *ngIf="isEventHappening()" color="success">
-							<ion-icon name="radio"></ion-icon>
-							<ion-label>Live Now</ion-label>
-						</ion-chip>
-						<ion-chip *ngIf="isEventUpcoming()" color="primary" outline>
-							<ion-icon name="time"></ion-icon>
-							<ion-label>Upcoming</ion-label>
-						</ion-chip>
-						<ion-chip *ngIf="isEventPast()" color="medium" outline>
-							<ion-icon name="checkmark-circle"></ion-icon>
-							<ion-label>Completed</ion-label>
-						</ion-chip>
-					</div>
-				</ion-card-content>
-			</ion-card>
-
-			<!-- Event timing -->
-			<ion-card>
-				<ion-card-header>
-					<ion-card-title>
-						<ion-icon name="calendar"></ion-icon>
-						Event Schedule
-					</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<div class="event-timing">
-						<!-- Same day event -->
-						<div *ngIf="isSameDay(event.Start_Time, event.End_Time)">
-							<div class="timing-item">
-								<ion-icon name="calendar"></ion-icon>
-								<div>
-									<strong>Date</strong>
-									<p>{{ formatDateOnly(event.Start_Time) }}</p>
-								</div>
-							</div>
-							<div class="timing-item">
-								<ion-icon name="time"></ion-icon>
-								<div>
-									<strong>Time</strong>
-									<p>{{ formatTime(event.Start_Time) }} - {{ formatTime(event.End_Time) }}</p>
-								</div>
-							</div>
-						</div>
-
-						<!-- Multi-day event -->
-						<div *ngIf="!isSameDay(event.Start_Time, event.End_Time)">
-							<div class="timing-item">
-								<ion-icon name="play"></ion-icon>
-								<div>
-									<strong>Starts</strong>
-									<p>{{ formatDateTime(event.Start_Time) }}</p>
-								</div>
-							</div>
-							<div class="timing-item">
-								<ion-icon name="stop"></ion-icon>
-								<div>
-									<strong>Ends</strong>
-									<p>{{ formatDateTime(event.End_Time) }}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</ion-card-content>
-			</ion-card>
-
-			<!-- Event description -->
-			<ion-card>
-				<ion-card-header>
-					<ion-card-title>
-						<ion-icon name="document-text"></ion-icon>
-						Event Details
-					</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<div class="event-body" [innerHTML]="event.Body"></div>
-				</ion-card-content>
-			</ion-card>
-
-			<!-- Action buttons -->
-			<div class="action-buttons">
-				<ion-button expand="block" fill="outline" color="medium" (click)="goBack()">
-					<ion-icon slot="start" name="arrow-back"></ion-icon>
-					Back to Events
-				</ion-button>
-			</div>
-		</div>
+			<ion-content>
+				@if (event()?.Images && event()!.Images![selectedImageIndex()]) {
+				<div class="modal-image-container">
+					<ion-img [src]="getImageUrl(event()!.Images![selectedImageIndex()].url)"
+						[alt]="event()!.Images![selectedImageIndex()].alternativeText || event()!.Title" class="modal-image"
+						loading="lazy">
+					</ion-img>
+				</div>
+				}
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+</ion-content>

@@ -105,6 +105,9 @@
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #cf3c4f;
   --ion-color-danger-tint: #ed576b;
+
+  /** App Secondary Text Color **/
+  --app-text-color-secondary: #111213; // Maximum darkness for secondary text in light mode
 }
 
 /*
@@ -179,4 +182,7 @@
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #e04055;
   --ion-color-danger-tint: #ff5b71;
+
+  /** App Secondary Text Color **/
+  --app-text-color-secondary: #d2d7e0; // More contrast: slightly lighter in dark mode
 }

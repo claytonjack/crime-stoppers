@@ -1,5 +1,21 @@
+// ===== GALLERY IMAGE ASPECT RATIO =====
+
+.card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding-top: 56.25%; // 16:9 aspect ratio
+  border-radius: var(--border-radius-md);
+}
+
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 // ===== HOME PAGE LAYOUT =====
-// Minimal styling - let Ionic handle most of the work
 
 .cta-section {
   margin-bottom: var(--spacing-md);

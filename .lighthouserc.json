@@ -10,11 +10,11 @@
     },
     "collect": {
       "url": [
-        "http://localhost:8100/tabs/tab1",
-        "http://localhost:8100/tabs/tab2",
-        "http://localhost:8100/tabs/tab3",
-        "http://localhost:8100/tabs/tab4",
-        "http://localhost:8100/tabs/tab5"
+        "http://localhost:8100/home",
+        "http://localhost:8100/alerts",
+        "http://localhost:8100/events",
+        "http://localhost:8100/crime-map",
+        "http://localhost:8100/crime-stats"
       ],
       "numberOfRuns": 1
     },

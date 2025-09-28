@@ -1,149 +1,123 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseImport } from '../../../../core/base-import';
+import { Location } from '@angular/common';
 import {
-  StrapiService,
-  Suspect,
-} from '../../../../core/services/strapi.service';
-import {
-  LoadingController,
-  AlertController,
-  IonCard,
-  IonCardContent,
-  IonIcon,
-  IonSkeletonText,
-  IonCardHeader,
-  IonRow,
-  IonGrid,
-  IonCardTitle,
-  IonCol,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   IonButton,
-  IonBreadcrumbs,
-  IonBreadcrumb,
+  IonText,
+  IonSpinner,
+  IonModal,
+  IonImg,
+  ModalController,
 } from '@ionic/angular/standalone';
+import { NgIcon } from '@ng-icons/core';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { Suspect } from '../../models/suspect.model';
+import { StrapiResponse } from '../../../../core/models/strapi.model';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+
+import { register } from 'swiper/element/bundle';
+import { SwiperContainer } from 'swiper/element';
+
+register();
 
 @Component({
-  standalone: true,
   selector: 'app-suspect-details',
-  imports: [
-    IonButton,
-    IonCol,
-    IonCardTitle,
-    IonGrid,
-    IonRow,
-    IonCardHeader,
-    IonSkeletonText,
-    IonIcon,
-    IonCardContent,
-    IonCard,
-    IonBreadcrumbs,
-    IonBreadcrumb,
-    ...BaseImport,
-  ],
   templateUrl: './suspect-details.page.html',
   styleUrls: ['./suspect-details.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonText,
+    IonSpinner,
+    IonModal,
+    IonImg,
+    NgIcon,
+    HeaderComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SuspectDetailsPage implements OnInit {
+  private readonly strapiService = inject(StrapiService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly strapiService = inject(StrapiService);
-  private readonly loadingController = inject(LoadingController);
-  private readonly alertController = inject(AlertController);
+  private readonly location = inject(Location);
+  private readonly modalController = inject(ModalController);
 
-  suspect: Suspect | null = null;
-  isLoading = false;
-  documentId: string = '';
+  readonly suspect = signal<Suspect | null>(null);
+  readonly isLoading = signal<boolean>(true);
+  readonly error = signal<string | null>(null);
+  readonly selectedImageIndex = signal<number>(0);
+  readonly isImageModalOpen = signal<boolean>(false);
 
   ngOnInit() {
-    this.documentId = this.route.snapshot.paramMap.get('documentId') || '';
-    if (this.documentId) {
-      this.loadSuspectDetails();
-    } else {
-      this.showErrorAndGoBack('Invalid suspect ID');
+    this.loadSuspect();
+  }
+
+  private async loadSuspect() {
+    const documentId = this.route.snapshot.paramMap.get('documentId');
+
+    if (!documentId) {
+      this.error.set('Invalid suspect ID');
+      this.isLoading.set(false);
+      return;
     }
-  }
 
-  async loadSuspectDetails() {
-    const loading = await this.loadingController.create({
-      message: 'Loading suspect details...',
-    });
-    await loading.present();
+    try {
+      const response = (await this.strapiService
+        .getSuspectByDocumentId(documentId)
+        .toPromise()) as StrapiResponse<Suspect>;
 
-    this.isLoading = true;
-
-    this.strapiService.getSuspectByDocumentId(this.documentId).subscribe({
-      next: (response) => {
-        this.suspect = response.data;
-        this.isLoading = false;
-        loading.dismiss();
-      },
-      error: async (error) => {
-        console.error('Error loading suspect details:', error);
-        this.isLoading = false;
-        loading.dismiss();
-        this.showErrorAndGoBack('Failed to load suspect details');
-      },
-    });
-  }
-
-  async showErrorAndGoBack(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: message,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.router.navigate(['/suspects']);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-
-  getImageUrl(): string {
-    if (this.suspect?.Main_Image?.url) {
-      return this.strapiService.getImageUrl(this.suspect.Main_Image.url);
-    }
-    return 'assets/images/placeholder-suspect.png';
-  }
-
-  onImageError(event: Event) {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-suspect.png';
+      if (response?.data) {
+        this.suspect.set(response.data);
+      } else {
+        this.error.set('Suspect not found');
+      }
+    } catch (error) {
+      console.error('Error loading suspect:', error);
+      this.error.set('Failed to load suspect');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
   goBack() {
-    this.router.navigate(['/suspects']);
+    this.location.back();
   }
 
-  navigateToHome() {
-    this.router.navigate(['/home']);
+  getImageUrl(imageUrl: string): string {
+    return this.strapiService.getImageUrl(imageUrl);
   }
 
-  navigateToSuspects() {
-    this.router.navigate(['/suspects']);
+  onImageClick(index: number) {
+    this.selectedImageIndex.set(index);
+    this.isImageModalOpen.set(true);
   }
 
-  async callContact() {
-    if (this.suspect?.Contact) {
-      const phoneRegex = /(\d{3}[-.]?\d{3}[-.]?\d{4})/;
-      const match = this.suspect.Contact.match(phoneRegex);
+  closeImageModal() {
+    this.isImageModalOpen.set(false);
+  }
 
-      if (match) {
-        const phoneNumber = match[1].replace(/[-.\s]/g, '');
-        window.open(`tel:${phoneNumber}`, '_system');
-      } else {
-        const alert = await this.alertController.create({
-          header: 'Contact Information',
-          message: this.suspect.Contact,
-          buttons: ['OK'],
-        });
-        await alert.present();
-      }
+  onSwiperSlideChange(event: any) {
+    if (event.detail && event.detail[0]) {
+      this.selectedImageIndex.set(event.detail[0].activeIndex);
     }
   }
 }

@@ -1,0 +1,27 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>Filter Alerts</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-list>
+		<ion-radio-group [(ngModel)]="selectedSourceLocal" (ionChange)="onSelectionChange($event)">
+			<ion-item>
+				<ion-label>All Sources</ion-label>
+				<ion-radio slot="start" value=""></ion-radio>
+			</ion-item>
+
+			<ion-item *ngFor="let source of availableSources">
+				<ion-label>{{ source }}</ion-label>
+				<ion-radio slot="start" [value]="source"></ion-radio>
+			</ion-item>
+		</ion-radio-group>
+	</ion-list>
+
+	<div class="filter-footer">
+		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()">
+			Clear Filters
+		</ion-button>
+	</div>
+</ion-content>

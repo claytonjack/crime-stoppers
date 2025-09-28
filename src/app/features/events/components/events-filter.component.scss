@@ -1,0 +1,17 @@
+.filter-footer {
+  padding: 16px;
+}
+
+ion-header,
+ion-toolbar {
+  background: var(--app-secondary-color) !important;
+  --background: var(--app-secondary-color) !important;
+  box-shadow: none;
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+ion-title {
+  color: var(--app-text-color);
+  font-weight: 700;
+  font-size: 20px;
+}

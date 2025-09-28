@@ -1,131 +1,225 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { BaseImport } from '../../../../core/base-import';
-import { StrapiService, Alert } from '../../../../core/services/strapi.service';
 import {
-  LoadingController,
-  AlertController,
-  IonRefresher,
-  IonCardContent,
-  IonSkeletonText,
-  IonCard,
-  IonChip,
-  IonIcon,
-  IonLabel,
+  Component,
+  OnInit,
+  inject,
+  ViewChild,
+  signal,
+  computed,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgIcon } from '@ng-icons/core';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { PopoverController } from '@ionic/angular';
+import { Alert } from '../../models/alert.model';
+import { AlertsFilterComponent } from '../../components/alerts-filter.component';
+import {
+  IonImg,
+  IonBadge,
+  IonCardHeader,
+  IonCardTitle,
+  IonList,
   IonButton,
-  IonRefresherContent,
+  IonContent,
+  IonCard,
+  IonCardSubtitle,
+  IonInfiniteScrollContent,
+  IonInfiniteScroll,
+  IonCardContent,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-alerts',
-  standalone: true,
   templateUrl: './alerts.page.html',
   styleUrls: ['./alerts.page.scss'],
+  standalone: true,
   imports: [
-    IonRefresherContent,
-    IonButton,
-    IonLabel,
-    IonIcon,
-    IonChip,
-    IonCard,
-    IonSkeletonText,
+    IonSearchbar,
     IonCardContent,
-    IonRefresher,
-    ...BaseImport,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonCardSubtitle,
+    IonCard,
+    IonContent,
+    IonButton,
+    IonList,
+    IonCardTitle,
+    IonCardHeader,
+    IonBadge,
+    IonImg,
+    CommonModule,
+    FormsModule,
+    NgIcon,
+    HeaderComponent,
   ],
+  providers: [PopoverController],
 })
 export class AlertsPage implements OnInit {
+  @ViewChild(IonInfiniteScroll, { static: true })
+  infiniteScroll!: IonInfiniteScroll;
+
   private readonly strapiService = inject(StrapiService);
   private readonly router = inject(Router);
-  private readonly loadingController = inject(LoadingController);
-  private readonly alertController = inject(AlertController);
+  private readonly popoverController = inject(PopoverController);
+  private readonly allAlerts = signal<Alert[]>([]);
+  readonly searchTerm = signal<string>('');
+  get searchQuery() {
+    return this.searchTerm();
+  }
+  set searchQuery(value: string) {
+    this.searchTerm.set(value);
+  }
+  readonly selectedSource = signal<string>('');
+  readonly isLoading = signal<boolean>(false);
+  readonly hasMoreData = signal<boolean>(true);
+  private readonly currentPage = signal<number>(1);
+  private readonly pageSize = 5;
 
-  alerts: Alert[] = [];
-  isLoading = false;
+  readonly filteredAlerts = computed(() => {
+    let alerts = this.allAlerts();
+    const search = this.searchTerm().toLowerCase();
+    if (search) {
+      alerts = alerts.filter(
+        (alert) =>
+          alert.Title.toLowerCase().includes(search) ||
+          alert.Body.toLowerCase().includes(search)
+      );
+    }
+    const source = this.selectedSource();
+    if (source) {
+      alerts = alerts.filter((alert) => alert.Source === source);
+    }
+    return alerts;
+  });
+
+  readonly uniqueSources = computed(() => {
+    const sources = this.allAlerts().map((alert) => alert.Source);
+    return [...new Set(sources)].sort();
+  });
+
+  async loadMore(event: any) {
+    try {
+      event?.target?.complete?.();
+      if (!this.hasMoreData()) {
+        if (event?.target) event.target.disabled = true;
+      }
+    } catch (err) {}
+  }
 
   ngOnInit() {
     this.loadAlerts();
   }
 
-  async loadAlerts() {
-    const loading = await this.loadingController.create({
-      message: 'Loading alerts...',
-    });
-    await loading.present();
-
-    this.isLoading = true;
-
-    this.strapiService.getAlerts().subscribe({
-      next: (response) => {
-        this.alerts = response.data;
-        this.isLoading = false;
-        loading.dismiss();
-      },
-      error: async (error) => {
-        console.error('Error loading alerts:', error);
-        this.isLoading = false;
-        loading.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: 'Failed to load alerts. Please try again later.',
-          buttons: ['OK'],
-        });
-        await alert.present();
-      },
-    });
+  private async loadAlerts(page: number = 1) {
+    if (this.isLoading()) return;
+    this.isLoading.set(true);
+    try {
+      const response = (await this.strapiService
+        .getAlerts()
+        .toPromise()) as StrapiResponse<Alert[]>;
+      if (response?.data) {
+        const sortedAlerts = response.data.sort(
+          (a: Alert, b: Alert) =>
+            new Date(b.publishedAt || b.createdAt).getTime() -
+            new Date(a.publishedAt || a.createdAt).getTime()
+        );
+        if (page === 1) {
+          this.allAlerts.set(sortedAlerts);
+        } else {
+          this.allAlerts.update((current) => [...current, ...sortedAlerts]);
+        }
+        this.hasMoreData.set(false);
+      }
+    } catch (error) {
+      // optional: handle error
+    }
+    this.isLoading.set(false);
   }
 
-  viewAlertDetails(alert: Alert) {
+  onSearchChange(event: any) {
+    this.searchTerm.set(event.detail?.value ?? event.target?.value ?? '');
+  }
+
+  // Add filter popover method
+  async openFilterPopover(event: Event) {
+    const popover = await this.popoverController.create({
+      component: AlertsFilterComponent,
+      event: event,
+      translucent: true,
+      componentProps: {
+        selectedSource: this.selectedSource(),
+        availableSources: this.uniqueSources(),
+        onSourceChange: (source: string) => this.onSourceChange(source),
+        clearFilters: () => this.clearFilters(),
+      },
+    });
+
+    await popover.present();
+  }
+
+  onSourceChange(source: string) {
+    this.selectedSource.set(source);
+  }
+
+  clearFilters() {
+    this.selectedSource.set('');
+    this.searchTerm.set('');
+  }
+
+  navigateToDetails(alert: Alert) {
     this.router.navigate(['/alert-details', alert.documentId]);
   }
 
   getImageUrl(alert: Alert): string {
-    if (alert.Main_Image?.url) {
-      return this.strapiService.getImageUrl(alert.Main_Image.url);
+    if (
+      alert.Images &&
+      Array.isArray(alert.Images) &&
+      alert.Images.length > 0
+    ) {
+      const firstImage = alert.Images[0];
+      if (firstImage && firstImage.url) {
+        return this.strapiService.getImageUrl(firstImage.url);
+      }
     }
-    return 'assets/images/placeholder-alert.png';
-  }
-
-  onImageError(event: ErrorEvent) {
-    const target = event.target as HTMLImageElement;
-    if (target) {
-      target.src = 'assets/images/placeholder-alert.png';
-    }
+    return '';
   }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: '2-digit',
+      hour: 'numeric',
       minute: '2-digit',
+      hour12: true,
+    } as Intl.DateTimeFormatOptions);
+  }
+
+  getSourceBadgeColor(source: string): string {
+    const colors: { [key: string]: string } = {
+      Police: 'primary',
+      Community: 'secondary',
+      Media: 'tertiary',
+      Official: 'success',
+    };
+    return colors[source] || 'medium';
+  }
+
+  formatTime(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
     });
   }
 
-  getSourceColor(source: string): string {
-    switch (source) {
-      case 'Crime Stoppers':
-        return 'primary';
-      case 'Halton Police':
-        return 'secondary';
-      default:
-        return 'medium';
-    }
-  }
-
-  async doRefresh(event: CustomEvent) {
-    this.strapiService.getAlerts().subscribe({
-      next: (response) => {
-        this.alerts = response.data;
-        event.detail.complete();
-      },
-      error: (error) => {
-        console.error('Error refreshing alerts:', error);
-        event.detail.complete();
-      },
-    });
+  formatDateTime(dateString: string): string {
+    return `${this.formatDate(dateString)} at ${this.formatTime(dateString)}`;
   }
 }

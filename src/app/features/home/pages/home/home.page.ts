@@ -4,7 +4,7 @@ import {
   bootstrapLightbulbFill,
   bootstrapChevronRight,
   bootstrapBook,
-  bootstrapShield,
+  bootstrapShieldCheck,
   bootstrapEmojiSmile,
   bootstrap1Circle,
   bootstrap2Circle,
@@ -58,7 +58,7 @@ import { BaseImport } from '../../../../core/base-import';
       bootstrapLightbulbFill,
       bootstrapChevronRight,
       bootstrapBook,
-      bootstrapShield,
+      bootstrapShieldCheck,
       bootstrapEmojiSmile,
       bootstrap1Circle,
       bootstrap2Circle,
@@ -99,7 +99,7 @@ export class HomePage {
       title: 'What We Do',
       details:
         'We enable anonymous crime reporting with rewards up to $2,000 for successful tips, connecting citizens with police while guaranteeing complete anonymity.',
-      icon: 'bootstrapShield',
+      icon: 'bootstrapShieldCheck',
     },
     {
       title: 'Community Impact',

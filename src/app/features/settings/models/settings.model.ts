@@ -5,10 +5,11 @@ export interface AppSettings {
   theme: ThemeType;
   fontSize: FontSizeOption;
   privacyMode: boolean;
+  notificationEnabled: boolean;
 }
 
 export interface SettingsChangeEvent {
-  type: 'theme' | 'fontSize' | 'privacyMode';
+  type: 'theme' | 'fontSize' | 'privacyMode' | 'notificationEnabled';
   value: ThemeType | FontSizeOption | boolean;
 }
 
@@ -29,12 +30,14 @@ export interface SettingsFormData {
   theme: ThemeType;
   fontSize: FontSizeOption;
   privacyMode: boolean;
+  notificationEnabled: boolean;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   theme: 'system',
   fontSize: 'medium',
   privacyMode: false,
+  notificationEnabled: true,
 };
 
 export const FONT_SIZE_CONFIGS: Record<FontSizeOption, FontSizeConfig> = {

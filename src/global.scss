@@ -67,6 +67,25 @@ body {
   transition: var(--transition-normal);
 }
 
+// Updated to fix bottom overlap
+:root {
+  --cs-safe-area-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
+}
+
+ion-tab-bar,
+ion-footer,
+.app-bottom-bar {
+  padding-bottom: var(--cs-safe-area-bottom);
+}
+
+ion-content {
+  --padding-bottom: var(--cs-safe-area-bottom);
+}
+
+ion-fab {
+  bottom: calc(var(--cs-safe-area-bottom) + 12px);
+}
+
 ion-app {
   background: var(--app-background-color);
   color: var(--app-text-color);
@@ -98,14 +117,6 @@ ion-icon {
   color: var(--app-accent-color);
 }
 
-ion-button {
-  margin-bottom: var(--spacing-md);
-  font-size: 1.1rem;
-  font-weight: 600;
-  --color: var(--ion-color-text);
-  --border-radius: var(--radius-md);
-}
-
 ion-card-header {
   font-weight: bold;
 }
@@ -120,6 +131,18 @@ ion-label {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: var(--spacing-2xs);
+}
+
+ion-searchbar {
+  --color: var(--app-text-color);
+  --background: var(--app-secondary-color);
+  --border-radius: var(--border-radius-md);
+}
+
+ion-button {
+  margin: 0; /* remove default bottom margin */
+  --border-radius: var(--border-radius-md);
+  --color: var(--app-text-color);
 }
 
 ion-action-sheet {
@@ -197,4 +220,29 @@ ion-action-sheet {
 }
 ng-icon {
   font-size: 20px;
+}
+
+.icon-text-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// Updated to fix bottom overlap
+:root {
+  --cs-safe-area-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
+}
+
+ion-tab-bar,
+ion-footer,
+.app-bottom-bar {
+  padding-bottom: var(--cs-safe-area-bottom);
+}
+
+ion-content {
+  --padding-bottom: var(--cs-safe-area-bottom);
+}
+
+ion-fab {
+  bottom: calc(var(--cs-safe-area-bottom) + 12px);
 }

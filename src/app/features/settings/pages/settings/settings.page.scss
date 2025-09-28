@@ -1,7 +1,3 @@
-// ================================
-// MODERN SETTINGS PAGE DESIGN
-// ================================
-
 .settings-container {
   padding: 20px 16px;
   background: var(--app-background-color);
@@ -76,10 +72,6 @@
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   }
 
-  &.app-icon {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-  }
-
   &.language-icon {
     background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   }
@@ -98,6 +90,10 @@
 
   &.reset-icon {
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  }
+
+  &.notifications-icon {
+    background: linear-gradient(135deg, #ffd194 0%, #70e1f5 100%);
   }
 }
 
@@ -189,10 +185,6 @@ ion-label {
     }
   }
 }
-
-// ================================
-// ANIMATION ENHANCEMENTS
-// ================================
 
 @media (prefers-reduced-motion: no-preference) {
   .settings-card {
