@@ -8,6 +8,8 @@ import { ThemeService } from '../theme/theme.service';
 import { FontSizeService } from '../font-size/font-size.service';
 import { PrivacyModeService } from '../../../privacy-mode/services/privacy-mode.service';
 import { ThemeType, FontSizeOption } from '../../models/settings.model';
+import { AppIconService } from '../../../../core/services/app-icon.service';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +20,7 @@ export class SettingsPageService {
   private readonly privacyModeService = inject(PrivacyModeService);
   private readonly actionSheetController = inject(ActionSheetController);
   private readonly alertController = inject(AlertController);
+  private readonly appIconService = inject(AppIconService);
 
   public get theme$(): Observable<ThemeType> {
     return this.themeService.theme$;
@@ -145,4 +148,61 @@ export class SettingsPageService {
     this.fontSizeService.resetToDefault();
     this.privacyModeService.resetToDefault();
   }
+
+  public async presentAppIconAlert(): Promise<void> {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Choose App Icon',
+      buttons: [
+        {
+          text: 'Default',
+          handler: () => {
+            this.appIconService.setIcon('default');
+          },
+        },
+        {
+          text: 'Blue',
+          handler: () => {
+            this.appIconService.setIcon('blue');
+          },
+        },
+        {
+          text: 'Red',
+          handler: () => {
+            this.appIconService.setIcon('red');
+          },
+        },
+        {
+          text: 'Green',
+          handler: () => {
+            this.appIconService.setIcon('green');
+          },
+        },
+        {
+          text: 'Yellow',
+          handler: () => {
+            this.appIconService.setIcon('yellow');
+          },
+        },
+        {
+          text: 'White',
+          handler: () => {
+            this.appIconService.setIcon('white');
+          },
+        },
+        {
+          text: 'Grey',
+          handler: () => {
+            this.appIconService.setIcon('grey');
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+
 }
