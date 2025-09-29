@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "documentId": "abc123",
+      "Name": "John Doe",
+      "Crime": "Robbery",
+      "Scene": "Downtown",
+      "Residence": "Unknown",
+      "Age": "30",
+      "Height": "180 cm",
+      "Weight": "75 kg",
+      "Images": [
+        {
+          "documentId": "img1",
+          "url": "/uploads/john_doe.jpg",
+          "alternativeText": "John Doe"
+        }
+      ],
+      "createdAt": "2025-09-01T00:00:00Z",
+      "publishedAt": "2025-09-01T00:00:00Z"
+    }
+  ]
+}

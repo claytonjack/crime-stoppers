@@ -1,0 +1,19 @@
+{
+  "data": {
+    "id": 2,
+    "documentId": "with-images",
+    "Title": "Alert with Images",
+    "Source": "Police",
+    "Body": "<p>This alert has attached images.</p>",
+    "createdAt": "2025-09-22T10:00:00Z",
+    "publishedAt": "2025-09-23T10:00:00Z",
+    "Images": [
+      {
+        "id": 1,
+        "documentId": "img1",
+        "url": "/uploads/sample1.jpg",
+        "alternativeText": "First image"
+      }
+    ]
+  }
+}
