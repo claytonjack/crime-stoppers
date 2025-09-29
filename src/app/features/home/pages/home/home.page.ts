@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   bootstrapLightbulbFill,
@@ -71,7 +71,9 @@ import { BaseImport } from '../../../../core/base-import';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomePage {
+export class HomePage implements AfterViewInit {
+  @ViewChild('submitTipButton', { read: ElementRef }) submitTipButton!: ElementRef;
+
   isModalOpen = false;
   selectedSegment: string = 'about-us';
 
@@ -159,6 +161,18 @@ export class HomePage {
     private screenReader: ScreenReaderService
   ) {}
 
+   ngAfterViewInit() {
+    // Focus first CTA button for TalkBack/VoiceOver
+    if (this.submitTipButton) {
+      const btn = this.submitTipButton.nativeElement as HTMLElement;
+      btn.focus();
+
+      // Optional: give guidance to the user
+      this.screenReader.speak(
+        'Welcome to Crime Stoppers. Swipe right to navigate. Press the Submit a Tip button to report a tip anonymously.'
+      );
+    }
+  }
   openTipModal() {
     this.isModalOpen = true;
     this.screenReader.speak('Tip form opened');

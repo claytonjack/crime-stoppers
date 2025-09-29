@@ -1,7 +1,15 @@
 <app-header title="Donate"></app-header>
 
 <ion-content [fullscreen]="true">
-	<ion-grid>
+	<ion-grid #donateContent>
+		<!--  Accessibility: Text-to-Speech Controls -->
+		<ion-row class="ion-text-center ion-padding">
+			<ion-col size="12">
+				<ion-button color="primary" (click)="readContent()">🔊 Read Aloud</ion-button>
+				<ion-button color="danger" (click)="stopReading()">⏹ Stop</ion-button>
+			</ion-col>
+		</ion-row>
+
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
 				<h2>Why Donate to Us?</h2>
