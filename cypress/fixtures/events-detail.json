@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": 2,
+    "documentId": "def456",
+    "Title": "Community Gathering",
+    "Event_Time": "2025-11-05T14:00:00Z",
+    "Location": "Community Hall",
+    "Body": "A fun event for everyone",
+    "Images": []
+  }
+}

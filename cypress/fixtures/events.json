@@ -1,0 +1,30 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "documentId": "abc123",
+      "Title": "Test Event",
+      "Event_Time": "2025-10-28T10:00:00Z",
+      "Location": "Test Location",
+      "Body": "This is a test event",
+      "Images": [],
+      "createdAt": "2025-09-01T00:00:00Z",
+      "updatedAt": "2025-09-01T00:00:00Z",
+      "publishedAt": "2025-09-01T00:00:00Z",
+      "locale": "en"
+    },
+    {
+      "id": 2,
+      "documentId": "def456",
+      "Title": "Community Gathering",
+      "Event_Time": "2025-11-05T14:00:00Z",
+      "Location": "Community Hall",
+      "Body": "A fun event for everyone",
+      "Images": [],
+      "createdAt": "2025-09-02T00:00:00Z",
+      "updatedAt": "2025-09-02T00:00:00Z",
+      "publishedAt": "2025-09-02T00:00:00Z",
+      "locale": "en"
+    }
+  ]
+}
