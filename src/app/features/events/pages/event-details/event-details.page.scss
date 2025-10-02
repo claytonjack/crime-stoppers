@@ -6,40 +6,43 @@
   justify-content: center;
   padding: 48px 16px;
   min-height: 50vh;
-}
-.loading-container ion-spinner {
-  margin-bottom: 16px;
-  --color: var(--ion-color-primary);
-}
-.error-container ng-icon,
-.loading-container ng-icon {
-  margin-bottom: 24px;
-}
-.error-container h3 {
-  margin: 0 0 8px 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-  text-align: center;
-}
-.error-container p {
-  margin: 0 0 24px 0;
-  text-align: center;
-  color: var(--ion-color-medium);
-  line-height: 1.4;
+
+  ion-spinner {
+    margin-bottom: 16px;
+    --color: var(--ion-color-primary);
+  }
+
+  ng-icon {
+    margin-bottom: 24px;
+    color: var(--ion-color-danger);
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    text-align: center;
+    color: var(--ion-color-medium);
+    line-height: 1.4;
+  }
 }
 
-.event-content {
+.content-wrapper {
   display: flex;
   flex-direction: column;
 }
 
 .images-section {
   position: relative;
-  background: var(--ion-color-step-50);
   margin-bottom: var(--spacing-md);
 }
 
-.event-swiper {
+.detail-swiper {
   width: 100%;
   height: 280px;
   border-radius: var(--border-radius-md);
@@ -47,27 +50,32 @@
   box-shadow: var(--shadow-sm);
   background: rgba(var(--app-accent-color-rgb), 0.015);
   border: 1px solid rgba(var(--app-accent-color-rgb), 0.06);
-}
-.event-swiper ::ng-deep {
-  --swiper-navigation-color: var(--ion-color-light);
-  --swiper-navigation-size: 18px;
-  --swiper-pagination-color: var(--ion-color-primary);
-  --swiper-pagination-bullet-inactive-color: var(--ion-color-light);
-  --swiper-pagination-bullet-inactive-opacity: 0.5;
-  .swiper-button-next,
-  .swiper-button-prev {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
+
+  @media (min-width: 768px) {
+    height: 350px;
   }
-  .swiper-button-next:after,
-  .swiper-button-prev:after {
-    font-size: 16px;
-  }
-  .swiper-pagination {
-    bottom: 12px;
+
+  ::ng-deep {
+    --swiper-navigation-color: var(--ion-color-light);
+    --swiper-navigation-size: 18px;
+    --swiper-pagination-color: var(--ion-color-primary);
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+
+      &:after {
+        font-size: 16px;
+      }
+    }
+
+    .swiper-pagination {
+      bottom: 12px;
+    }
   }
 }
 
@@ -86,9 +94,10 @@
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.2s ease;
-}
-.slide-image:hover {
-  transform: scale(1.02);
+
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
 .image-counter {
@@ -105,90 +114,84 @@
 }
 
 .info-section {
-  padding: 0 16px;
-  margin-bottom: var(--spacing-lg);
+  padding: 0 0 16px 0;
 }
 
-.event-card {
-  background: var(--ion-card-background, var(--app-background-color));
-  color: var(--app-text-color);
+.info-card {
+  background: var(--ion-card-background);
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-md);
-  margin: 0;
-  padding: 0;
   overflow: hidden;
+  margin: 0 0 12px 0;
+  padding: 0; /* Remove any default padding */
 }
 
 .card-header-section {
-  padding: 16px 20px 12px;
+  padding: 16px 20px 12px 20px;
   border-bottom: 1px solid var(--ion-color-step-100);
 }
-.event-title {
+
+.detail-title {
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.3;
   margin: 0 0 12px 0;
-  color: var(--app-card-title-color, var(--app-text-color));
+  color: var(--app-text-color);
 }
-.date-calendar-container {
+
+.metadata-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
-.date-time-container {
+
+.metadata-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--ion-color-medium);
   font-size: 0.9rem;
+
+  ng-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    color: var(--app-accent-color) !important;
+  }
+
+  span {
+    font-weight: 500;
+    color: var(--app-text-color-secondary);
+  }
+
+  &.location-item {
+    margin-bottom: 0;
+
+    span {
+      color: var(--app-text-color-secondary);
+    }
+  }
 }
-.date-time-container ng-icon {
-  flex-shrink: 0;
-  font-size: 16px;
-}
-.date-time-text {
-  font-weight: 500;
-}
-.calendar-button {
-  flex-shrink: 0;
+
+.info-badge {
+  --border-radius: 12px;
   font-size: 12px;
-  font-weight: 500;
-  text-transform: none;
-  height: 32px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --border-radius: 16px;
-}
-.calendar-button ng-icon {
-  font-size: 14px;
-}
-.location-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--ion-color-medium);
-  font-size: 0.9rem;
-}
-.location-container ng-icon {
+  padding: 4px 10px;
+  height: auto;
   flex-shrink: 0;
-  font-size: 16px;
-}
-.location-text {
-  font-weight: 500;
-  color: var(--app-text-color);
+  background: var(--ion-color-primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
 
 .card-content-section {
   padding: 20px;
 }
-.event-body {
+
+.detail-body {
   line-height: 1.6;
   color: var(--app-text-color);
-}
-.event-body ::ng-deep a:hover {
-  text-decoration: underline;
 }
 
 .modal-image-container {
@@ -198,4 +201,8 @@
   min-height: 100%;
   padding: 16px;
   background: var(--ion-color-dark);
+}
+
+.icon-size {
+  font-size: 16px !important;
 }

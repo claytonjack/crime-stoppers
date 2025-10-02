@@ -41,11 +41,9 @@ ion-tab-bar {
     &.tab-selected {
       opacity: 1;
       transform: scale(1.05);
-
       ng-icon {
         color: var(--app-accent-color);
       }
-
       ion-label {
         color: var(--app-accent-color);
       }

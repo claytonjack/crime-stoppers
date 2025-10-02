@@ -1,6 +1,5 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-
 import {
   IonTabs,
   IonTabBar,
@@ -11,6 +10,7 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab-menu',

@@ -28,10 +28,22 @@ export const routes: Routes = [
       },
       {
         path: 'alerts',
-        loadComponent: () =>
-          import('./features/alerts/pages/alerts/alerts.page').then(
-            (m) => m.AlertsPage
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/alerts/pages/alerts/alerts.page').then(
+                (m) => m.AlertsPage
+              ),
+          },
+          {
+            path: 'details/:documentId',
+            loadComponent: () =>
+              import(
+                './features/alerts/pages/alert-details/alert-details.page'
+              ).then((m) => m.AlertDetailsPage),
+          },
+        ],
       },
       {
         path: 'crime-map',
@@ -48,43 +60,46 @@ export const routes: Routes = [
           ).then((m) => m.CrimeStatsPage),
       },
 
-      // Detail Pages
-      {
-        path: 'alert-details/:documentId',
-        loadComponent: () =>
-          import(
-            './features/alerts/pages/alert-details/alert-details.page'
-          ).then((m) => m.AlertDetailsPage),
-      },
-      {
-        path: 'event-details/:documentId',
-        loadComponent: () =>
-          import(
-            './features/events/pages/event-details/event-details.page'
-          ).then((m) => m.EventDetailsPage),
-      },
-      {
-        path: 'suspect-details/:documentId',
-        loadComponent: () =>
-          import(
-            './features/suspects/pages/suspect-details/suspect-details.page'
-          ).then((m) => m.SuspectDetailsPage),
-      },
+      // Detail Pages now nested under tabs
 
       // Side Menu Pages
       {
         path: 'events',
-        loadComponent: () =>
-          import('./features/events/pages/events/events.page').then(
-            (m) => m.EventsPage
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/events/pages/events/events.page').then(
+                (m) => m.EventsPage
+              ),
+          },
+          {
+            path: 'details/:documentId',
+            loadComponent: () =>
+              import(
+                './features/events/pages/event-details/event-details.page'
+              ).then((m) => m.EventDetailsPage),
+          },
+        ],
       },
       {
         path: 'suspects',
-        loadComponent: () =>
-          import('./features/suspects/pages/suspects/suspects.page').then(
-            (m) => m.SuspectsPage
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/suspects/pages/suspects/suspects.page').then(
+                (m) => m.SuspectsPage
+              ),
+          },
+          {
+            path: 'details/:documentId',
+            loadComponent: () =>
+              import(
+                './features/suspects/pages/suspect-details/suspect-details.page'
+              ).then((m) => m.SuspectDetailsPage),
+          },
+        ],
       },
       {
         path: 'volunteer',

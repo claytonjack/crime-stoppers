@@ -171,7 +171,7 @@ export class AlertsPage implements OnInit {
   }
 
   navigateToDetails(alert: Alert) {
-    this.router.navigate(['/alert-details', alert.documentId]);
+    this.router.navigate(['/alerts', 'details', alert.documentId]);
   }
 
   getImageUrl(alert: Alert): string {

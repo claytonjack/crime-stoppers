@@ -1,0 +1,21 @@
+{
+  "data": {
+    "id": 1,
+    "documentId": "abc123",
+    "Name": "John Doe",
+    "Crime": "Robbery",
+    "Scene": "Downtown",
+    "Residence": "Unknown",
+    "Age": "30",
+    "Height": "180 cm",
+    "Weight": "75 kg",
+    "Body": "<p>Considered dangerous. Do not approach.</p>",
+    "Images": [
+      {
+        "documentId": "img1",
+        "url": "/uploads/john_doe.jpg",
+        "alternativeText": "John Doe"
+      }
+    ]
+  }
+}

@@ -16,7 +16,7 @@
 
 	@if (error() && !isLoading()) {
 	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
 		<ion-text color="danger">
 			<h3>Error</h3>
 			<p>{{ error() }}</p>
@@ -28,10 +28,10 @@
 	}
 
 	@if (event() && !isLoading() && !error()) {
-	<div class="event-content">
+	<div class="content-wrapper">
 		@if (event()!.Images && event()!.Images!.length > 0) {
 		<div class="images-section">
-			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="event-swiper"
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
 				(swiperslidechange)="onSwiperSlideChange($event)">
 				@for (image of event()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
@@ -53,31 +53,31 @@
 		}
 
 		<div class="info-section">
-			<div class="event-card">
+			<div class="info-card">
 				<div class="card-header-section">
-					<h1 class="event-title">{{ event()!.Title }}</h1>
+					<h1 class="detail-title">{{ event()!.Title }}</h1>
 
-					<div class="date-calendar-container">
-						<div class="date-time-container">
+					<div class="metadata-container">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
-							<span class="date-time-text">{{ formatDateTime(event()!.Event_Time) }}</span>
+							<span>{{ formatDate(event()!.Event_Time) }}</span>
 						</div>
-						<ion-badge class="calendar-badge" (click)="addToCalendar(event())">
+						<ion-badge class="info-badge" (click)="addToCalendar(event())">
 							Save Event
 						</ion-badge>
 					</div>
 
 					@if (event()!.Location) {
-					<div class="location-container">
+					<div class="metadata-item location-item">
 						<ng-icon name="bootstrapGeoAlt"></ng-icon>
-						<span class="location-text">{{ event()!.Location }}</span>
+						<span>{{ event()!.Location }}</span>
 					</div>
 					}
 				</div>
 
 				@if (event()!.Body) {
 				<div class="card-content-section">
-					<div class="event-body">
+					<div class="detail-body">
 						<ion-text>
 							<div [innerHTML]="event()!.Body"></div>
 						</ion-text>

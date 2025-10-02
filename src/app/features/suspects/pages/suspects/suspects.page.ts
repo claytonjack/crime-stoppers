@@ -6,14 +6,6 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgIcon } from '@ng-icons/core';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { StrapiService } from '../../../../core/services/strapi.service';
-import { StrapiResponse } from 'src/app/core/models/strapi.model';
-import { Suspect } from '../../models/suspect.model';
 import {
   IonImg,
   IonCardHeader,
@@ -24,7 +16,19 @@ import {
   IonCardSubtitle,
   IonInfiniteScrollContent,
   IonInfiniteScroll,
+  IonSearchbar,
+  IonButton,
 } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgIcon } from '@ng-icons/core';
+import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { StrapiService } from '../../../../core/services/strapi.service';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { Suspect } from '../../models/suspect.model';
+import { Router } from '@angular/router';
+import { PopoverController } from '@ionic/angular';
+import { SuspectsFilterComponent } from '../../components/suspects-filter.component';
 
 @Component({
   selector: 'app-suspects',
@@ -32,35 +36,94 @@ import {
   styleUrls: ['./suspects.page.scss'],
   standalone: true,
   imports: [
+    NgIcon,
+    HeaderComponent,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonCardSubtitle,
-    IonCard,
-    IonContent,
-    IonList,
-    IonCardTitle,
-    IonCardHeader,
     IonImg,
-    CommonModule,
+    IonCardHeader,
+    IonCardTitle,
+    IonList,
+    IonContent,
+    IonCard,
+    IonSearchbar,
+    IonButton,
     FormsModule,
-    NgIcon,
-    HeaderComponent,
+    CommonModule,
   ],
+  providers: [PopoverController],
 })
 export class SuspectsPage implements OnInit {
-  @ViewChild(IonInfiniteScroll, { static: true })
-  infiniteScroll!: IonInfiniteScroll;
-
   private readonly strapiService = inject(StrapiService);
   private readonly router = inject(Router);
+  private readonly popoverController = inject(PopoverController);
 
   private readonly allSuspects = signal<Suspect[]>([]);
   readonly isLoading = signal<boolean>(false);
   readonly hasMoreData = signal<boolean>(true);
 
+  readonly searchTerm = signal<string>('');
+  get searchQuery() {
+    return this.searchTerm();
+  }
+  set searchQuery(value: string) {
+    this.searchTerm.set(value);
+  }
+
+  readonly selectedScene = signal<string>('');
+
   readonly filteredSuspects = computed(() => {
-    return this.allSuspects();
+    let suspects = this.allSuspects();
+    const search = this.searchTerm().toLowerCase();
+    if (search) {
+      suspects = suspects.filter(
+        (suspect) =>
+          suspect.Name.toLowerCase().includes(search) ||
+          suspect.Crime.toLowerCase().includes(search) ||
+          suspect.Scene.toLowerCase().includes(search)
+      );
+    }
+    const scene = this.selectedScene();
+    if (scene) {
+      suspects = suspects.filter((suspect) => suspect.Scene === scene);
+    }
+    return suspects;
   });
+  readonly availableScenes = [
+    'Oakville',
+    'Burlington',
+    'Milton',
+    'Halton Hills',
+  ];
+
+  onSearchChange(event: any) {
+    this.searchTerm.set(event.detail?.value ?? event.target?.value ?? '');
+  }
+
+  async openFilterPopover(event: Event) {
+    const popover = await this.popoverController.create({
+      component: SuspectsFilterComponent,
+      event: event,
+      translucent: true,
+      componentProps: {
+        selectedScene: this.selectedScene(),
+        scenes: this.availableScenes,
+        onSceneChange: (scene: string) => this.onSceneChange(scene),
+        clearFilters: () => this.clearFilters(),
+      },
+    });
+    await popover.present();
+  }
+
+  onSceneChange(scene: string) {
+    this.selectedScene.set(scene);
+  }
+
+  clearFilters() {
+    this.selectedScene.set('');
+    this.searchTerm.set('');
+  }
 
   async loadMore(event: any) {
     try {
@@ -100,7 +163,7 @@ export class SuspectsPage implements OnInit {
   }
 
   navigateToDetails(suspect: Suspect) {
-    this.router.navigate(['/suspect-details', suspect.documentId]);
+    this.router.navigate(['/suspects/details', suspect.documentId]);
   }
 
   getImageUrl(suspect: Suspect): string {

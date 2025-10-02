@@ -19,10 +19,10 @@
 				<ion-card-title>{{ alert.Title }}</ion-card-title>
 				<ion-card-subtitle class="card-subtitle">
 					<div class="icon-text-group">
-						<ng-icon name="bootstrapCalendarEvent" class="date-icon" inline="true"></ng-icon>
+						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
 						<span>{{ formatDate(alert.publishedAt || alert.createdAt) }}</span>
 					</div>
-					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="source-badge">
+					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge">
 						{{ alert.Source }}
 					</ion-badge>
 				</ion-card-subtitle>
@@ -37,5 +37,4 @@
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
 		<ion-infinite-scroll-content></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
-
 </ion-content>

@@ -47,6 +47,7 @@
 
 :root {
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+  --cs-safe-area-bottom: env(safe-area-inset-bottom);
 }
 
 ion-app {
@@ -54,6 +55,8 @@ ion-app {
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+  background: var(--app-background-color);
+  color: var(--app-text-color);
 }
 
 /**
@@ -67,30 +70,6 @@ body {
   transition: var(--transition-normal);
 }
 
-// Updated to fix bottom overlap
-:root {
-  --cs-safe-area-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
-}
-
-ion-tab-bar,
-ion-footer,
-.app-bottom-bar {
-  padding-bottom: var(--cs-safe-area-bottom);
-}
-
-ion-content {
-  --padding-bottom: var(--cs-safe-area-bottom);
-}
-
-ion-fab {
-  bottom: calc(var(--cs-safe-area-bottom) + 12px);
-}
-
-ion-app {
-  background: var(--app-background-color);
-  color: var(--app-text-color);
-}
-
 ion-router-outlet {
   background: var(--app-background-color);
 }
@@ -98,8 +77,23 @@ ion-router-outlet {
 ion-content {
   --background: var(--app-background-color);
   --color: var(--app-text-color);
+  --padding-bottom: var(--cs-safe-area-bottom);
 }
 
+ion-tab-bar,
+ion-footer {
+  padding-bottom: var(--cs-safe-area-bottom);
+  margin-bottom: -12px;
+}
+
+ion-fab {
+  bottom: calc(var(--cs-safe-area-bottom) + 12px - 12px);
+}
+
+/**
+ * Global Component Styling
+ * -----------------------------------------------------
+ */
 ion-card,
 ion-item,
 ion-list {
@@ -107,14 +101,15 @@ ion-list {
   --color: var(--app-text-color);
 }
 
-ion-card-title {
-  color: var(--app-card-title-color, var(--app-text-color));
-  font-weight: 600;
-  line-height: 1.2;
+ion-card {
+  background: var(--ion-card-background);
+  color: var(--app-text-color);
 }
 
-ion-icon {
-  color: var(--app-accent-color);
+ion-card-title {
+  color: var(--app-text-color);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 ion-card-header {
@@ -131,6 +126,7 @@ ion-label {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: var(--spacing-2xs);
+  color: var(--app-text-color);
 }
 
 ion-searchbar {
@@ -140,7 +136,7 @@ ion-searchbar {
 }
 
 ion-button {
-  margin: 0; /* remove default bottom margin */
+  margin: 0;
   --border-radius: var(--border-radius-md);
   --color: var(--app-text-color);
 }
@@ -152,6 +148,24 @@ ion-action-sheet {
   --button-background: var(--app-background-color) !important;
 }
 
+/**
+ * Global Icon Styling
+ * -----------------------------------------------------
+ */
+ng-icon {
+  font-size: 20px;
+}
+
+.icon-text-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/**
+ * Swiper/Carousel Styling
+ * -----------------------------------------------------
+ */
 .swiper-container {
   border-radius: var(--border-radius-md);
   overflow: hidden;
@@ -186,6 +200,10 @@ ion-action-sheet {
   box-shadow: var(--shadow-sm);
 }
 
+/**
+ * Utility Classes
+ * -----------------------------------------------------
+ */
 .card-rounded {
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-md);
@@ -207,42 +225,14 @@ ion-action-sheet {
   --padding-start: 16px;
   --padding-end: 16px;
   text-transform: none;
-}
 
-.btn-elevated:hover {
-  box-shadow: var(--shadow-accent-hover);
-  transform: translateY(-2px);
-}
+  &:hover {
+    box-shadow: var(--shadow-accent-hover);
+    transform: translateY(-2px);
+  }
 
-.btn-elevated:active {
-  transform: translateY(0);
-  transition-duration: 0.1s;
-}
-ng-icon {
-  font-size: 20px;
-}
-
-.icon-text-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-// Updated to fix bottom overlap
-:root {
-  --cs-safe-area-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
-}
-
-ion-tab-bar,
-ion-footer,
-.app-bottom-bar {
-  padding-bottom: var(--cs-safe-area-bottom);
-}
-
-ion-content {
-  --padding-bottom: var(--cs-safe-area-bottom);
-}
-
-ion-fab {
-  bottom: calc(var(--cs-safe-area-bottom) + 12px);
+  &:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+  }
 }

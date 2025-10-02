@@ -16,7 +16,7 @@
 
 	@if (error() && !isLoading()) {
 	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
 		<ion-text color="danger">
 			<h3>Error</h3>
 			<p>{{ error() }}</p>
@@ -28,10 +28,10 @@
 	}
 
 	@if (alert() && !isLoading() && !error()) {
-	<div class="alert-content">
+	<div class="content-wrapper">
 		@if (alert()!.Images && alert()!.Images!.length > 0) {
 		<div class="images-section">
-			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="alert-swiper"
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
 				(swiperslidechange)="onSwiperSlideChange($event)">
 				@for (image of alert()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
@@ -53,22 +53,22 @@
 		}
 
 		<div class="info-section">
-			<div class="alert-card">
+			<div class="info-card">
 				<div class="card-header-section">
-					<h1 class="alert-title">{{ alert()!.Title }}</h1>
-					<div class="date-source-container">
-						<div class="date-container">
+					<h1 class="detail-title">{{ alert()!.Title }}</h1>
+					<div class="metadata-container">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
-							<span class="date-text">{{ formatDate(alert()!.publishedAt || alert()!.createdAt) }}</span>
+							<span>{{ formatDate(alert()!.publishedAt || alert()!.createdAt) }}</span>
 						</div>
-						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="source-badge">
+						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge">
 							{{ alert()!.Source }}
 						</ion-badge>
 					</div>
 				</div>
 
 				<div class="card-content-section">
-					<div class="alert-body">
+					<div class="detail-body">
 						<ion-text>
 							<div [innerHTML]="alert()!.Body"></div>
 						</ion-text>

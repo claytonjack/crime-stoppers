@@ -6,7 +6,7 @@ import { FontSizeService } from './features/settings/services/font-size/font-siz
 import { PrivacyModeService } from './features/privacy-mode/services/privacy-mode.service';
 import { LocalNotificationsService } from './core/services/local-notifications.service';
 
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBarService } from './core/services/status-bar.service';
 
 @Component({
   selector: 'app-root',
@@ -19,25 +19,20 @@ export class AppComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   private readonly fontSizeService = inject(FontSizeService);
   private readonly privacyModeService = inject(PrivacyModeService);
+
   private readonly platform = inject(Platform);
   private readonly localNotificationsService = inject(
     LocalNotificationsService
   );
+  private readonly statusBarService = inject(StatusBarService);
 
   async ngOnInit() {
-    console.log(
-      'App initialized, current theme:',
-      this.themeService.currentTheme
-    );
-
     await this.platform.ready();
 
     try {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setStyle({ style: Style.Dark });
-      await StatusBar.setBackgroundColor({ color: '#ffffff' });
+      await this.statusBarService.init();
     } catch (err) {
-      console.warn('StatusBar plugin not available:', err);
+      console.warn('StatusBarService not available:', err);
     }
 
     try {

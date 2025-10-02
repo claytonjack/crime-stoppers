@@ -2,15 +2,12 @@
 
 <ion-content>
 	<div class="search-filter">
-		<ion-searchbar placeholder="Search" [(ngModel)]="searchQuery" (ionInput)="onSearchChange($event)">
-		</ion-searchbar>
-
-		<ion-button fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+		<ion-searchbar placeholder="Search events" [(ngModel)]="searchQuery"
+			(ionInput)="onSearchChange($event)"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
 			<ng-icon name="bootstrapFilter"></ng-icon>
 		</ion-button>
 	</div>
-
-
 
 	<ion-list>
 		<ion-card *ngFor="let event of filteredEvents()" (click)="navigateToDetails(event)">
@@ -22,22 +19,24 @@
 				<ion-card-title>{{ event.Title }}</ion-card-title>
 				<ion-card-subtitle class="card-subtitle">
 					<div class="icon-text-group">
-						<ng-icon name="bootstrapCalendarEvent" class="date-icon" inline="true"></ng-icon>
+						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
 						<span>{{ formatDate(event.Event_Time) }}</span>
 					</div>
-					<ion-badge class="source-badge calendar-badge" [color]="getTypeBadgeColorSafe(event.Type)"
+					<ion-badge class="info-badge" [color]="getTypeBadgeColorSafe(event.Type)"
 						(click)="addToCalendar(event, $event)">
 						Save Event
 					</ion-badge>
 				</ion-card-subtitle>
+				@if (event.Location) {
+				<div class="metadata-item location-item">
+					<ng-icon name="bootstrapGeoAlt"></ng-icon>
+					<span>{{ event.Location }}</span>
+				</div>
+				}
 			</ion-card-header>
 
 			<ion-card-content>
-				<p class="event-location icon-text-group">
-					<ng-icon name="bootstrapGeoAlt" class="location-icon" inline="true"></ng-icon>
-					<span>{{ event.Location }}</span>
-				</p>
-				<p class="event-body-text">{{ event.Body | slice: 0:150 }}...</p>
+				<p class="card-body-text">{{ event.Body | slice: 0:150 }}...</p>
 			</ion-card-content>
 		</ion-card>
 	</ion-list>
@@ -45,5 +44,4 @@
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
 		<ion-infinite-scroll-content></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
-
 </ion-content>

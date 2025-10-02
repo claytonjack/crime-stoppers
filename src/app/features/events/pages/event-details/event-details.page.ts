@@ -110,12 +110,14 @@ export class EventDetailsPage implements OnInit {
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
+    return date.toLocaleString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
-    });
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    } as Intl.DateTimeFormatOptions);
   }
 
   formatTime(dateString: string): string {
@@ -128,7 +130,7 @@ export class EventDetailsPage implements OnInit {
   }
 
   formatDateTime(dateString: string): string {
-    return `${this.formatDate(dateString)} at ${this.formatTime(dateString)}`;
+    return this.formatDate(dateString);
   }
 
   getImageUrl(imageUrl: string): string {

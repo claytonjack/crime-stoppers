@@ -1,3 +1,6 @@
+.icon-size {
+  font-size: 16px !important;
+}
 .search-filter {
   display: flex;
   align-items: center;
@@ -5,22 +8,14 @@
   padding: 8px 0;
   width: 100%;
   margin-bottom: 0;
-  ng-icon {
-    color: #fff !important;
+
+  ion-button {
+    margin-right: 8px;
+
+    ng-icon {
+      color: #fff !important;
+    }
   }
-}
-
-.search-filter ion-button {
-  margin-right: 8px;
-}
-
-.event-body-text {
-  color: var(--app-text-color-secondary);
-  margin-top: 1rem;
-}
-
-.event-location {
-  color: var(--app-text-color-secondary);
 }
 
 ion-list {
@@ -28,21 +23,23 @@ ion-list {
   padding-bottom: 0 !important;
 }
 
-ng-icon {
-  color: var(--app-accent-color) !important;
-}
-
 ion-searchbar {
   --background: var(--app-secondary-color);
-  --color: var(--app-text-color, #1a1a1a);
+  --color: var(--app-text-color);
   --border-radius: var(--border-radius-md);
+}
+
+ion-card {
+  margin-top: 0 !important;
+  padding-bottom: 0.75rem;
+  border-radius: var(--border-radius-md);
 }
 
 ion-card-title,
 ion-card-subtitle,
 ion-label,
 ion-text {
-  color: var(--ion-text-color, #1a1a1a);
+  color: var(--app-text-color);
 }
 
 .card-subtitle {
@@ -50,17 +47,32 @@ ion-text {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+
+  .icon-text-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    ng-icon {
+      color: var(--app-accent-color) !important;
+      font-size: 16px;
+    }
+
+    span {
+      color: var(--app-text-color-secondary);
+    }
+  }
 }
 
-.card-subtitle .icon-text-group span {
-  color: var(--app-text-color-secondary);
-}
-
-.calendar-badge {
+.info-badge {
   --border-radius: 12px;
   font-size: 12px;
   padding: 4px 10px;
   height: auto;
+  flex-shrink: 0;
+  background: var(--ion-color-primary);
+  color: #fff;
+  border: none;
 }
 
 .card-image-wrapper {
@@ -82,19 +94,24 @@ ion-text {
   border-radius: 0;
 }
 
-ion-card {
-  margin-top: 0 !important;
-  padding-bottom: 0.75rem;
-  border-radius: var(--border-radius-md);
+.metadata-item.location-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0 0;
+
+  ng-icon {
+    color: var(--app-accent-color) !important;
+    font-size: 16px;
+  }
 }
 
-ion-card-header {
-  margin-bottom: 0;
-  padding-bottom: 0.15rem;
-  padding-top: 0.5rem;
+.metadata-item.location-item span {
+  color: var(--app-text-color-secondary);
+  font-weight: 500;
 }
 
-.event-location {
-  margin-top: 0.15rem;
-  margin-bottom: 0.6rem;
+.card-body-text {
+  color: var(--app-text-color-secondary);
+  margin: 0;
 }

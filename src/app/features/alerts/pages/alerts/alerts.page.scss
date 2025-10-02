@@ -1,3 +1,6 @@
+.icon-size {
+  font-size: 16px !important;
+}
 .search-filter {
   display: flex;
   align-items: center;
@@ -5,15 +8,14 @@
   padding: 8px 0;
   width: 100%;
   margin-bottom: 0;
-  ng-icon {
-    color: #fff !important;
+
+  ion-button {
+    margin-right: 8px;
+
+    ng-icon {
+      color: #fff !important;
+    }
   }
-}
-.search-filter ion-button {
-  margin-right: 8px;
-}
-.card-body-text {
-  color: var(--app-text-color-secondary);
 }
 
 ion-list {
@@ -21,40 +23,10 @@ ion-list {
   padding-bottom: 0 !important;
 }
 
-ng-icon {
-  color: var(--app-accent-color) !important;
-}
-
 ion-searchbar {
   --background: var(--app-secondary-color);
-  --color: var(--app-text-color, #1a1a1a);
+  --color: var(--app-text-color);
   --border-radius: var(--border-radius-md);
-  gap: 8px;
-}
-
-.card-subtitle .icon-text-group span {
-  color: var(--app-text-color-secondary);
-}
-ion-card-title,
-ion-card-subtitle,
-ion-label,
-ion-text {
-  color: var(--ion-text-color, #1a1a1a);
-}
-
-.card-subtitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-image-wrapper {
-  width: 100%;
-  margin: 0;
-  position: relative;
-  overflow: hidden;
-  padding-top: 56.25%;
-  border-radius: 0;
 }
 
 ion-card {
@@ -67,13 +39,49 @@ ion-card-title,
 ion-card-subtitle,
 ion-label,
 ion-text {
-  color: var(--ion-text-color, #1a1a1a);
+  color: var(--app-text-color);
 }
 
 .card-subtitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+
+  .icon-text-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    ng-icon {
+      color: var(--app-accent-color) !important;
+      font-size: 16px;
+    }
+
+    span {
+      color: var(--app-text-color-secondary);
+    }
+  }
+}
+
+.info-badge {
+  --border-radius: 12px;
+  font-size: 12px;
+  padding: 4px 10px;
+  height: auto;
+  flex-shrink: 0;
+  background: var(--ion-color-primary);
+  color: #fff;
+  border: none;
+}
+
+.card-image-wrapper {
+  width: 100%;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  padding-top: 56.25%;
+  border-radius: 0;
 }
 
 .card-image {
@@ -84,4 +92,9 @@ ion-text {
   height: 100%;
   object-fit: cover;
   border-radius: 0;
+}
+
+.card-body-text {
+  color: var(--app-text-color-secondary);
+  margin: 0;
 }

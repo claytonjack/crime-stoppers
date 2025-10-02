@@ -1,21 +1,30 @@
 <app-header title="Most Wanted" [showMenuButton]="true"></app-header>
 
+
 <ion-content>
+	<div class="search-filter">
+		<ion-searchbar placeholder="Search suspects" [(ngModel)]="searchQuery"
+			(ionInput)="onSearchChange($event)"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+			<ng-icon name="bootstrapFilter"></ng-icon>
+		</ion-button>
+	</div>
+
 	<ion-list>
 		<ion-card *ngFor="let suspect of filteredSuspects()" (click)="navigateToDetails(suspect)">
-			<div class="card-image-wrapper" *ngIf="getImageUrl(suspect)">
-				<ion-img class="card-image" [src]="getImageUrl(suspect)"></ion-img>
+			<div class="suspect-image-wrapper" *ngIf="getImageUrl(suspect)">
+				<ion-img class="suspect-image" [src]="getImageUrl(suspect)"></ion-img>
 			</div>
 
 			<ion-card-header>
 				<ion-card-title>{{ suspect.Name }}</ion-card-title>
 				<ion-card-subtitle class="card-subtitle">
 					<div class="icon-text-group" *ngIf="suspect.Crime">
-						<ng-icon name="bootstrapExclamationTriangle" class="crime-icon" inline="true"></ng-icon>
+						<ng-icon name="bootstrapExclamationTriangle"></ng-icon>
 						<span>{{ suspect.Crime }}</span>
 					</div>
 					<div class="icon-text-group" *ngIf="suspect.Scene">
-						<ng-icon name="bootstrapPinAngle" class="scene-icon" inline="true"></ng-icon>
+						<ng-icon name="bootstrapPinAngle"></ng-icon>
 						<span>{{ suspect.Scene }}</span>
 					</div>
 				</ion-card-subtitle>
@@ -26,5 +35,4 @@
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
 		<ion-infinite-scroll-content></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
-
 </ion-content>

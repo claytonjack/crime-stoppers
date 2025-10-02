@@ -1,11 +1,10 @@
 <app-header title="Suspect Details" [showMenuButton]="false">
 	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
-		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
+		<ng-icon slot="icon-only" name="bootstrapArrowLeft" class="icon-size"></ng-icon>
 	</ion-button>
 </app-header>
 
 <ion-content [fullscreen]="true">
-	<!-- Loading State -->
 	@if (isLoading()) {
 	<div class="loading-container">
 		<ion-spinner name="crescent"></ion-spinner>
@@ -15,10 +14,9 @@
 	</div>
 	}
 
-	<!-- Error State -->
 	@if (error() && !isLoading()) {
 	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64" color="danger"></ng-icon>
+		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
 		<ion-text color="danger">
 			<h3>Error</h3>
 			<p>{{ error() }}</p>
@@ -29,26 +27,23 @@
 	</div>
 	}
 
-	<!-- Suspect Content -->
 	@if (suspect() && !isLoading() && !error()) {
-	<div class="suspect-content">
-		<!-- Images Carousel -->
+	<div class="content-wrapper">
 		@if (suspect()!.Images && suspect()!.Images!.length > 0) {
 		<div class="images-section">
-			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="suspect-swiper"
+			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
 				(swiperslidechange)="onSwiperSlideChange($event)">
 				@for (image of suspect()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
-					<div class="slide-container">
+					<div class="slide-container suspect-image-wrapper">
 						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || suspect()!.Name"
-							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+							(click)="onImageClick(i)" class="suspect-image" loading="lazy">
 						</ion-img>
 					</div>
 				</swiper-slide>
 				}
 			</swiper-container>
 
-			<!-- Image Counter -->
 			@if (suspect()!.Images!.length > 1) {
 			<div class="image-counter">
 				{{ selectedImageIndex() + 1 }} / {{ suspect()!.Images!.length }}
@@ -57,52 +52,51 @@
 		</div>
 		}
 
-		<!-- Suspect Information Card -->
 		<div class="info-section">
-			<div class="suspect-card">
+			<div class="info-card">
 				<div class="card-header-section">
-					<h1 class="suspect-title">{{ suspect()!.Name }}</h1>
-					<div class="suspect-basic-info">
+					<h1 class="detail-title">{{ suspect()!.Name }}</h1>
+					<div class="suspect-attributes">
 						@if (suspect()!.Crime) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapExclamationTriangle"></ng-icon>
-							<span class="info-label">Crime:</span>
-							<span class="info-value">{{ suspect()!.Crime }}</span>
+							<span class="attribute-label">Crime:</span>
+							<span class="attribute-value">{{ suspect()!.Crime }}</span>
 						</div>
 						}
 						@if (suspect()!.Scene) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapPinAngle"></ng-icon>
-							<span class="info-label">Scene:</span>
-							<span class="info-value">{{ suspect()!.Scene }}</span>
+							<span class="attribute-label">Scene:</span>
+							<span class="attribute-value">{{ suspect()!.Scene }}</span>
 						</div>
 						}
 						@if (suspect()!.Residence) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapHouseDoor"></ng-icon>
-							<span class="info-label">Residence:</span>
-							<span class="info-value">{{ suspect()!.Residence }}</span>
+							<span class="attribute-label">Residence:</span>
+							<span class="attribute-value">{{ suspect()!.Residence }}</span>
 						</div>
 						}
 						@if (suspect()!.Age) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapCake2"></ng-icon>
-							<span class="info-label">Age:</span>
-							<span class="info-value">{{ suspect()!.Age }}</span>
+							<span class="attribute-label">Age:</span>
+							<span class="attribute-value">{{ suspect()!.Age }}</span>
 						</div>
 						}
 						@if (suspect()!.Height) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapArrowsExpand"></ng-icon>
-							<span class="info-label">Height:</span>
-							<span class="info-value">{{ suspect()!.Height }}</span>
+							<span class="attribute-label">Height:</span>
+							<span class="attribute-value">{{ suspect()!.Height }}</span>
 						</div>
 						}
 						@if (suspect()!.Weight) {
-						<div class="info-item">
+						<div class="metadata-item">
 							<ng-icon name="bootstrapArrowsExpandVertical"></ng-icon>
-							<span class="info-label">Weight:</span>
-							<span class="info-value">{{ suspect()!.Weight }}</span>
+							<span class="attribute-label">Weight:</span>
+							<span class="attribute-value">{{ suspect()!.Weight }}</span>
 						</div>
 						}
 					</div>
@@ -110,7 +104,7 @@
 
 				@if (suspect()!.Body) {
 				<div class="card-content-section">
-					<div class="suspect-body">
+					<div class="detail-body">
 						<ion-text>
 							<div [innerHTML]="suspect()!.Body"></div>
 						</ion-text>
@@ -118,11 +112,42 @@
 				</div>
 				}
 			</div>
+
+			<div class="additional-info-section">
+				<ion-card class="info-highlight-card">
+					<ion-card-header>
+						<ion-card-title>
+							<ng-icon name="bootstrapCash"></ng-icon>
+							<span>Reward</span>
+						</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-text>
+							Cash rewards of up to <b>$2,000</b> are available for information leading to an arrest or the solving of a
+							crime.
+						</ion-text>
+					</ion-card-content>
+				</ion-card>
+
+				<ion-card class="info-highlight-card">
+					<ion-card-header>
+						<ion-card-title>
+							<ng-icon name="bootstrapTelephone"></ng-icon>
+							<span>Contact Us</span>
+						</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-text>
+							If seen, <b>do not approach the suspect</b>.<br>
+							Instead, Call <b>9-1-1</b> or contact Crime Stoppers: <a href="tel:1-800-222-8477">1-800-222-8477</a>
+						</ion-text>
+					</ion-card-content>
+				</ion-card>
+			</div>
 		</div>
 	</div>
 	}
 
-	<!-- Full-size Image Modal -->
 	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
 		<ng-template>
 			<ion-header>
@@ -148,36 +173,4 @@
 			</ion-content>
 		</ng-template>
 	</ion-modal>
-	<!-- Reward and Contact Us (static sections) -->
-	<div class="bottom-static-section">
-		<ion-card class="reward-card">
-			<ion-card-header>
-				<ion-card-title>
-					<ng-icon name="bootstrapCash" style="margin-right:8px;"></ng-icon>
-					Reward
-				</ion-card-title>
-			</ion-card-header>
-			<ion-card-content>
-				<ion-text>
-					Cash rewards of up to <b>$2,000</b> are available for information leading to an arrest or the solving of a
-					crime.
-				</ion-text>
-			</ion-card-content>
-		</ion-card>
-
-		<ion-card class="contact-card">
-			<ion-card-header>
-				<ion-card-title>
-					<ng-icon name="bootstrapTelephone" style="margin-right:8px;"></ng-icon>
-					Contact Us
-				</ion-card-title>
-			</ion-card-header>
-			<ion-card-content>
-				<ion-text>
-					If seen, <b>do not approach the suspect</b>.<br>
-					Instead, Call <b>9-1-1</b> or contact Crime Stoppers: <a href="tel:1-800-222-8477">1-800-222-8477</a>
-				</ion-text>
-			</ion-card-content>
-		</ion-card>
-	</div>
 </ion-content>

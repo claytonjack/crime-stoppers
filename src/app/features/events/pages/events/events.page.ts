@@ -13,7 +13,7 @@ import {
   IonCardContent,
   IonCardSubtitle,
   PopoverController,
-  AlertController, // Make sure this is imported
+  AlertController,
 } from '@ionic/angular/standalone';
 import { NgIcon } from '@ng-icons/core';
 import { CommonModule, NgIf, NgForOf } from '@angular/common';
@@ -158,7 +158,7 @@ export class EventsPage implements OnInit {
             new Date(b.Event_Time).getTime() - new Date(a.Event_Time).getTime()
         );
         this.allEvents.set(sortedEvents);
-        this.displayedEvents.set([]); // reset paging
+        this.displayedEvents.set([]);
         this.hasMoreData.set(true);
         this.loadMoreEvents();
       }
@@ -200,7 +200,7 @@ export class EventsPage implements OnInit {
   }
 
   navigateToDetails(event: Event) {
-    this.router.navigate(['/event-details', event.documentId]);
+    this.router.navigate(['/events', 'details', event.documentId]);
   }
 
   getImageUrl(event: Event): string {
