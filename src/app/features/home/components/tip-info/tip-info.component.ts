@@ -15,6 +15,7 @@ import {
   IonButton,
   IonModal,
 } from '@ionic/angular/standalone';
+import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tip-info',
@@ -29,6 +30,7 @@ import {
     IonButtons,
     IonButton,
     IonModal,
+    TranslatePipe,
   ],
 })
 export class TipInfoComponent {

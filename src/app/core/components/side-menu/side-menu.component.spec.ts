@@ -4,7 +4,7 @@ import { provideIonicAngular } from '@ionic/angular/standalone';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 import { provideRouter } from '@angular/router';
-import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 
 describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
@@ -37,7 +37,6 @@ describe('SideMenuComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
 
-    // Add a main content element that the ion-menu can reference
     const mainContent = document.createElement('div');
     mainContent.id = 'main-content';
     document.body.appendChild(mainContent);
@@ -46,7 +45,6 @@ describe('SideMenuComponent', () => {
   }));
 
   afterEach(() => {
-    // Clean up the main content element
     const mainContent = document.getElementById('main-content');
     if (mainContent) {
       document.body.removeChild(mainContent);
@@ -86,7 +84,6 @@ describe('SideMenuComponent', () => {
   });
 
   it('should trigger goToSettings() when ion-item is clicked', async () => {
-    // Find the settings ion-item specifically (contains text "Settings")
     const settingsItem = Array.from(
       fixture.nativeElement.querySelectorAll('ion-item')
     ).find((item: any) => item.textContent.includes('Settings')) as HTMLElement;

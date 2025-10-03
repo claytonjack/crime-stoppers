@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
-import { FontSizeOption, FONT_SIZE_CONFIGS } from '../../models/settings.model';
+import {
+  FontSizeOption,
+  FONT_SIZE_CONFIGS,
+} from 'src/app/core/pages/settings/models/settings.model';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrivacyModePage } from './privacy-mode.page';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
 import { By } from '@angular/platform-browser';
 
 describe('PrivacyModePage', () => {

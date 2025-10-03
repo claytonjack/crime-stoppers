@@ -1,4 +1,4 @@
-import { StrapiImage } from '../../../core/models/strapi.model';
+import { StrapiImage } from 'src/app/core/models/strapi.model';
 
 export interface Suspect {
   id: number;

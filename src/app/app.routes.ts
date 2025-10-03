@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PrivacyModeGuard } from './features/privacy-mode/guards/privacy-mode.guard';
+import { PrivacyModeGuard } from './core/pages/privacy-mode/guards/privacy-mode.guard';
 import { TabMenuComponent } from './core/components/tab-menu/tab-menu.component';
 
 export const routes: Routes = [
@@ -8,7 +8,7 @@ export const routes: Routes = [
     path: 'privacy-mode',
     loadComponent: () =>
       import(
-        './features/privacy-mode/pages/privacy-mode/privacy-mode.page'
+        './core/pages/privacy-mode/pages/privacy-mode/privacy-mode.page'
       ).then((m) => m.PrivacyModePage),
   },
 
@@ -132,7 +132,7 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () =>
-          import('./features/settings/pages/settings/settings.page').then(
+          import('./core/pages/settings/pages/settings/settings.page').then(
             (m) => m.SettingsPage
           ),
       },

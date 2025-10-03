@@ -2,7 +2,8 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
-import { BaseImport } from '../../../../core/base-import';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BaseImport } from 'src/app/core/base-import';
 import {
   IonContent,
   IonItem,
@@ -12,11 +13,16 @@ import {
   IonTitle,
   IonToggle,
 } from '@ionic/angular/standalone';
-import { SettingsPageService } from '../../services/settings-page/settings-page.service';
+import { SettingsPageService } from 'src/app/core/pages/settings/services/settings-page.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { ThemeType, FontSizeOption } from '../../models/settings.model';
+import {
+  ThemeType,
+  FontSizeOption,
+  LanguageOption,
+} from 'src/app/core/pages/settings/models/settings.model';
 import { Preferences } from '@capacitor/preferences';
+import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
 
 export const settingsPageSelector = 'app-settings';
 
@@ -36,42 +42,26 @@ export const settingsPageSelector = 'app-settings';
     IonLabel,
     NgIcon,
     IonToggle,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPage {
   private readonly settingsPageService = inject(SettingsPageService);
   private readonly router = inject(Router);
+  private readonly notificationsService = inject(NotificationsService);
 
   public notificationPermissionStatus: 'granted' | 'denied' | 'prompt' =
     'prompt';
-  public notificationEnabled = true;
+  public notificationEnabled$ = this.notificationsService.notificationEnabled$;
 
   constructor() {
     this.checkNotificationPermission();
-    this.loadNotificationEnabled();
   }
 
-  private async loadNotificationEnabled() {
-    // Try to load from Preferences, fallback to true
-    try {
-      const { value } = await Preferences.get({ key: 'notificationEnabled' });
-      this.notificationEnabled = value === null ? true : value === 'true';
-    } catch {
-      this.notificationEnabled = true;
-    }
-  }
-
-  private async saveNotificationEnabled(value: boolean) {
-    this.notificationEnabled = value;
-    await Preferences.set({
-      key: 'notificationEnabled',
-      value: value ? 'true' : 'false',
-    });
-  }
   public async onNotificationEnabledToggle(event: any) {
     const checked = event.detail.checked;
-    await this.saveNotificationEnabled(checked);
+    await this.notificationsService.setEnabled(checked);
   }
 
   private async checkNotificationPermission() {
@@ -90,7 +80,6 @@ export class SettingsPage {
 
   public async onNotificationPermissionToggle(event: any) {
     if (event.detail.checked) {
-      // Request permission
       const result = await LocalNotifications.requestPermissions();
       this.notificationPermissionStatus =
         result.display === 'granted'
@@ -99,9 +88,7 @@ export class SettingsPage {
           ? 'denied'
           : 'prompt';
     } else {
-      // No API to revoke, so show info and update UI
       this.notificationPermissionStatus = 'denied';
-      // Optionally, show a toast or alert to guide user to system settings
       alert('To fully disable notifications, please use your device settings.');
     }
   }
@@ -121,11 +108,17 @@ export class SettingsPage {
       true: 'Enabled',
       false: 'Disabled',
     },
+    language: {
+      en: 'English',
+      'fr-CA': 'Français (CA)',
+      es: 'Español',
+    } as Record<LanguageOption, string>,
   };
 
   public readonly theme$ = this.settingsPageService.theme$;
   public readonly fontSize$ = this.settingsPageService.fontSize$;
   public readonly privacyMode$ = this.settingsPageService.privacyMode$;
+  public readonly language$ = this.settingsPageService.language$;
 
   public readonly themeDisplayName$ = this.theme$.pipe(
     map((theme) => this.displayNames.theme[theme] || 'System')
@@ -135,12 +128,8 @@ export class SettingsPage {
     map((fontSize) => this.displayNames.fontSize[fontSize] || 'Medium')
   );
 
-  public readonly privacyModeDisplayName$ = this.privacyMode$.pipe(
-    map(
-      (enabled) =>
-        this.displayNames.privacyMode[enabled.toString() as 'true' | 'false'] ||
-        'Disabled'
-    )
+  public readonly languageDisplayName$ = this.language$.pipe(
+    map((language) => this.displayNames.language[language] || 'English')
   );
 
   public async onThemeClick(): Promise<void> {
@@ -151,8 +140,11 @@ export class SettingsPage {
     await this.settingsPageService.presentFontSizeActionSheet();
   }
 
-  public async onPrivacyModeClick(): Promise<void> {
-    await this.settingsPageService.presentPrivacyModeActionSheet();
+  public onPrivacyModeToggle(enabled: boolean): void {
+    this.settingsPageService.setPrivacyMode(enabled);
+    if (enabled) {
+      this.router.navigate(['/privacy-mode']);
+    }
   }
 
   public async onResetSettings(): Promise<void> {
@@ -160,7 +152,7 @@ export class SettingsPage {
   }
 
   public async onLanguageClick(): Promise<void> {
-    console.log('Language settings clicked');
+    await this.settingsPageService.presentLanguageActionSheet();
   }
 
   public async onScreenReaderClick(): Promise<void> {

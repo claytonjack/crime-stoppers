@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   inject,
   ViewChild,
   signal,
@@ -10,12 +11,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { StrapiService } from '../../../../core/services/strapi.service';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { StrapiService } from 'src/app/core/services/strapi.service';
+import {
+  LanguageService,
+  LanguageOption,
+} from 'src/app/core/pages/settings/services/language.service';
 import { StrapiResponse } from 'src/app/core/models/strapi.model';
 import { PopoverController } from '@ionic/angular';
-import { Alert } from '../../models/alert.model';
-import { AlertsFilterComponent } from '../../components/alerts-filter.component';
+import { Alert } from 'src/app/features/alerts/models/alert.model';
+import { AlertsFilterComponent } from 'src/app/features/alerts/components/alerts-filter.component';
+import { Subscription } from 'rxjs';
 import {
   IonImg,
   IonBadge,
@@ -58,21 +64,27 @@ import {
   ],
   providers: [PopoverController],
 })
-export class AlertsPage implements OnInit {
+export class AlertsPage implements OnInit, OnDestroy {
   @ViewChild(IonInfiniteScroll, { static: true })
   infiniteScroll!: IonInfiniteScroll;
 
   private readonly strapiService = inject(StrapiService);
+  private readonly languageService = inject(LanguageService);
   private readonly router = inject(Router);
   private readonly popoverController = inject(PopoverController);
+
+  private languageSubscription?: Subscription;
+
   private readonly allAlerts = signal<Alert[]>([]);
   readonly searchTerm = signal<string>('');
+
   get searchQuery() {
     return this.searchTerm();
   }
   set searchQuery(value: string) {
     this.searchTerm.set(value);
   }
+
   readonly selectedSource = signal<string>('');
   readonly isLoading = signal<boolean>(false);
   readonly hasMoreData = signal<boolean>(true);
@@ -101,6 +113,33 @@ export class AlertsPage implements OnInit {
     return [...new Set(sources)].sort();
   });
 
+  ngOnInit() {
+    // Set initial locale in Strapi service
+    const currentLang: LanguageOption =
+      this.languageService.getCurrentLanguage();
+    this.strapiService.setLocale(currentLang);
+
+    // Load alerts with current locale
+    this.loadAlerts();
+
+    // Subscribe to language changes and reload alerts
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
+      (language: LanguageOption) => {
+        console.log(
+          'Language changed, reloading alerts with locale:',
+          language
+        );
+        this.strapiService.setLocale(language);
+        this.loadAlerts(1); // Reload from page 1
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    this.languageSubscription?.unsubscribe();
+  }
+
   async loadMore(event: any) {
     try {
       event?.target?.complete?.();
@@ -110,33 +149,35 @@ export class AlertsPage implements OnInit {
     } catch (err) {}
   }
 
-  ngOnInit() {
-    this.loadAlerts();
-  }
-
   private async loadAlerts(page: number = 1) {
     if (this.isLoading()) return;
+
     this.isLoading.set(true);
+
     try {
       const response = (await this.strapiService
         .getAlerts()
         .toPromise()) as StrapiResponse<Alert[]>;
+
       if (response?.data) {
+        // Sort by createdAt only, descending (newest first)
         const sortedAlerts = response.data.sort(
           (a: Alert, b: Alert) =>
-            new Date(b.publishedAt || b.createdAt).getTime() -
-            new Date(a.publishedAt || a.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
+
         if (page === 1) {
           this.allAlerts.set(sortedAlerts);
         } else {
           this.allAlerts.update((current) => [...current, ...sortedAlerts]);
         }
+
         this.hasMoreData.set(false);
       }
     } catch (error) {
-      // optional: handle error
+      console.error('Error loading alerts:', error);
     }
+
     this.isLoading.set(false);
   }
 
@@ -144,7 +185,6 @@ export class AlertsPage implements OnInit {
     this.searchTerm.set(event.detail?.value ?? event.target?.value ?? '');
   }
 
-  // Add filter popover method
   async openFilterPopover(event: Event) {
     const popover = await this.popoverController.create({
       component: AlertsFilterComponent,

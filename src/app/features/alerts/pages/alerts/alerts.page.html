@@ -20,7 +20,7 @@
 				<ion-card-subtitle class="card-subtitle">
 					<div class="icon-text-group">
 						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
-						<span>{{ formatDate(alert.publishedAt || alert.createdAt) }}</span>
+						<span>{{ formatDate(alert.createdAt) }}</span>
 					</div>
 					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge">
 						{{ alert.Source }}

@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateServiceMock } from './core/test/translate-service.mock';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -50,7 +52,10 @@ describe('AppComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        { provide: TranslateService, useClass: TranslateServiceMock },
+      ],
     }).compileComponents();
   });
 

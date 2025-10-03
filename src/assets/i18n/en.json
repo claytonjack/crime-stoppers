@@ -1,0 +1,116 @@
+{
+  "home": {
+    "cta": {
+      "submitTip": "Submit a Tip",
+      "anonymousSecureRewarded": "Anonymous • Secure • Rewarded"
+    },
+    "segments": {
+      "aboutUs": "About Us",
+      "tipProcedure": "Tip Procedure"
+    },
+    "aboutItems": {
+      "ourStory": {
+        "title": "Our Story",
+        "details": "Crime Stoppers of Halton is a non-profit organization with 35+ years of service, working as part of a global network of 1,800 crime prevention programs."
+      },
+      "whatWeDo": {
+        "title": "What We Do",
+        "details": "We enable anonymous crime reporting with rewards up to $2,000 for successful tips, connecting citizens with police while guaranteeing complete anonymity."
+      },
+      "communityImpact": {
+        "title": "Community Impact",
+        "details": "Together, we create a safer Halton Region through community-powered crime prevention that protects tipsters while helping solve crimes."
+      }
+    },
+    "procedureSteps": {
+      "step1": {
+        "title": "Step 1: Submit Your Tip",
+        "details": "Submit your tip anonymously and we will issue you a code number that you can use to inquire about the status of your tip."
+      },
+      "step2": {
+        "title": "Step 2: Sharing Your Tip'",
+        "details": "The valuable information you provide anonymously is shared with law enforcement."
+      },
+      "step3": {
+        "title": "Step 3: The Investigation",
+        "details": "Once the investigation is complete, Crime Stoppers of Halton is advised of the case results."
+      },
+      "step4": {
+        "title": "Step 4: Reward Amount",
+        "details": "The usefulness of your tip will be reviewed by Crime Stoppers of Halton to determine the amount of your cash reward."
+      },
+      "step5": {
+        "title": "Step 5: Tip Inquiry",
+        "details": "Use your tip number to inquire by phone or online about the status of your tip and possible cash reward up to $2000."
+      },
+      "step6": {
+        "title": "Step 6: Reward Arranged",
+        "details": "Crime Stoppers of Halton will authorize the bank (or other public outlet) to prepare your cash reward identifiable by your tip number."
+      },
+      "step7": {
+        "title": "Step 7: Cash Pick-up",
+        "details": "A tip inquiry will tell you the amount of your cash award & where you can pick it up by providing your tip number only – no ID needed."
+      }
+    }
+  },
+  "tipInfo": {
+    "title": "Tip Information",
+    "close": "Close",
+    "intro": "For emergencies, call the police. This tip system is for non-urgent information about past or potential crimes. Examples:",
+    "example1": "Information about unsolved crimes.",
+    "example2": "Suspected illegal activities.",
+    "example3": "Knowledge of potential threats to the community.",
+    "details": "To aid investigations, provide comprehensive details. Your anonymity is guaranteed.",
+    "continue": "Continue to Tip"
+  },
+  "settings": {
+    "language": {
+      "title": "Language",
+      "description": "Choose your preferred language",
+      "select": "Select Language"
+    },
+    "theme": {
+      "title": "Theme",
+      "description": "Choose your preferred color scheme",
+      "select": "Select Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "fontSize": {
+      "title": "Font Size",
+      "description": "Adjust text size for better readability",
+      "select": "Select Font Size",
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "privacyMode": {
+      "title": "Privacy Mode",
+      "description": "Control data collection and visibility",
+      "select": "Select Privacy Mode",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Enable or disable notifications"
+    },
+    "reset": {
+      "title": "Reset Settings",
+      "description": "Restore all settings to default values",
+      "confirm": "Are you sure you want to reset all settings to their default values?",
+      "reset": "Reset"
+    },
+    "authentication": {
+      "title": "Authentication",
+      "description": "Sign in with biometrics or password (*WIP*)",
+      "disabled": "Disabled"
+    },
+    "screenReader": {
+      "title": "Screen Reader",
+      "description": "Enable accessibility features (*WIP*)",
+      "enabled": "Enabled"
+    }
+  }
+}

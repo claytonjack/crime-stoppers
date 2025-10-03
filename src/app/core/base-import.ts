@@ -9,3 +9,5 @@ export const BaseImport = [
   HeaderComponent,
   IonContent,
 ];
+
+export { HeaderComponent };

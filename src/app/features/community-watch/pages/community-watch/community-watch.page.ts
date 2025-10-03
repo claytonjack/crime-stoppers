@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BaseImport } from '../../../../core/base-import';
+import { BaseImport } from 'src/app/core/base-import';
 import {
   IonItem,
   IonLabel,

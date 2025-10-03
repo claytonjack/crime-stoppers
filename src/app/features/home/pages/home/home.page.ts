@@ -31,9 +31,10 @@ import {
   InAppBrowser,
   DefaultSystemBrowserOptions,
 } from '@capacitor/inappbrowser';
-import { ScreenReaderService } from '@app/core/services/screen-reader.service';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 import { TipInfoComponent } from '@app/features/home/components/tip-info/tip-info.component';
-import { BaseImport } from '../../../../core/base-import';
+import { BaseImport } from '@app/core/base-import';
+import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -52,6 +53,7 @@ import { BaseImport } from '../../../../core/base-import';
     IonLabel,
     TipInfoComponent,
     NgIcon,
+    TranslatePipe,
   ],
   providers: [
     provideIcons({
@@ -90,66 +92,56 @@ export class HomePage {
 
   aboutItems = [
     {
-      title: 'Our Story',
-      details:
-        'Crime Stoppers of Halton is a non-profit organization with 35+ years of service, working as part of a global network of 1,800 crime prevention programs.',
+      title: 'home.aboutItems.ourStory.title',
+      details: 'home.aboutItems.ourStory.details',
       icon: 'bootstrapBook',
     },
     {
-      title: 'What We Do',
-      details:
-        'We enable anonymous crime reporting with rewards up to $2,000 for successful tips, connecting citizens with police while guaranteeing complete anonymity.',
+      title: 'home.aboutItems.whatWeDo.title',
+      details: 'home.aboutItems.whatWeDo.details',
       icon: 'bootstrapShieldCheck',
     },
     {
-      title: 'Community Impact',
-      details:
-        'Together, we create a safer Halton Region through community-powered crime prevention that protects tipsters while helping solve crimes.',
+      title: 'home.aboutItems.communityImpact.title',
+      details: 'home.aboutItems.communityImpact.details',
       icon: 'bootstrapEmojiSmile',
     },
   ];
 
   procedureSteps = [
     {
-      title: 'Submit Your Tip',
-      details:
-        'Submit your tip anonymously and we will issue you a code number that you can use to inquire about the status of your tip.',
+      title: 'home.procedureSteps.step1.title',
+      details: 'home.procedureSteps.step1.details',
       icon: 'bootstrap1Circle',
     },
     {
-      title: 'Sharing Your Tip',
-      details:
-        'The valuable information you provide anonymously is shared with law enforcement.',
+      title: 'home.procedureSteps.step2.title',
+      details: 'home.procedureSteps.step2.details',
       icon: 'bootstrap2Circle',
     },
     {
-      title: 'The Investigation',
-      details:
-        'Once the investigation is complete, Crime Stoppers of Halton is advised of the case results.',
+      title: 'home.procedureSteps.step3.title',
+      details: 'home.procedureSteps.step3.details',
       icon: 'bootstrap3Circle',
     },
     {
-      title: 'Reward Amount',
-      details:
-        'The usefulness of your tip will be reviewed by Crime Stoppers of Halton to determine the amount of your cash reward.',
+      title: 'home.procedureSteps.step4.title',
+      details: 'home.procedureSteps.step4.details',
       icon: 'bootstrap4Circle',
     },
     {
-      title: 'Tip Inquiry',
-      details:
-        'Use your tip number to inquire by phone or online about the status of your tip and possible cash reward up to $2000.',
+      title: 'home.procedureSteps.step5.title',
+      details: 'home.procedureSteps.step5.details',
       icon: 'bootstrap5Circle',
     },
     {
-      title: 'Reward Arranged',
-      details:
-        'Crime Stoppers of Halton will authorize the bank (or other public outlet) to prepare your cash reward identifiable by your tip number.',
+      title: 'home.procedureSteps.step6.title',
+      details: 'home.procedureSteps.step6.details',
       icon: 'bootstrap6Circle',
     },
     {
-      title: 'Cash Pick-up',
-      details:
-        'A tip inquiry will tell you the amount of your cash award & where you can pick it up by providing your tip number only – no ID needed.',
+      title: 'home.procedureSteps.step7.title',
+      details: 'home.procedureSteps.step7.details',
       icon: 'bootstrap7Circle',
     },
   ];

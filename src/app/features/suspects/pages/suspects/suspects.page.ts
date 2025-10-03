@@ -22,14 +22,13 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { StrapiService } from '../../../../core/services/strapi.service';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { StrapiService } from 'src/app/core/services/strapi.service';
 import { StrapiResponse } from 'src/app/core/models/strapi.model';
-import { Suspect } from '../../models/suspect.model';
+import { Suspect } from 'src/app/features/suspects/models/suspect.model';
+import { SuspectsFilterComponent } from 'src/app/features/suspects/components/suspects-filter.component';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
-import { SuspectsFilterComponent } from '../../components/suspects-filter.component';
-
 @Component({
   selector: 'app-suspects',
   templateUrl: './suspects.page.html',
@@ -148,8 +147,7 @@ export class SuspectsPage implements OnInit {
       if (response?.data) {
         const sortedSuspects = response.data.sort(
           (a: Suspect, b: Suspect) =>
-            new Date(b.publishedAt || b.createdAt).getTime() -
-            new Date(a.publishedAt || a.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         if (page === 1) {
           this.allSuspects.set(sortedSuspects);

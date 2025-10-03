@@ -59,7 +59,7 @@
 					<div class="metadata-container">
 						<div class="metadata-item">
 							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
-							<span>{{ formatDate(alert()!.publishedAt || alert()!.createdAt) }}</span>
+							<span>{{ formatDate(alert()!.createdAt) }}</span>
 						</div>
 						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge">
 							{{ alert()!.Source }}

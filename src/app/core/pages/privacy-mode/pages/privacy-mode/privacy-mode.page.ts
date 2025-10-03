@@ -7,8 +7,8 @@ import {
   IonCard,
   IonCardContent,
 } from '@ionic/angular/standalone';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { PrivacyModeService } from '../../services/privacy-mode.service';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 
 @Component({
   selector: 'app-privacy-mode',

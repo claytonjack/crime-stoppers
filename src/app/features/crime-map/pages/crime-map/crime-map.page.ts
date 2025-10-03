@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseImport } from '../../../../core/base-import';
+import { BaseImport } from 'src/app/core/base-import';
 
 @Component({
   selector: 'app-crime-map',

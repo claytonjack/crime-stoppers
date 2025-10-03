@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TabMenuComponent } from './tab-menu.component';
-import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideRouter } from '@angular/router';
 

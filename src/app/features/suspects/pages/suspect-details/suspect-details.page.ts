@@ -22,10 +22,10 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { NgIcon } from '@ng-icons/core';
-import { StrapiService } from '../../../../core/services/strapi.service';
-import { Suspect } from '../../models/suspect.model';
-import { StrapiResponse } from '../../../../core/models/strapi.model';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { StrapiService } from 'src/app/core/services/strapi.service';
+import { Suspect } from 'src/app/features/suspects/models/suspect.model';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
 
 import { register } from 'swiper/element/bundle';
 import { SwiperContainer } from 'swiper/element';

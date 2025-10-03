@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular/standalone';
 import {
   IonContent,
@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
 })
-export class AlertsFilterComponent {
+export class AlertsFilterComponent implements OnInit {
   @Input() selectedSource = '';
   @Input() availableSources: string[] = [];
   @Input() onSourceChange!: (source: string) => void;

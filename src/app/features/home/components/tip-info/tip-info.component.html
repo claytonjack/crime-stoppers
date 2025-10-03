@@ -2,31 +2,30 @@
 	<ng-template>
 		<ion-header>
 			<ion-toolbar>
-				<ion-title>Tip Information</ion-title>
+				<ion-title>{{ 'tipInfo.title' | translate }}</ion-title>
 				<ion-buttons slot="end">
-					<ion-button (click)="close()">Close</ion-button>
+					<ion-button (click)="close()">{{ 'tipInfo.close' | translate }}</ion-button>
 				</ion-buttons>
 			</ion-toolbar>
 		</ion-header>
 		<ion-content class="ion-padding">
 
 			<p>
-				For emergencies, call the police. This tip system is for non-urgent information about past or potential crimes.
-				Examples:
+				{{ 'tipInfo.intro' | translate }}
 			</p>
 
 
 			<ul>
-				<li>Information about unsolved crimes.</li>
-				<li>Suspected illegal activities.</li>
-				<li>Knowledge of potential threats to the community.</li>
+				<li>{{ 'tipInfo.example1' | translate }}</li>
+				<li>{{ 'tipInfo.example2' | translate }}</li>
+				<li>{{ 'tipInfo.example3' | translate }}</li>
 			</ul>
 
 			<p>
-				To aid investigations, provide comprehensive details. Your anonymity is guaranteed.
+				{{ 'tipInfo.details' | translate }}
 			</p>
 
-			<ion-button shape="round" expand="full" (click)="continueTip()">Continue to Tip</ion-button>
+			<ion-button shape="round" expand="full" (click)="continueTip()">{{ 'tipInfo.continue' | translate }}</ion-button>
 		</ion-content>
 	</ng-template>
 </ion-modal>

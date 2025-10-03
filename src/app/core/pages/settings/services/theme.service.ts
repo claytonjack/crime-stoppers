@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
-import { ThemeType } from '../../models/settings.model';
+import { ThemeType } from 'src/app/core/pages/settings/models/settings.model';
 
 @Injectable({
   providedIn: 'root',

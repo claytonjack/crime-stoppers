@@ -1,0 +1,116 @@
+{
+  "home": {
+    "cta": {
+      "submitTip": "Soumettre un renseignement",
+      "anonymousSecureRewarded": "Anonyme • Sécurisé • Récompensé"
+    },
+    "segments": {
+      "aboutUs": "À propos de nous",
+      "tipProcedure": "Procédure de signalement"
+    },
+    "aboutItems": {
+      "ourStory": {
+        "title": "Notre histoire",
+        "details": "Crime Stoppers de Halton est un organisme à but non lucratif avec plus de 35 ans de service, faisant partie d’un réseau mondial de 1 800 programmes de prévention du crime."
+      },
+      "whatWeDo": {
+        "title": "Ce que nous faisons",
+        "details": "Nous permettons de signaler anonymement des crimes avec des récompenses allant jusqu’à 2 000 $ pour des renseignements utiles, reliant les citoyens à la police tout en garantissant un anonymat complet."
+      },
+      "communityImpact": {
+        "title": "Impact communautaire",
+        "details": "Ensemble, nous créons une région de Halton plus sécuritaire grâce à une prévention du crime axée sur la communauté qui protège les informateurs tout en aidant à résoudre des crimes."
+      }
+    },
+    "procedureSteps": {
+      "step1": {
+        "title": "Étape 1 : Soumettez votre renseignement",
+        "details": "Soumettez votre renseignement de façon anonyme et nous vous attribuerons un numéro de code que vous pourrez utiliser pour vérifier l’état de votre signalement."
+      },
+      "step2": {
+        "title": "Étape 2 : Partage de votre renseignement",
+        "details": "Les informations précieuses que vous fournissez anonymement sont transmises aux forces de l’ordre."
+      },
+      "step3": {
+        "title": "Étape 3 : L’enquête",
+        "details": "Une fois l’enquête terminée, Crime Stoppers de Halton est informé des résultats du dossier."
+      },
+      "step4": {
+        "title": "Étape 4 : Montant de la récompense",
+        "details": "L’utilité de votre renseignement sera évaluée par Crime Stoppers de Halton afin de déterminer le montant de votre récompense en argent."
+      },
+      "step5": {
+        "title": "Étape 5 : Suivi de votre renseignement",
+        "details": "Utilisez votre numéro de code pour vérifier par téléphone ou en ligne l’état de votre renseignement et le montant possible d’une récompense allant jusqu’à 2 000 $."
+      },
+      "step6": {
+        "title": "Étape 6 : Récompense organisée",
+        "details": "Crime Stoppers de Halton autorisera la banque (ou un autre établissement public) à préparer votre récompense en argent identifiable uniquement par votre numéro de code."
+      },
+      "step7": {
+        "title": "Étape 7 : Cueillette de l’argent",
+        "details": "Une vérification vous indiquera le montant de votre récompense et où la récupérer simplement en fournissant votre numéro de code – aucune pièce d’identité n’est requise."
+      }
+    }
+  },
+  "tipInfo": {
+    "title": "Informations sur le renseignement",
+    "close": "Fermer",
+    "intro": "En cas d’urgence, appelez la police. Ce système est destiné aux informations non urgentes sur des crimes passés ou potentiels. Exemples :",
+    "example1": "Informations sur des crimes non résolus.",
+    "example2": "Activités illégales suspectées.",
+    "example3": "Connaissance de menaces potentielles pour la communauté.",
+    "details": "Pour aider les enquêtes, fournissez des renseignements complets. Votre anonymat est garanti.",
+    "continue": "Continuer vers le renseignement"
+  },
+  "settings": {
+    "language": {
+      "title": "Langue",
+      "description": "Choisissez votre langue préférée",
+      "select": "Sélectionner la langue"
+    },
+    "theme": {
+      "title": "Thème",
+      "description": "Choisissez votre thème de couleur préféré",
+      "select": "Sélectionner le thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "fontSize": {
+      "title": "Taille de police",
+      "description": "Ajustez la taille du texte pour une meilleure lisibilité",
+      "select": "Sélectionner la taille de police",
+      "small": "Petit",
+      "medium": "Moyen",
+      "large": "Grand"
+    },
+    "privacyMode": {
+      "title": "Mode confidentialité",
+      "description": "Contrôlez la collecte de données et la visibilité",
+      "select": "Sélectionner le mode de confidentialité",
+      "enabled": "Activé",
+      "disabled": "Désactivé"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Activer ou désactiver les notifications"
+    },
+    "reset": {
+      "title": "Réinitialiser les paramètres",
+      "description": "Restaurer tous les paramètres aux valeurs par défaut",
+      "confirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
+      "reset": "Réinitialiser"
+    },
+    "authentication": {
+      "title": "Authentification",
+      "description": "Connexion avec biométrie ou mot de passe (*WIP*)",
+      "disabled": "Désactivé"
+    },
+    "screenReader": {
+      "title": "Lecteur d’écran",
+      "description": "Activer les fonctionnalités d’accessibilité (*WIP*)",
+      "enabled": "Activé"
+    }
+  }
+}

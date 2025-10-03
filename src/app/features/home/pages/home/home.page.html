@@ -5,8 +5,8 @@
 		<ion-button expand="block" size="large" class="tip-button" (click)="openTipModal()">
 			<ng-icon name="bootstrapLightbulbFill" slot="start"></ng-icon>
 			<div class="button-text">
-				<div class="main-text">Submit a Tip</div>
-				<div class="sub-text">Anonymous • Secure • Rewarded</div>
+				<div class="main-text">{{ 'home.cta.submitTip' | translate }}</div>
+				<div class="sub-text">{{ 'home.cta.anonymousSecureRewarded' | translate }}</div>
 			</div>
 			<ng-icon name="bootstrapChevronRight" slot="end"></ng-icon>
 		</ion-button>
@@ -30,8 +30,8 @@
 	<div class="info-section">
 		<div class="segment-container">
 			<ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged()">
-				<ion-segment-button value="about-us">About Us</ion-segment-button>
-				<ion-segment-button value="tip-procedure">Tip Procedure</ion-segment-button>
+				<ion-segment-button value="about-us">{{ 'home.segments.aboutUs' | translate }}</ion-segment-button>
+				<ion-segment-button value="tip-procedure">{{ 'home.segments.tipProcedure' | translate }}</ion-segment-button>
 			</ion-segment>
 		</div>
 
@@ -43,10 +43,10 @@
 					<div class="about-item">
 						<ion-item class="about-header">
 							<ng-icon [name]="item.icon" slot="start" class="about-icon"></ng-icon>
-							<ion-label>{{ item.title }}</ion-label>
+							<ion-label>{{ item.title | translate }}</ion-label>
 						</ion-item>
 						<div class="about-content">
-							{{ item.details }}
+							{{ item.details | translate }}
 						</div>
 					</div>
 					}
@@ -61,10 +61,10 @@
 					<ion-accordion>
 						<ion-item slot="header" class="procedure-header">
 							<ng-icon [name]="step.icon" slot="start" class="procedure-icon"></ng-icon>
-							<ion-label>{{ step.title }}</ion-label>
+							<ion-label>{{ step.title | translate }}</ion-label>
 						</ion-item>
 						<div class="procedure-content" slot="content">
-							{{ step.details }}
+							{{ step.details | translate }}
 						</div>
 					</ion-accordion>
 					}

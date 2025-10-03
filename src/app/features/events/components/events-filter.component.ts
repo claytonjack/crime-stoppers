@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular/standalone';
 import {
   IonContent,
@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
 })
-export class EventsFilterComponent {
+export class EventsFilterComponent implements OnInit {
   @Input() selectedEventType = '';
   @Input() onEventTypeChange!: (type: string) => void;
   @Input() clearFilters!: () => void;

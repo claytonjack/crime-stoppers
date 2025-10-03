@@ -27,12 +27,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { StrapiService } from '../../../../core/services/strapi.service';
-import { Event } from '../../models/event.model';
-import { StrapiResponse } from '../../../../core/models/strapi.model';
-import { CalendarService } from '../../calendar.service';
-import { EventsFilterComponent } from '../../components/events-filter.component';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { StrapiService } from 'src/app/core/services/strapi.service';
+import { Event } from 'src/app/features/events/models/event.model';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { CalendarService } from 'src/app/features/events/calendar.service';
+import { EventsFilterComponent } from 'src/app/features/events/components/events-filter.component';
 
 @Component({
   selector: 'app-events',
@@ -80,7 +80,7 @@ export class EventsPage implements OnInit {
     this.searchTerm.set(value);
   }
 
-  readonly selectedEventType = signal<string>(''); // '', 'upcoming', 'past'
+  readonly selectedEventType = signal<string>('');
 
   onSearchChange(event: any) {
     const value = event.detail?.value ?? event.target?.value ?? '';

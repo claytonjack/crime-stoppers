@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular/standalone';
 import {
   IonContent,
@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'suspects-filter',
+  selector: 'app-suspects-filter',
   templateUrl: './suspects-filter.component.html',
   styleUrls: ['./suspects-filter.component.scss'],
   standalone: true,
@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
 })
-export class SuspectsFilterComponent {
+export class SuspectsFilterComponent implements OnInit {
   @Input() selectedScene = '';
   @Input() scenes: string[] = [];
   @Input() onSceneChange!: (scene: string) => void;

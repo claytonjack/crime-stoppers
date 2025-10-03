@@ -10,7 +10,7 @@ describe('VolunteerPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VolunteerPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA], // ignore Ionic elements
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -62,7 +62,6 @@ describe('VolunteerPage', () => {
     expect(renderedSteps).toEqual(expectedSteps);
   });
   it('should render volunteer application buttons', () => {
-    // Target only the last ion-row that contains the apply buttons
     const applyRow = fixture.debugElement
       .queryAll(By.css('ion-row'))
       ?.slice(-1)[0];

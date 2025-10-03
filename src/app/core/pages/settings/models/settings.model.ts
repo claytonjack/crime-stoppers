@@ -1,16 +1,23 @@
 export type ThemeType = 'light' | 'dark' | 'system';
 export type FontSizeOption = 'small' | 'medium' | 'large';
+export type LanguageOption = 'en' | 'fr-CA' | 'es';
 
 export interface AppSettings {
   theme: ThemeType;
   fontSize: FontSizeOption;
   privacyMode: boolean;
   notificationEnabled: boolean;
+  language: LanguageOption;
 }
 
 export interface SettingsChangeEvent {
-  type: 'theme' | 'fontSize' | 'privacyMode' | 'notificationEnabled';
-  value: ThemeType | FontSizeOption | boolean;
+  type:
+    | 'theme'
+    | 'fontSize'
+    | 'privacyMode'
+    | 'notificationEnabled'
+    | 'language';
+  value: ThemeType | FontSizeOption | boolean | LanguageOption;
 }
 
 export interface FontSizeConfig {
@@ -26,11 +33,18 @@ export interface ThemeConfig {
   icon?: string;
 }
 
+export interface LanguageConfig {
+  code: LanguageOption;
+  name: string;
+  nativeName: string;
+}
+
 export interface SettingsFormData {
   theme: ThemeType;
   fontSize: FontSizeOption;
   privacyMode: boolean;
   notificationEnabled: boolean;
+  language: LanguageOption;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -38,6 +52,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   fontSize: 'medium',
   privacyMode: false,
   notificationEnabled: true,
+  language: 'en',
 };
 
 export const FONT_SIZE_CONFIGS: Record<FontSizeOption, FontSizeConfig> = {
@@ -65,4 +80,10 @@ export const THEME_CONFIGS: ThemeConfig[] = [
   { value: 'light', label: 'Light' },
   { value: 'dark', label: 'Dark' },
   { value: 'system', label: 'System' },
+];
+
+export const AVAILABLE_LANGUAGES: LanguageConfig[] = [
+  { code: 'en', name: 'English', nativeName: 'English' },
+  { code: 'fr-CA', name: 'French (Canada)', nativeName: 'Français (Canada)' },
+  { code: 'es', name: 'Spanish', nativeName: 'Español' },
 ];

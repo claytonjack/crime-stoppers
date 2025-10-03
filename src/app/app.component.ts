@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
-import { SideMenuComponent } from './core/components/side-menu/side-menu.component';
-import { ThemeService } from './features/settings/services/theme/theme.service';
-import { FontSizeService } from './features/settings/services/font-size/font-size.service';
-import { PrivacyModeService } from './features/privacy-mode/services/privacy-mode.service';
-import { LocalNotificationsService } from './core/services/local-notifications.service';
-
-import { StatusBarService } from './core/services/status-bar.service';
+import { SideMenuComponent } from 'src/app/core/components/side-menu/side-menu.component';
+import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
+import { StatusBarService } from 'src/app/core/services/status-bar.service';
+import { ThemeService } from 'src/app/core/pages/settings/services/theme.service';
+import { FontSizeService } from 'src/app/core/pages/settings/services/font-size.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
+import { LanguageService } from 'src/app/core/pages/settings/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +19,10 @@ export class AppComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   private readonly fontSizeService = inject(FontSizeService);
   private readonly privacyModeService = inject(PrivacyModeService);
+  private readonly languageService = inject(LanguageService);
 
   private readonly platform = inject(Platform);
-  private readonly localNotificationsService = inject(
-    LocalNotificationsService
-  );
+  private readonly notificationsService = inject(NotificationsService);
   private readonly statusBarService = inject(StatusBarService);
 
   async ngOnInit() {
@@ -36,7 +35,7 @@ export class AppComponent implements OnInit {
     }
 
     try {
-      await this.localNotificationsService.init();
+      await this.notificationsService.init();
     } catch (e) {
       console.error('Failed to init notifications:', e);
     }

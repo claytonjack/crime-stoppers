@@ -8,7 +8,7 @@ import {
   IonLabel,
   IonItemDivider,
 } from '@ionic/angular/standalone';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
 
 @Component({
   selector: 'app-dontate',

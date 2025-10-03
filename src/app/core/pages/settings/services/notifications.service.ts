@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import {
   LocalNotifications,
   ScheduleOptions,
@@ -6,15 +7,50 @@ import {
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({ providedIn: 'root' })
-export class LocalNotificationsService {
+export class NotificationsService {
   private readonly WEEKLY_ID = 101;
   private readonly MONTHLY_ID = 102;
   private readonly INACTIVITY_ID = 103;
   private readonly CHANNEL_ID = 'crime-stoppers-nottifications';
+  private readonly NOTIFICATION_KEY = 'notificationEnabled';
+  private readonly DEFAULT_ENABLED = true;
+
+  private readonly enabledSubject = new BehaviorSubject<boolean>(
+    this.DEFAULT_ENABLED
+  );
+  public readonly notificationEnabled$: Observable<boolean> =
+    this.enabledSubject.asObservable().pipe(distinctUntilChanged());
 
   constructor() {
+    this.load();
     this.trackAppOpened();
   }
+
+  // --- Notification enabled state management ---
+  private async load(): Promise<void> {
+    try {
+      const { value } = await Preferences.get({ key: this.NOTIFICATION_KEY });
+      this.enabledSubject.next(
+        value === null ? this.DEFAULT_ENABLED : value === 'true'
+      );
+    } catch {
+      this.enabledSubject.next(this.DEFAULT_ENABLED);
+    }
+  }
+
+  public async setEnabled(enabled: boolean): Promise<void> {
+    this.enabledSubject.next(enabled);
+    await Preferences.set({
+      key: this.NOTIFICATION_KEY,
+      value: enabled ? 'true' : 'false',
+    });
+  }
+
+  public get current(): boolean {
+    return this.enabledSubject.value;
+  }
+
+  // --- Notification scheduling logic ---
   async init(): Promise<void> {
     const permResult = await LocalNotifications.requestPermissions();
     console.log('Notification permission result:', permResult);
@@ -24,7 +60,7 @@ export class LocalNotificationsService {
         id: this.CHANNEL_ID,
         name: 'Crime Stoppers Notifications',
         description: 'Notifications from Crime Stoppers',
-        importance: 4, // High importance
+        importance: 4,
       });
       console.log('Notification channel created');
     } else {
@@ -33,7 +69,7 @@ export class LocalNotificationsService {
   }
 
   async scheduleWeeklyReminder(): Promise<void> {
-    if (!(await this.isNotificationEnabled())) return;
+    if (!this.current) return;
 
     await LocalNotifications.cancel({
       notifications: [{ id: this.WEEKLY_ID }],
@@ -47,7 +83,7 @@ export class LocalNotificationsService {
           body: 'Explore the latest crime alerts and local events to stay informed and connected with your community',
           schedule: {
             repeats: true,
-            on: { weekday: 1, hour: 10, minute: 0 }, // Monday 10:00 AM
+            on: { weekday: 1, hour: 10, minute: 0 },
           },
           channelId: this.CHANNEL_ID,
           smallIcon: 'ic_stat_notify',
@@ -66,7 +102,7 @@ export class LocalNotificationsService {
   }
 
   async scheduleMonthlyReminder(): Promise<void> {
-    if (!(await this.isNotificationEnabled())) return;
+    if (!this.current) return;
 
     await LocalNotifications.cancel({
       notifications: [{ id: this.MONTHLY_ID }],
@@ -80,7 +116,7 @@ export class LocalNotificationsService {
           body: 'Submitting an anonymous tip is easy and could be the key to solving a crime',
           schedule: {
             repeats: true,
-            on: { day: 15, hour: 10, minute: 0 }, // 15th each month
+            on: { day: 15, hour: 10, minute: 0 },
           },
           channelId: this.CHANNEL_ID,
           smallIcon: 'ic_stat_notify',
@@ -99,7 +135,7 @@ export class LocalNotificationsService {
   }
 
   async checkInactivity(): Promise<void> {
-    if (!(await this.isNotificationEnabled())) return;
+    if (!this.current) return;
 
     const { value } = await Preferences.get({ key: 'lastOpened' });
     if (!value) return;
@@ -127,7 +163,7 @@ export class LocalNotificationsService {
   }
 
   private async triggerNow(id: number, title: string, body: string) {
-    if (!(await this.isNotificationEnabled())) return;
+    if (!this.current) return;
 
     const perm = await LocalNotifications.checkPermissions();
     if (perm.display !== 'granted') {
@@ -142,7 +178,7 @@ export class LocalNotificationsService {
           id,
           title,
           body,
-          schedule: { at: new Date(Date.now() + 1000) }, // 1s delay
+          schedule: { at: new Date(Date.now() + 1000) },
           channelId: this.CHANNEL_ID,
           smallIcon: 'ic_stat_notify',
         },
@@ -150,14 +186,7 @@ export class LocalNotificationsService {
     });
   }
 
-  private async isNotificationEnabled(): Promise<boolean> {
-    try {
-      const { value } = await Preferences.get({ key: 'notificationEnabled' });
-      return value === null ? true : value === 'true';
-    } catch {
-      return true;
-    }
-  }
+  // isNotificationEnabled is now replaced by the reactive state above
 
   async requestPermissions(): Promise<void> {
     await LocalNotifications.requestPermissions();

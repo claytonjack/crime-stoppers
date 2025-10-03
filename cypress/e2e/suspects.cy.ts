@@ -1,10 +1,8 @@
 describe('Suspects Page', () => {
   beforeEach(() => {
-    cy.intercept(
-      'GET',
-      'https://codeagainstcrime.com/api/suspects?populate=*',
-      { fixture: 'suspects.json' }
-    ).as('getSuspects');
+    cy.intercept('GET', '**/api/suspects*', { fixture: 'suspects.json' }).as(
+      'getSuspects'
+    );
 
     cy.visit('/suspects');
     cy.wait('@getSuspects');

@@ -24,7 +24,8 @@
 					</div>
 					<ion-badge class="info-badge" [color]="getTypeBadgeColorSafe(event.Type)"
 						(click)="addToCalendar(event, $event)">
-						Save Event
+						<ng-icon name="bootstrapPlusCircle" class="icon-size" style="margin-right: 6px;"></ng-icon>
+						Save
 					</ion-badge>
 				</ion-card-subtitle>
 				@if (event.Location) {

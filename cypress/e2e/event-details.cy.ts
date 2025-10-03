@@ -1,10 +1,8 @@
 describe('Event Details Page', () => {
   beforeEach(() => {
-    cy.intercept(
-      'GET',
-      'https://codeagainstcrime.com/api/events/def456?populate=*',
-      { fixture: 'event-details.json' }
-    ).as('getEvent');
+    cy.intercept('GET', '**/api/events/def456*', {
+      fixture: 'event-details.json',
+    }).as('getEvent');
 
     cy.visit('/events/details/def456');
 

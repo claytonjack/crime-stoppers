@@ -23,17 +23,15 @@ import {
   AlertController,
 } from '@ionic/angular/standalone';
 import { NgIcon } from '@ng-icons/core';
-import { StrapiService } from '../../../../core/services/strapi.service';
-import { Event } from '../../models/event.model';
-import { StrapiResponse } from '../../../../core/models/strapi.model';
-import { HeaderComponent } from '../../../../core/components/header/header.component';
-import { CalendarService } from '../../calendar.service';
+import { StrapiService } from 'src/app/core/services/strapi.service';
+import { Event } from 'src/app/features/events/models/event.model';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { CalendarService } from 'src/app/features/events/calendar.service';
 
-// Import Swiper modules and components
 import { register } from 'swiper/element/bundle';
 import { SwiperContainer } from 'swiper/element';
 
-// Register Swiper web components
 register();
 
 @Component({

@@ -6,7 +6,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { PrivacyModeService } from '../services/privacy-mode.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,0 +1,116 @@
+{
+  "home": {
+    "cta": {
+      "submitTip": "Enviar un aviso",
+      "anonymousSecureRewarded": "Anónimo • Seguro • Recompensado"
+    },
+    "segments": {
+      "aboutUs": "Sobre nosotros",
+      "tipProcedure": "Procedimiento de aviso"
+    },
+    "aboutItems": {
+      "ourStory": {
+        "title": "Nuestra historia",
+        "details": "Crime Stoppers de Halton es una organización sin fines de lucro con más de 35 años de servicio, formando parte de una red mundial de 1,800 programas de prevención del crimen."
+      },
+      "whatWeDo": {
+        "title": "Lo que hacemos",
+        "details": "Permitimos denunciar delitos de forma anónima con recompensas de hasta $2,000 por avisos exitosos, conectando a los ciudadanos con la policía mientras garantizamos un anonimato total."
+      },
+      "communityImpact": {
+        "title": "Impacto en la comunidad",
+        "details": "Juntos, creamos una Región de Halton más segura mediante la prevención del crimen impulsada por la comunidad que protege a los informantes y ayuda a resolver delitos."
+      }
+    },
+    "procedureSteps": {
+      "step1": {
+        "title": "Paso 1: Enviar su aviso",
+        "details": "Envíe su aviso de forma anónima y le daremos un número de código que podrá usar para consultar el estado de su aviso."
+      },
+      "step2": {
+        "title": "Paso 2: Compartir su aviso",
+        "details": "La información valiosa que proporcione de manera anónima se compartirá con las autoridades."
+      },
+      "step3": {
+        "title": "Paso 3: La investigación",
+        "details": "Una vez completada la investigación, Crime Stoppers de Halton será informado de los resultados del caso."
+      },
+      "step4": {
+        "title": "Paso 4: Monto de la recompensa",
+        "details": "La utilidad de su aviso será revisada por Crime Stoppers de Halton para determinar el monto de su recompensa en efectivo."
+      },
+      "step5": {
+        "title": "Paso 5: Consulta del aviso",
+        "details": "Use su número de aviso para consultar por teléfono o en línea el estado de su aviso y una posible recompensa en efectivo de hasta $2,000."
+      },
+      "step6": {
+        "title": "Paso 6: Recompensa organizada",
+        "details": "Crime Stoppers de Halton autorizará al banco (u otra entidad pública) a preparar su recompensa en efectivo, identificable únicamente por su número de aviso."
+      },
+      "step7": {
+        "title": "Paso 7: Retiro del efectivo",
+        "details": "Una consulta le indicará el monto de su recompensa y dónde retirarla proporcionando únicamente su número de aviso – no se necesita identificación."
+      }
+    }
+  },
+  "tipInfo": {
+    "title": "Información del aviso",
+    "close": "Cerrar",
+    "intro": "En caso de emergencia, llame a la policía. Este sistema es para información no urgente sobre delitos pasados o potenciales. Ejemplos:",
+    "example1": "Información sobre delitos no resueltos.",
+    "example2": "Actividades ilegales sospechosas.",
+    "example3": "Conocimiento de amenazas potenciales para la comunidad.",
+    "details": "Para ayudar en las investigaciones, proporcione información completa. Su anonimato está garantizado.",
+    "continue": "Continuar con el aviso"
+  },
+  "settings": {
+    "language": {
+      "title": "Idioma",
+      "description": "Elija su idioma preferido",
+      "select": "Seleccionar idioma"
+    },
+    "theme": {
+      "title": "Tema",
+      "description": "Elija su esquema de color preferido",
+      "select": "Seleccionar tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+    "fontSize": {
+      "title": "Tamaño de fuente",
+      "description": "Ajuste el tamaño del texto para una mejor legibilidad",
+      "select": "Seleccionar tamaño de fuente",
+      "small": "Pequeño",
+      "medium": "Mediano",
+      "large": "Grande"
+    },
+    "privacyMode": {
+      "title": "Modo de privacidad",
+      "description": "Controle la recopilación de datos y la visibilidad",
+      "select": "Seleccionar modo de privacidad",
+      "enabled": "Activado",
+      "disabled": "Desactivado"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "description": "Activar o desactivar notificaciones"
+    },
+    "reset": {
+      "title": "Restablecer configuración",
+      "description": "Restaurar todos los ajustes a los valores predeterminados",
+      "confirm": "¿Está seguro de que desea restablecer todos los ajustes a sus valores predeterminados?",
+      "reset": "Restablecer"
+    },
+    "authentication": {
+      "title": "Autenticación",
+      "description": "Inicie sesión con biometría o contraseña (*WIP*)",
+      "disabled": "Desactivado"
+    },
+    "screenReader": {
+      "title": "Lector de pantalla",
+      "description": "Habilite funciones de accesibilidad (*WIP*)",
+      "enabled": "Activado"
+    }
+  }
+}

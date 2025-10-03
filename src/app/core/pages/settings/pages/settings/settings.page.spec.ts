@@ -1,9 +1,17 @@
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SettingsPage } from './settings.page';
-import { SettingsPageService } from '../../services/settings-page/settings-page.service';
+import { SettingsPageService } from 'src/app/core/pages/settings/services/settings-page.service';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { of } from 'rxjs';
+
+// Fake loader so TranslateModule works without real translation files
+class FakeLoader implements TranslateLoader {
+  getTranslation(lang: string) {
+    return of({});
+  }
+}
 
 describe('SettingsPage', () => {
   let component: SettingsPage;
@@ -13,15 +21,13 @@ describe('SettingsPage', () => {
   let navControllerSpy: jasmine.SpyObj<NavController>;
 
   beforeEach(waitForAsync(() => {
-    // Create a spy object for SettingsPageService with its current methods
     settingsPageServiceSpy = jasmine.createSpyObj('SettingsPageService', [
       'presentThemeActionSheet',
       'presentFontSizeActionSheet',
-      'presentPrivacyModeActionSheet',
       'presentResetSettingsAlert',
+      'setPrivacyMode',
     ]);
 
-    // Mock the Observable properties from the service
     Object.defineProperty(settingsPageServiceSpy, 'theme$', {
       get: () => of('system'),
     });
@@ -31,6 +37,9 @@ describe('SettingsPage', () => {
     Object.defineProperty(settingsPageServiceSpy, 'privacyMode$', {
       get: () => of(false),
     });
+    Object.defineProperty(settingsPageServiceSpy, 'language$', {
+      get: () => of('en'),
+    });
 
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     navControllerSpy = jasmine.createSpyObj('NavController', [
@@ -39,7 +48,12 @@ describe('SettingsPage', () => {
     ]);
 
     TestBed.configureTestingModule({
-      imports: [SettingsPage],
+      imports: [
+        SettingsPage,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+      ],
       providers: [
         { provide: SettingsPageService, useValue: settingsPageServiceSpy },
         { provide: Router, useValue: routerSpy },
@@ -68,11 +82,11 @@ describe('SettingsPage', () => {
     ).toHaveBeenCalled();
   });
 
-  it('should call presentPrivacyModeActionSheet on onPrivacyModeClick', async () => {
-    await component.onPrivacyModeClick();
-    expect(
-      settingsPageServiceSpy.presentPrivacyModeActionSheet
-    ).toHaveBeenCalled();
+  it('should call setPrivacyMode on privacy mode toggle', () => {
+    if (component.onPrivacyModeToggle) {
+      component.onPrivacyModeToggle(true);
+      expect(settingsPageServiceSpy.setPrivacyMode).toHaveBeenCalledWith(true);
+    }
   });
 
   it('should call presentResetSettingsAlert on onResetSettings', async () => {

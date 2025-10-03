@@ -4,7 +4,16 @@ import {
   ActionSheetController,
 } from '@ionic/angular/standalone';
 import { HomePage } from './home.page';
-import { ScreenReaderService } from '@app/core/services/screen-reader.service';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { of } from 'rxjs';
+
+// Fake loader so TranslateModule works without real translation files
+class FakeLoader implements TranslateLoader {
+  getTranslation(lang: string) {
+    return of({});
+  }
+}
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -18,7 +27,12 @@ describe('HomePage', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [HomePage],
+      imports: [
+        HomePage,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+      ],
       providers: [
         provideIonicAngular(),
         { provide: ScreenReaderService, useValue: screenReaderSpy },

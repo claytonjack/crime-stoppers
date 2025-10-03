@@ -73,6 +73,9 @@ ion-text {
   background: var(--ion-color-primary);
   color: #fff;
   border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .card-image-wrapper {

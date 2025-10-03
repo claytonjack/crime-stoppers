@@ -4,10 +4,10 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { StrapiService } from './strapi.service';
-import { Event } from '../../features/events/models/event.model';
-import { Suspect } from '../../features/suspects/models/suspect.model';
-import { Alert } from '../../features/alerts/models/alert.model';
-import { StrapiResponse } from '../models/strapi.model';
+import { Event } from 'src/app/features/events/models/event.model';
+import { Suspect } from 'src/app/features/suspects/models/suspect.model';
+import { Alert } from 'src/app/features/alerts/models/alert.model';
+import { StrapiResponse } from 'src/app/core/models/strapi.model';
 
 describe('StrapiService', () => {
   let service: StrapiService;
@@ -41,7 +41,7 @@ describe('StrapiService', () => {
     });
 
     const req = httpMock.expectOne(
-      'https://codeagainstcrime.com/api/suspects?populate=*'
+      'https://codeagainstcrime.com/api/suspects?locale=en&populate=*'
     );
     expect(req.request.method).toBe('GET');
     req.flush(dummyResponse);
@@ -60,7 +60,7 @@ describe('StrapiService', () => {
     });
 
     const req = httpMock.expectOne(
-      'https://codeagainstcrime.com/api/suspects/abc123?populate=*'
+      'https://codeagainstcrime.com/api/suspects/abc123?locale=en&populate=*'
     );
     expect(req.request.method).toBe('GET');
     req.flush(dummyResponse);

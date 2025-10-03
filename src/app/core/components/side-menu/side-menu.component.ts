@@ -1,4 +1,4 @@
-import { LocalNotificationsService } from '../../services/local-notifications.service';
+import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@ionic/angular/standalone';
 
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
-import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -24,9 +24,7 @@ export class SideMenuComponent {
   private readonly menuCtrl = inject(MenuController);
   private readonly router = inject(Router);
   private readonly privacyModeService = inject(PrivacyModeService);
-  private readonly localNotificationsService = inject(
-    LocalNotificationsService
-  );
+  private readonly notificationsService = inject(NotificationsService);
 
   activePage = '';
 
@@ -43,17 +41,17 @@ export class SideMenuComponent {
   }
 
   async testWeekly() {
-    await this.localNotificationsService.triggerWeeklyTest();
+    await this.notificationsService.triggerWeeklyTest();
     await this.menuCtrl.close('side-menu');
   }
 
   async testMonthly() {
-    await this.localNotificationsService.triggerMonthlyTest();
+    await this.notificationsService.triggerMonthlyTest();
     await this.menuCtrl.close('side-menu');
   }
 
   async testInactivity() {
-    await this.localNotificationsService.triggerInactivityTest();
+    await this.notificationsService.triggerInactivityTest();
     await this.menuCtrl.close('side-menu');
   }
 

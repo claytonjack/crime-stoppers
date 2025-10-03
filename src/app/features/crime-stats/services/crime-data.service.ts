@@ -44,9 +44,6 @@ export class CrimeDataService {
   private readonly baseUrl =
     'https://services2.arcgis.com/o1LYr96CpFkfsDJS/arcgis/rest/services/Crime_Map/FeatureServer/0/query';
 
-  /**
-   * Fetch all crime data from the ArcGIS API
-   */
   getCrimeData(): Observable<CrimeRecord[]> {
     const params = new HttpParams()
       .set('f', 'json')
@@ -63,9 +60,6 @@ export class CrimeDataService {
       );
   }
 
-  /**
-   * Get crime data filtered by date range
-   */
   getCrimeDataByDateRange(
     startDate: Date,
     endDate: Date
@@ -89,9 +83,6 @@ export class CrimeDataService {
       );
   }
 
-  /**
-   * Process crime data into monthly statistics grouped by city and crime type
-   */
   processCrimeDataToMonthlyStats(crimeData: CrimeRecord[]): CrimeStats[] {
     const stats: { [key: string]: CrimeStats } = {};
 
@@ -146,9 +137,6 @@ export class CrimeDataService {
     });
   }
 
-  /**
-   * Categorize crime types into broader categories
-   */
   private categorizeCrimeType(description: string): string {
     const desc = description.toUpperCase();
 
@@ -180,9 +168,6 @@ export class CrimeDataService {
     }
   }
 
-  /**
-   * Get unique cities from the data
-   */
   getUniqueCities(crimeData: CrimeRecord[]): string[] {
     const cities = new Set(
       crimeData
@@ -192,9 +177,6 @@ export class CrimeDataService {
     return Array.from(cities).sort();
   }
 
-  /**
-   * Get unique crime types from processed data
-   */
   getUniqueCrimeTypes(stats: CrimeStats[]): string[] {
     const types = new Set(stats.map((stat) => stat.crimeType));
     return Array.from(types).sort();

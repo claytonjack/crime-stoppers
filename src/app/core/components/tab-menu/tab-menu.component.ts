@@ -9,7 +9,7 @@ import {
   IonFabButton,
   IonRouterOutlet,
 } from '@ionic/angular/standalone';
-import { PrivacyModeService } from '../../../features/privacy-mode/services/privacy-mode.service';
+import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 import { Router } from '@angular/router';
 
 @Component({
