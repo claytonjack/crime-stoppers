@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonContent,
   IonButton,
@@ -15,6 +15,7 @@ import {
   InAppBrowser,
   DefaultSystemBrowserOptions,
 } from '@capacitor/inappbrowser';
+import { ScreenReaderService } from '@app/core/services/screen-reader.service';
 
 @Component({
   selector: 'app-volunteer',
@@ -35,14 +36,22 @@ import {
   ],
 })
 export class VolunteerPage {
-  async openPdf(url: string) {
+  private readonly screenReader = inject(ScreenReaderService);
+  
+  async openPdf(url: string, label: string) {
     try {
       await InAppBrowser.openInSystemBrowser({
         url: url,
         options: DefaultSystemBrowserOptions,
       });
+      await this.screenReader.speak(`${label} application PDF opened`);
     } catch (error) {
       console.error('Error opening PDF:', error);
+      await this.screenReader.speak(`Failed to open ${label} application PDF`);
     }
+  }
+
+  async announceSection(title: string) {
+    await this.screenReader.speak(title);
   }
 }

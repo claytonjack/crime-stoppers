@@ -11,7 +11,7 @@
 		<div class="settings-section">
 			<h3 class="section-title">Appearance</h3>
 			<div class="settings-card">
-				<ion-item button (click)="onThemeClick()" lines="none">
+				<ion-item button (click)="onThemeClick()" lines="none" aria-label="Theme settings">
 					<div class="setting-icon-container theme-icon" slot="start">
 						<ng-icon name="bootstrapPalette"></ng-icon>
 					</div>
@@ -24,7 +24,7 @@
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
-				<ion-item button (click)="onFontSizeClick()" lines="none">
+				<ion-item button (click)="onFontSizeClick()" lines="none" aria-label="Font size settings">
 					<div class="setting-icon-container font-icon" slot="start">
 						<ng-icon name="bootstrapType"></ng-icon>
 					</div>
@@ -43,7 +43,7 @@
 		<div class="settings-section">
 			<h3 class="section-title">Accessibility</h3>
 			<div class="settings-card">
-				<ion-item button (click)="onLanguageClick()" lines="none">
+				<ion-item button (click)="onLanguageClick()" lines="none" aria-label="Language settings">
 					<div class="setting-icon-container language-icon" slot="start">
 						<ng-icon name="bootstrapTranslate"></ng-icon>
 					</div>
@@ -58,7 +58,7 @@
 				</ion-item>
 
 
-				<ion-item button (click)="onScreenReaderClick()" lines="none">
+				<ion-item button (click)="onScreenReaderClick()" lines="none"  aria-label="Screen reader settings">
 					<div class="setting-icon-container screen-reader-icon" slot="start">
 						<ng-icon name="bootstrapSoundwave"></ng-icon>
 					</div>
@@ -89,7 +89,7 @@
 						(ionChange)="onPrivacyModeToggle($event.detail.checked)"></ion-toggle>
 				</ion-item>
 
-				<ion-item button (click)="onLoginAuthClick()" lines="none">
+				<ion-item button (click)="onLoginAuthClick()" lines="none" aria-label="Authentication settings">
 					<div class="setting-icon-container auth-icon" slot="start">
 						<ng-icon name="bootstrapFingerprint"></ng-icon>
 					</div>
@@ -119,7 +119,7 @@
 					<ion-toggle slot="end" [checked]="(notificationEnabled$ | async)"
 						(ionChange)="onNotificationEnabledToggle($event)"></ion-toggle>
 				</ion-item>
-				<ion-item button (click)="onResetSettings()" lines="none">
+				<ion-item button (click)="onResetSettings()" lines="none" aria-label="Reset settings">
 					<div class="setting-icon-container reset-icon" slot="start">
 						<ng-icon name="bootstrapArrowClockwise"></ng-icon>
 					</div>

@@ -23,6 +23,7 @@ import {
 } from 'src/app/core/pages/settings/models/settings.model';
 import { Preferences } from '@capacitor/preferences';
 import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
+import { ScreenReaderService } from '@app/core/services/screen-reader.service';
 
 export const settingsPageSelector = 'app-settings';
 
@@ -50,6 +51,7 @@ export class SettingsPage {
   private readonly settingsPageService = inject(SettingsPageService);
   private readonly router = inject(Router);
   private readonly notificationsService = inject(NotificationsService);
+  private readonly screenReader = inject(ScreenReaderService);
 
   public notificationPermissionStatus: 'granted' | 'denied' | 'prompt' =
     'prompt';
@@ -57,6 +59,33 @@ export class SettingsPage {
 
   constructor() {
     this.checkNotificationPermission();
+    this.loadNotificationEnabled();
+    this.announcePageLoad();
+  }
+
+   private async announcePageLoad() {
+    await this.screenReader.speak('Settings page loaded');
+  }
+
+  private async loadNotificationEnabled() {
+    // Try to load from Preferences, fallback to true
+    try {
+      const { value } = await Preferences.get({ key: 'notificationEnabled' });
+      this.notificationEnabled = value === null ? true : value === 'true';
+    } catch {
+      this.notificationEnabled = true;
+    }
+  }
+
+  private async saveNotificationEnabled(value: boolean) {
+    this.notificationEnabled = value;
+    await Preferences.set({
+      key: 'notificationEnabled',
+      value: value ? 'true' : 'false',
+    });
+    await this.screenReader.speak(
+      `Notifications ${value ? 'enabled' : 'disabled'}`
+    );
   }
 
   public async onNotificationEnabledToggle(event: any) {
@@ -133,10 +162,12 @@ export class SettingsPage {
   );
 
   public async onThemeClick(): Promise<void> {
+    await this.screenReader.speak('Theme settings clicked');
     await this.settingsPageService.presentThemeActionSheet();
   }
 
   public async onFontSizeClick(): Promise<void> {
+    await this.screenReader.speak('Font size settings clicked');
     await this.settingsPageService.presentFontSizeActionSheet();
   }
 
@@ -148,22 +179,28 @@ export class SettingsPage {
   }
 
   public async onResetSettings(): Promise<void> {
+    await this.screenReader.speak('Reset settings clicked');
     await this.settingsPageService.presentResetSettingsAlert();
   }
 
   public async onLanguageClick(): Promise<void> {
     await this.settingsPageService.presentLanguageActionSheet();
+    await this.screenReader.speak('Language settings clicked');
+    console.log('Language settings clicked');
   }
 
   public async onScreenReaderClick(): Promise<void> {
+    await this.screenReader.speak('Screen reader settings clicked');
     console.log('Screen reader settings clicked');
   }
 
   public async onLoginAuthClick(): Promise<void> {
+    await this.screenReader.speak('Authentication settings clicked');
     console.log('Login authentication settings clicked');
   }
 
   public async onNotificationsClick(): Promise<void> {
+    await this.screenReader.speak('Notifications settings clicked');
     console.log('Notifications settings clicked');
   }
 }
