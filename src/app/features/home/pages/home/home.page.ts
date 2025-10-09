@@ -35,6 +35,7 @@ import { ScreenReaderService } from '@app/core/pages/settings/services/screen-re
 import { TipInfoComponent } from '@app/features/home/components/tip-info/tip-info.component';
 import { BaseImport } from '@app/core/base-import';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { Swiper } from 'swiper/types';
 
 @Component({
   selector: 'app-home',
@@ -149,7 +150,7 @@ export class HomePage {
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private screenReader: ScreenReaderService
-  ) {}
+  ) { }
 
   openTipModal() {
     this.isModalOpen = true;
@@ -203,12 +204,27 @@ export class HomePage {
     }
   }
 
+  onSlideChange(event: any) {
+    // `event` is the swiper instance
+    const swiper: Swiper = event?.detail?.swiper || event;
+    const currentIndex = swiper?.activeIndex ?? 0;
+
+    if (this.slides[currentIndex]) {
+      const slideAlt = this.slides[currentIndex].alt;
+      this.screenReader.speak(
+        `Slide ${currentIndex + 1} of ${this.slides.length}: ${slideAlt}`
+      );
+    }
+  }
   onSegmentChanged() {
     const message =
-      this.selectedSegment === 'about-us'
-        ? 'About Us section selected'
-        : 'Tip Procedure section selected';
-
+      this.selectedSegment === 'about-us' ? 'About Us section selected' : 'Tip Procedure section selected';
     this.screenReader.speak(message);
+  }
+
+  onAccordionChanged(event: CustomEvent, stepTitle: string) {
+    const expanded = event.detail?.value;
+    if (expanded) this.screenReader.speak(`${stepTitle} expanded`);
+    else this.screenReader.speak(`${stepTitle} collapsed`);
   }
 }

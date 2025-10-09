@@ -14,6 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-suspects-filter',
@@ -43,20 +44,26 @@ export class SuspectsFilterComponent implements OnInit {
 
   selectedSceneLocal = '';
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
   ngOnInit() {
     this.selectedSceneLocal = this.selectedScene;
   }
 
-  onSelectionChange(event: any) {
+  async onSelectionChange(event: any) {
     const value = event.detail.value;
     this.selectedSceneLocal = value;
     this.onSceneChange(value);
+    const announcement = value ? `Location selected: ${value}` : 'All Locations selected';
+    await this.screenReader.speak(announcement);
     this.popoverController.dismiss();
+    await this.screenReader.speak('Filter popover closed');
   }
 
-  clearAndClose() {
+  async clearAndClose() {
     this.clearFilters();
-    this.popoverController.dismiss();
+    await this.screenReader.speak('Filters cleared');
+    await this.popoverController.dismiss();
+    await this.screenReader.speak('Filter popover closed');
   }
 }

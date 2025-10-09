@@ -6,20 +6,20 @@
 
 <ion-content>
 	<ion-list>
-		<ion-radio-group [(ngModel)]="selectedSceneLocal" (ionChange)="onSelectionChange($event)">
+		<ion-radio-group [(ngModel)]="selectedSceneLocal" (ionChange)="onSelectionChange($event)" aria-label="Filter suspects by location">
 			<ion-item>
 				<ion-label>All Locations</ion-label>
-				<ion-radio slot="start" value=""></ion-radio>
+				<ion-radio slot="start" value="" aria-label="All Locations"></ion-radio>
 			</ion-item>
 			<ion-item *ngFor="let scene of scenes">
 				<ion-label>{{ scene }}</ion-label>
-				<ion-radio slot="start" [value]="scene"></ion-radio>
+				<ion-radio slot="start" [value]="scene" [aria-label]="scene"></ion-radio>
 			</ion-item>
 		</ion-radio-group>
 	</ion-list>
 
 	<div class="filter-footer">
-		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()">
+		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()"  aria-label="Clear filters">
 			Clear Filters
 		</ion-button>
 	</div>

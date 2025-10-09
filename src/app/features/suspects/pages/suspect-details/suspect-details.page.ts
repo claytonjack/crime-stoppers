@@ -29,6 +29,7 @@ import { HeaderComponent } from 'src/app/core/components/header/header.component
 
 import { register } from 'swiper/element/bundle';
 import { SwiperContainer } from 'swiper/element';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 register();
 
@@ -59,6 +60,7 @@ export class SuspectDetailsPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
+   private readonly screenReader = inject(ScreenReaderService);
   private readonly modalController = inject(ModalController);
 
   readonly suspect = signal<Suspect | null>(null);
@@ -77,6 +79,7 @@ export class SuspectDetailsPage implements OnInit {
     if (!documentId) {
       this.error.set('Invalid suspect ID');
       this.isLoading.set(false);
+      await this.screenReader.speak('Invalid suspect ID');
       return;
     }
 
@@ -87,18 +90,22 @@ export class SuspectDetailsPage implements OnInit {
 
       if (response?.data) {
         this.suspect.set(response.data);
+        await this.screenReader.speak(`Suspect details loaded for ${response.data.Name}`);
       } else {
         this.error.set('Suspect not found');
+        await this.screenReader.speak('Suspect not found');
       }
     } catch (error) {
       console.error('Error loading suspect:', error);
       this.error.set('Failed to load suspect');
+      await this.screenReader.speak('Failed to load suspect');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  goBack() {
+  async goBack() {
+    await this.screenReader.speak('Going back');
     this.location.back();
   }
 
@@ -106,18 +113,32 @@ export class SuspectDetailsPage implements OnInit {
     return this.strapiService.getImageUrl(imageUrl);
   }
 
-  onImageClick(index: number) {
+  async onImageClick(index: number) {
     this.selectedImageIndex.set(index);
     this.isImageModalOpen.set(true);
+
+    const suspectName = this.suspect()?.Name || 'Suspect';
+    await this.screenReader.speak(
+      `Image ${index + 1} of ${this.suspect()?.Images?.length || 0} for ${suspectName}`
+    );
   }
 
-  closeImageModal() {
+  async closeImageModal() {
     this.isImageModalOpen.set(false);
+    await this.screenReader.speak('Image modal closed');
   }
 
-  onSwiperSlideChange(event: any) {
+  async onSwiperSlideChange(event: any) {
     if (event.detail && event.detail[0]) {
-      this.selectedImageIndex.set(event.detail[0].activeIndex);
+      const swiper = event.detail[0];
+      const index = swiper.activeIndex ?? 0;
+      this.selectedImageIndex.set(index);
+
+      const image = this.suspect()?.Images?.[index];
+      if (image) {
+        const altText = image.alternativeText || this.suspect()?.Name || 'Suspect image';
+        await this.screenReader.speak(`Slide ${index + 1} of ${this.suspect()?.Images?.length}: ${altText}`);
+      }
     }
   }
 }
