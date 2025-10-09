@@ -15,7 +15,7 @@ import {
   InAppBrowser,
   DefaultSystemBrowserOptions,
 } from '@capacitor/inappbrowser';
-import { ScreenReaderService } from '@app/core/services/screen-reader.service';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-volunteer',

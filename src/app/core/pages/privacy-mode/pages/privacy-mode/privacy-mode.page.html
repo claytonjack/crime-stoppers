@@ -1,12 +1,12 @@
 <app-header title="Calendar"></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-	<ion-datetime size="cover" presentation="date" [(ngModel)]="selectedDate" (ionChange)="onDateChange($event)">
+	<ion-datetime size="cover" presentation="date" [(ngModel)]="selectedDate" (ionChange)="onDateChange($event)" aria-label="Select a date from the calendar">
 	</ion-datetime>
 
 	<h2 class="date-heading">Date: {{ selectedDate | date:'mediumDate' }}</h2>
 
-	<ion-card class="event-card">
+	<ion-card class="event-card" aria-label="Event details for the selected date">
 		<ion-card-content class="no-events">
 			<p>No events scheduled for this day</p>
 		</ion-card-content>

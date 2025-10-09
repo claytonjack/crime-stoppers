@@ -1,5 +1,7 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular/standalone';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
+
 import {
   IonContent,
   IonList,
@@ -43,20 +45,24 @@ export class AlertsFilterComponent implements OnInit {
 
   selectedSourceLocal = '';
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
-  ngOnInit() {
+  async ngOnInit() {
     this.selectedSourceLocal = this.selectedSource;
+    await this.screenReader.speak('Alert filter options loaded');
   }
 
-  onSelectionChange(event: any) {
+  async onSelectionChange(event: any) {
     const value = event.detail.value;
     this.selectedSourceLocal = value;
     this.onSourceChange(value);
+    await this.screenReader.speak(value ? `Source set to ${value}` : 'All sources selected');
     this.popoverController.dismiss();
   }
 
-  clearAndClose() {
+  async clearAndClose() {
     this.clearFilters();
+    await this.screenReader.speak('Filters cleared');
     this.popoverController.dismiss();
   }
 }

@@ -23,7 +23,8 @@ import {
 } from 'src/app/core/pages/settings/models/settings.model';
 import { Preferences } from '@capacitor/preferences';
 import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
-import { ScreenReaderService } from '@app/core/services/screen-reader.service';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
+
 
 export const settingsPageSelector = 'app-settings';
 
@@ -59,34 +60,12 @@ export class SettingsPage {
 
   constructor() {
     this.checkNotificationPermission();
-    this.loadNotificationEnabled();
     this.announcePageLoad();
   }
 
    private async announcePageLoad() {
     await this.screenReader.speak('Settings page loaded');
-  }
-
-  private async loadNotificationEnabled() {
-    // Try to load from Preferences, fallback to true
-    try {
-      const { value } = await Preferences.get({ key: 'notificationEnabled' });
-      this.notificationEnabled = value === null ? true : value === 'true';
-    } catch {
-      this.notificationEnabled = true;
-    }
-  }
-
-  private async saveNotificationEnabled(value: boolean) {
-    this.notificationEnabled = value;
-    await Preferences.set({
-      key: 'notificationEnabled',
-      value: value ? 'true' : 'false',
-    });
-    await this.screenReader.speak(
-      `Notifications ${value ? 'enabled' : 'disabled'}`
-    );
-  }
+  } 
 
   public async onNotificationEnabledToggle(event: any) {
     const checked = event.detail.checked;

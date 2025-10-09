@@ -1,28 +1,33 @@
 <app-header title="Alerts" [showMenuButton]="true"></app-header>
 
 <ion-content>
-	<div class="search-filter">
+	<div class="search-filter" role="search" aria-label="Search and filter alerts section">
 		<ion-searchbar placeholder="Search alerts" [(ngModel)]="searchQuery"
-			(ionInput)="onSearchChange($event)"></ion-searchbar>
-		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+			(ionInput)="onSearchChange($event)" aria-label="Search alerts by title or description"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" aria-label="Open Filter Options" (click)="openFilterPopover($event)">
 			<ng-icon name="bootstrapFilter"></ng-icon>
 		</ion-button>
 	</div>
 
 	<ion-list>
-		<ion-card *ngFor="let alert of filteredAlerts()" (click)="navigateToDetails(alert)">
+		<ion-card *ngFor="let alert of filteredAlerts()" (click)="navigateToDetails(alert)" tabindex="0"
+			role="button"
+			[attr.aria-label]="'View details for alert titled ' + alert.Title">
 			<div class="card-image-wrapper" *ngIf="getImageUrl(alert)">
-				<ion-img class="card-image" [src]="getImageUrl(alert)"></ion-img>
+				<ion-img class="card-image" [src]="getImageUrl(alert)" alt="Image associated with alert titled {{ alert.Title }}"></ion-img>
 			</div>
 
 			<ion-card-header>
-				<ion-card-title>{{ alert.Title }}</ion-card-title>
-				<ion-card-subtitle class="card-subtitle">
-					<div class="icon-text-group">
-						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+				<ion-card-title role="heading"
+					aria-level="2"
+					[id]="'alert-title-' + alert.documentId">{{ alert.Title }}</ion-card-title>
+				<ion-card-subtitle class="card-subtitle" aria-describedby="'alert-title-' + alert.documentId" >
+					<div class="icon-text-group" aria-label="Alert date" >
+						<ng-icon name="bootstrapCalendarEvent" aria-hidden="true"></ng-icon>
 						<span>{{ formatDate(alert.createdAt) }}</span>
 					</div>
-					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge">
+					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge" role="status"
+						aria-label="Source: {{ alert.Source }}">
 						{{ alert.Source }}
 					</ion-badge>
 				</ion-card-subtitle>
@@ -35,6 +40,6 @@
 	</ion-list>
 
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
-		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+		<ion-infinite-scroll-content aria-label="Loading more alerts"></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
 </ion-content>

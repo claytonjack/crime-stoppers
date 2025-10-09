@@ -4,10 +4,10 @@
 	</ion-button>
 </app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-live="polite">
 	@if (isLoading()) {
-	<div class="loading-container">
-		<ion-spinner name="crescent"></ion-spinner>
+	<div class="loading-container" aria-busy="true">
+		<ion-spinner name="crescent" aria-label="Loading alert information"></ion-spinner>
 		<ion-text>
 			<p>Loading alert...</p>
 		</ion-text>
@@ -15,13 +15,13 @@
 	}
 
 	@if (error() && !isLoading()) {
-	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
+	<div class="error-container" role="alert">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" aria-hidden="true"></ng-icon>
 		<ion-text color="danger">
 			<h3>Error</h3>
 			<p>{{ error() }}</p>
 		</ion-text>
-		<ion-button fill="outline" (click)="goBack()">
+		<ion-button fill="outline" (click)="goBack()" aria-label="Go back to previous page">
 			Go Back
 		</ion-button>
 	</div>
@@ -32,12 +32,13 @@
 		@if (alert()!.Images && alert()!.Images!.length > 0) {
 		<div class="images-section">
 			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
-				(swiperslidechange)="onSwiperSlideChange($event)">
+				(swiperslidechange)="onSwiperSlideChange($event)" aria-roledescription="Image carousel"
+				aria-label="Alert images">
 				@for (image of alert()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
 					<div class="slide-container">
 						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || alert()!.Title"
-							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+							(click)="onImageClick(i)" class="slide-image" loading="lazy" role="img">
 						</ion-img>
 					</div>
 				</swiper-slide>
@@ -45,7 +46,7 @@
 			</swiper-container>
 
 			@if (alert()!.Images!.length > 1) {
-			<div class="image-counter">
+			<div class="image-counter" aria-live="polite">
 				{{ selectedImageIndex() + 1 }} / {{ alert()!.Images!.length }}
 			</div>
 			}
@@ -53,15 +54,15 @@
 		}
 
 		<div class="info-section">
-			<div class="info-card">
+			<div class="info-card" aria-labelledby="alert-title">
 				<div class="card-header-section">
-					<h1 class="detail-title">{{ alert()!.Title }}</h1>
+					<h1 class="detail-title" id="alert-title">{{ alert()!.Title }}</h1>
 					<div class="metadata-container">
-						<div class="metadata-item">
+						<div class="metadata-item" aria-label="Published on {{ formatDate(alert()!.createdAt) }}">
 							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
 							<span>{{ formatDate(alert()!.createdAt) }}</span>
 						</div>
-						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge">
+						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge" [attr.aria-label]="'Source: ' + alert()!.Source">
 							{{ alert()!.Source }}
 						</ion-badge>
 					</div>
@@ -70,7 +71,7 @@
 				<div class="card-content-section">
 					<div class="detail-body">
 						<ion-text>
-							<div [innerHTML]="alert()!.Body"></div>
+							<div [innerHTML]="alert()!.Body" aria-label="Alert details content"></div>
 						</ion-text>
 					</div>
 				</div>
@@ -79,13 +80,13 @@
 	</div>
 	}
 
-	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()" aria-label="Full-size Image viewer">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
 					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ alert()?.Images?.length || 0 }}</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="closeImageModal()">
+						<ion-button (click)="closeImageModal()"  aria-label="Close image viewer">
 							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
 						</ion-button>
 					</ion-buttons>
@@ -96,8 +97,8 @@
 				@if (alert()?.Images && alert()!.Images![selectedImageIndex()]) {
 				<div class="modal-image-container">
 					<ion-img [src]="getImageUrl(alert()!.Images![selectedImageIndex()].url)"
-						[alt]="alert()!.Images![selectedImageIndex()].alternativeText || alert()!.Title" class="modal-image"
-						loading="lazy">
+						[alt]="alert()!.Images![selectedImageIndex()].alternativeText || alert()!.Title"
+						class="modal-image" loading="lazy">
 					</ion-img>
 				</div>
 				}
