@@ -1,15 +1,16 @@
-<ion-menu menuId="side-menu" contentId="main-content" [swipeGesture]="true" autoHide="true">
+<ion-menu menuId="side-menu" contentId="main-content" [swipeGesture]="true" autoHide="true" role="navigation"
+	aria-label="Main menu">
 	<ion-content [fullscreen]="true" class="side-menu-content">
-		<div class="menu-header">
+		<div class="menu-header" role="banner">
 			<div class="logo-container">
 				<img src="assets/icons/icon-white.png" alt="Crime Stoppers Logo" class="app-icon" />
 			</div>
-			<h3>Crime Stoppers of Halton</h3>
+			<h3 id="menu-title">Crime Stoppers of Halton</h3>
 		</div>
 
-		<div class="menu-items">
+		<div class="menu-items" role="menu" aria-labelledby="menu-title">
 			@if (!isPrivacyModeEnabled) {
-			<ion-item button (click)="goToSuspects()">
+			<ion-item button (click)="goToSuspects()" aria-label="Go to Most Wanted page" role="menuitem">
 				<ng-icon slot="start" name="bootstrapPersonBoundingBox"></ng-icon>
 				<ion-label>Most Wanted</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
@@ -20,7 +21,7 @@
 			}
 
 			@if (!isPrivacyModeEnabled) {
-			<ion-item button (click)="goToCommunityWatch()">
+			<ion-item button (click)="goToCommunityWatch()" aria-label="Go to Community Watch page" role="menuitem">
 				<ng-icon slot="start" name="bootstrapEye"></ng-icon>
 				<ion-label>Community Watch</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
@@ -28,7 +29,7 @@
 			}
 
 			@if (!isPrivacyModeEnabled) {
-			<ion-item button routerLink="/donate" (click)="closeMenu()">
+			<ion-item button routerLink="/donate" (click)="closeMenu()" aria-label="Go to Donate page" role="menuitem">
 				<ng-icon slot="start" name="bootstrapCash"></ng-icon>
 				<ion-label>Donate</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
@@ -36,7 +37,8 @@
 			}
 
 			@if (!isPrivacyModeEnabled) {
-			<ion-item button routerLink="/volunteer" (click)="closeMenu()">
+			<ion-item button routerLink="/volunteer" (click)="closeMenu()" aria-label="Go to Volunteer page"
+				role="menuitem">
 				<ng-icon slot="start" name="bootstrapPeople"></ng-icon>
 				<ion-label>Volunteer</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
@@ -44,14 +46,14 @@
 			}
 
 			@if (!isPrivacyModeEnabled) {
-			<ion-item button (click)="goToContact()">
+			<ion-item button (click)="goToContact()" aria-label="Go to Contact Us page" role="menuitem">
 				<ng-icon slot="start" name="bootstrapEnvelope"></ng-icon>
 				<ion-label>Contact Us</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
 			</ion-item>
 			}
 
-			<ion-item button (click)="goToSettings()">
+			<ion-item button (click)="goToSettings()" aria-label="Go to Settings page" role="menuitem">
 				<ng-icon slot="start" name="bootstrapGear"></ng-icon>
 				<ion-label>Settings</ion-label>
 				<ng-icon slot="end" name="bootstrapChevronRight"></ng-icon>
@@ -59,8 +61,8 @@
 		</div>
 	</ion-content>
 	<div class="test-notifications">
-		<button class="notification-btn" (click)="testWeekly()">Weekly</button>
-		<button class="notification-btn" (click)="testMonthly()">Monthly</button>
-		<button class="notification-btn" (click)="testInactivity()">Inactivity</button>
+		<button class="notification-btn" (click)="testWeekly()" aria-label="Trigger weekly notification test">Weekly</button>
+		<button class="notification-btn" (click)="testMonthly()" aria-label="Trigger monthly notification test">Monthly</button>
+		<button class="notification-btn" (click)="testInactivity()"  aria-label="Trigger inactivity notification test">Inactivity</button>
 	</div>
 </ion-menu>
