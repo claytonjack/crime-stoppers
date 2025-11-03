@@ -50,6 +50,7 @@ import {
   TIMEFRAMES,
   TimeframeValue,
 } from '@app/features/crime-stats/models/crime-stats.model';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-crime-stats',
@@ -77,6 +78,7 @@ export class CrimeStatsPage implements OnInit {
   private themeService = inject(ThemeService);
   private chartsService = inject(ChartsService);
   private destroyRef = inject(DestroyRef);
+  private readonly screenReader = inject(ScreenReaderService);
 
   selectedCity = 'all';
   selectedCategory = 'all';
@@ -103,6 +105,21 @@ export class CrimeStatsPage implements OnInit {
       .subscribe(() => this.updateCharts());
 
     this.loadCrimeData();
+    this.announcePage();
+  }
+
+   private async announcePage() {
+    await this.screenReader.speak('Crime Stats page loaded.');
+    await this.screenReader.speak(
+      'You can filter incidents by location, category, and timeframe, and view charts summarizing recent crime data.'
+    );
+
+    //Announce empty state if data not loaded yet
+    if (!this.visibleIncidents.length && !this.loading) {
+      await this.screenReader.speak(
+        'No crime incidents available for the selected filters.'
+      );
+    }
   }
 
   onCityChange(event: any) {
@@ -176,8 +193,24 @@ export class CrimeStatsPage implements OnInit {
     }
 
     this.updateCharts();
+
+    //Announce updated results
+    this.announceFilterResults();
   }
 
+
+   private async announceFilterResults() {
+    if (!this.visibleIncidents.length) {
+      await this.screenReader.speak(
+        'No incidents match the current filters.'
+      );
+    } else {
+      await this.screenReader.speak(
+        `${this.visibleIncidents.length} incidents found for the selected filters.`
+      );
+    }
+  }
+  
   private updateCharts() {
     const theme = this.chartsService.getChartTheme();
 

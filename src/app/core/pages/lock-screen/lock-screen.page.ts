@@ -4,6 +4,7 @@ import { IonButton, IonSpinner } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { BiometricAuthService } from '@app/core/services/authentication.service';
 import { Subscription } from 'rxjs';
+import { ScreenReaderService } from '../settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-lock-screen',
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class LockScreenPage implements OnInit, OnDestroy {
   private readonly biometricAuthService = inject(BiometricAuthService);
+  private readonly screenReader = inject(ScreenReaderService);
   private subscription?: Subscription;
   private autoAttemptTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -23,12 +25,12 @@ export class LockScreenPage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.biometricAuthService.locked$.subscribe(
-      (locked) => {
+      async (locked) => {
         this.isLocked = locked;
 
         if (locked) {
           this.lastError = null;
-
+await this.screenReader.speak('Device is locked. Please authenticate.');
           if (this.autoAttemptTimeout) {
             clearTimeout(this.autoAttemptTimeout);
           }
@@ -58,6 +60,7 @@ export class LockScreenPage implements OnInit, OnDestroy {
 
     this.lastError = null;
     this.isAttempting = true;
+     await this.screenReader.speak('Attempting authentication.');
 
     const success = await this.biometricAuthService.authenticate();
 
@@ -65,6 +68,9 @@ export class LockScreenPage implements OnInit, OnDestroy {
 
     if (!success) {
       this.lastError = 'core.lockScreen.authFailed';
+      await this.screenReader.speak('Authentication failed. Please try again.');
+    } else {
+      await this.screenReader.speak('Authentication successful. Unlocking device.');
     }
   }
 

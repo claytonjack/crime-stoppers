@@ -1,9 +1,9 @@
 <app-header [title]="'feature.crimeMap.headerTitle' | translate"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-label="Crime Map Page">
 	<div class="ion-padding" style="height: 100%; box-sizing: border-box;">
 		<iframe src="https://experience.arcgis.com/experience/5372f09e53114a46a871a3a5c2a58a48/"
 			style="width: 100%; height: 100%; border: none;" [attr.title]="'feature.crimeMap.iframeTitle' | translate"
-			loading="lazy"></iframe>
+			role="application" aria-label="Interactive crime map" loading="lazy"></iframe>
 	</div>
 </ion-content>
