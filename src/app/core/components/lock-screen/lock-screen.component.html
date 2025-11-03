@@ -1,0 +1,22 @@
+<section class="lock-screen" *ngIf="isLocked">
+  <div class="lock-backdrop"></div>
+  <div class="lock-card" role="alert">
+    <ion-icon class="lock-icon" name="lock-closed"></ion-icon>
+    <h1>Locked</h1>
+    <p class="message">Authenticate to continue using Crime Stoppers.</p>
+    <div class="spinner" *ngIf="isAttempting">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+    <p *ngIf="lastError" class="error">{{ lastError }}</p>
+    <ion-button
+      color="primary"
+      expand="block"
+      size="large"
+      (click)="tryAuthenticate()"
+      [disabled]="isAttempting"
+    >
+      <ion-icon slot="start" name="refresh"></ion-icon>
+      Try Again
+    </ion-button>
+  </div>
+</section>
