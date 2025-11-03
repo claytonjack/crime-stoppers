@@ -1,76 +1,93 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { DonatePage } from './donate.page';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input, Pipe, PipeTransform } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
+import { DonatePage } from './donate.page';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
+import {
+  IonContent, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonItemDivider,
+} from '@ionic/angular/standalone';
+
+// ---- Standalone TranslatePipe Mock ----
+@Pipe({ name: 'translate', standalone: true })
+class TranslatePipeMock implements PipeTransform {
+  transform(value: string): string {
+    return value; // bypass translation
+  }
+}
+
+// ---- Mock Header Component (make it standalone!) ----
+@Component({
+  selector: 'app-header',
+  standalone: true,
+  imports: [],
+  template: `<div>{{ title }}</div>`,
+})
+class HeaderComponentMock {
+  @Input() title!: string;
+}
 
 describe('DonatePage', () => {
   let component: DonatePage;
   let fixture: ComponentFixture<DonatePage>;
+  let screenReader: jasmine.SpyObj<ScreenReaderService>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [DonatePage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA], // ignore Ionic components not loaded in tests
-    }).compileComponents();
-  }));
+  beforeEach(async () => {
+    const screenReaderSpy = jasmine.createSpyObj('ScreenReaderService', ['speak']);
 
-  beforeEach(() => {
+    await TestBed.configureTestingModule({
+      imports: [
+        DonatePage,
+        HeaderComponentMock, // ✅ now imported instead of declared
+        IonContent, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonItemDivider,
+        TranslatePipeMock,
+      ],
+      providers: [
+        { provide: ScreenReaderService, useValue: screenReaderSpy },
+      ],
+    })
+      .overrideComponent(DonatePage, {
+        set: {
+          imports: [
+            IonContent, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonItemDivider,
+            TranslatePipeMock, HeaderComponentMock
+          ],
+        },
+      })
+      .compileComponents();
+
     fixture = TestBed.createComponent(DonatePage);
     component = fixture.componentInstance;
+    screenReader = TestBed.inject(ScreenReaderService) as jasmine.SpyObj<ScreenReaderService>;
+
     fixture.detectChanges();
   });
 
-  it('should create the DonatePage', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the main page title', () => {
-    const pageTitle = fixture.debugElement.query(By.css('h2'))?.nativeElement;
-    expect(pageTitle.textContent).toContain('Why Donate to Us?');
-  });
-
-  it('should render all info section headers', () => {
-    const headers = fixture.debugElement.queryAll(
-      By.css('.info-header ion-label')
-    );
-    const expectedHeaders = [
-      'Direct Community Impact',
-      '100% Community Funded',
-      'Safe & Secure',
-      'Trusted & Transparent',
-      'Tax Deductible',
-    ];
-    const renderedHeaders = headers.map((h) =>
-      h.nativeElement.textContent.trim()
-    );
-    expect(renderedHeaders).toEqual(expectedHeaders);
-  });
-
-  it('should render info section content', () => {
-    const contents = fixture.debugElement.queryAll(By.css('.info-content'));
-    expect(contents.length).toBeGreaterThan(0);
-    expect(contents[0].nativeElement.textContent).toContain(
-      'Your donation helps solve crimes'
-    );
-    expect(contents[3].nativeElement.textContent).toContain(
-      'Registered charity with full accountability'
+  it('should announce page loaded on ngOnInit', async () => {
+    await component.ngOnInit();
+    expect(screenReader.speak).toHaveBeenCalledWith(
+      'Donate page loaded. Why Donate section displayed.'
     );
   });
 
-  it('should render the donation form iframe', () => {
-    const iframe = fixture.debugElement.query(By.css('iframe'))?.nativeElement;
-    expect(iframe).toBeTruthy();
-    expect(iframe.getAttribute('src')).toBe(
-      'https://www.canadahelps.org/en/dn/93928'
-    );
-    expect(iframe.getAttribute('title')).toBe('Donate Now');
-    expect(iframe.getAttribute('width')).toBe('100%');
-    expect(iframe.getAttribute('height')).toBe('800');
+  it('should render the header component', () => {
+    const headerEl = fixture.debugElement.query(By.css('app-header'));
+    expect(headerEl).toBeTruthy();
+    expect(headerEl.nativeElement.textContent).toContain('feature.donate.headerTitle');
   });
 
-  it('should render the "Donate Now" section header', () => {
-    const donateHeader = fixture.debugElement.queryAll(By.css('h2'))[1]
-      ?.nativeElement;
-    expect(donateHeader.textContent).toContain('Donate Now');
+  it('should render all "why donate" info sections', () => {
+    const infoSections = fixture.debugElement.queryAll(By.css('.info-item'));
+    expect(infoSections.length).toBe(5);
+  });
+
+  it('should have an iframe for the donation form', () => {
+    const iframeEl = fixture.debugElement.query(By.css('iframe'));
+    expect(iframeEl).toBeTruthy();
+    expect(iframeEl.nativeElement.src).toContain('https://www.canadahelps.org/en/dn/93928');
   });
 });

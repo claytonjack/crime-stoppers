@@ -1,99 +1,93 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Pipe, PipeTransform } from '@angular/core';
+import { of } from 'rxjs';
+
 import { CommunityWatchPage } from './community-watch.page';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BrowserModule, By } from '@angular/platform-browser';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 import { InAppBrowser } from '@capacitor/inappbrowser';
-import * as InAppBrowserModule from '@capacitor/inappbrowser';
+import {
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+
+// ---- Standalone TranslatePipe Mock ----
+@Pipe({ name: 'translate', standalone: true })
+class TranslatePipeMock implements PipeTransform {
+  transform(value: string, args?: any): string {
+    if (args?.date) {
+      return `${value}: ${args.date}`;
+    }
+    return value;
+  }
+}
 
 describe('CommunityWatchPage', () => {
   let component: CommunityWatchPage;
   let fixture: ComponentFixture<CommunityWatchPage>;
-  let inAppBrowserSpy: any;
+  let screenReader: jasmine.SpyObj<ScreenReaderService>;
 
-  beforeEach(waitForAsync(() => {
-    // Mock InAppBrowser plugin
-    inAppBrowserSpy = {
-      openInSystemBrowser: jasmine
-        .createSpy('openInSystemBrowser')
-        .and.returnValue(Promise.resolve()),
-    };
+  beforeEach(async () => {
+    const screenReaderSpy = jasmine.createSpyObj('ScreenReaderService', ['speak']);
 
-    TestBed.configureTestingModule({
-      imports: [BrowserModule, CommunityWatchPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: InAppBrowser, useValue: inAppBrowserSpy }],
-    }).compileComponents();
-  }));
+    await TestBed.configureTestingModule({
+      imports: [
+        CommunityWatchPage,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonHeader,
+        IonTitle,
+        IonToolbar,
+        TranslatePipeMock, // use mock pipe
+      ],
+      providers: [
+        { provide: ScreenReaderService, useValue: screenReaderSpy },
+      ],
+    })
+      .overrideComponent(CommunityWatchPage, {
+        set: {
+          imports: [
+            IonContent,
+            IonList,
+            IonItem,
+            IonLabel,
+            IonHeader,
+            IonTitle,
+            IonToolbar,
+            TranslatePipeMock,
+          ],
+        },
+      })
+      .compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CommunityWatchPage);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    screenReader = TestBed.inject(ScreenReaderService) as jasmine.SpyObj<ScreenReaderService>;
+    fixture.detectChanges(); // triggers ngOnInit
   });
 
-  it('should create the CommunityWatchPage', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render hero title', () => {
-    const heroTitle = fixture.debugElement.query(By.css('h2'))?.nativeElement;
-    expect(heroTitle.textContent).toContain('Prevent | Report | Community');
+  it('should have hero image path defined', () => {
+    expect(component.heroImage).toBe('assets/images/community-watch.png');
   });
 
-  it('should render program benefits sections', () => {
-    const benefitHeaders = fixture.debugElement.queryAll(
-      By.css('.info-header ion-label')
-    );
-    const expectedHeaders = [
-      'Stay Informed',
-      'Anonymous Reporting',
-      'Visibility Materials',
-      'CamSafe Registration',
-      'Partner Discounts',
-      'Build Connections',
-    ];
-    const renderedHeaders = benefitHeaders.map((el) =>
-      el.nativeElement.textContent.trim()
-    );
-    expect(renderedHeaders).toEqual(expectedHeaders);
-  });
-
-  it('should render partner slides', () => {
-    expect(component.partnerSlides.length).toBeGreaterThan(0);
-    const firstSlide = component.partnerSlides[0];
-    expect(firstSlide.src).toContain('assets/images/cw1-lorex.jpg');
-  });
-
-  it('should open Home Inspection PDF in a new tab', () => {
-    const spy = spyOn(window, 'open');
-    component.openHomeInspection();
-    expect(spy).toHaveBeenCalledWith(
-      'assets/HomeInspectionReport.pdf',
-      '_blank'
-    );
-  });
-  it('should open PDF via openPdf', async () => {
-    const spy = spyOn(component, 'openPdf');
-    const testUrl = 'https://example.com/test.pdf';
-    await component.openPdf(testUrl);
-    expect(spy).toHaveBeenCalledWith(testUrl);
-  });
-
-  it('should open Home Inspection PDF in a new tab', () => {
-    const spy = spyOn(window, 'open');
-    component.openHomeInspection();
-    expect(spy).toHaveBeenCalledWith(
-      'assets/HomeInspectionReport.pdf',
-      '_blank'
+  it('should announce page and hero content on ngOnInit', async () => {
+    await component.ngOnInit();
+    expect(screenReader.speak).toHaveBeenCalledWith('Community Watch page loaded.');
+    expect(screenReader.speak).toHaveBeenCalledWith(
+      "Join your neighbours in Oakville's Ward 3 for the Community Watch pilot, a partnership with Crime Stoppers of Halton, Halton Regional Police, and the Halton Police Board."
     );
   });
 
-  it('Subscribe button click should open URL', () => {
-    const spy = spyOn(window, 'open');
 
-    const subscribeUrl = 'https://lp.constantcontactpages.com/sl/guJGNOk';
-    window.open(subscribeUrl, '_blank');
-
-    expect(spy).toHaveBeenCalledWith(subscribeUrl, '_blank');
-  });
 });

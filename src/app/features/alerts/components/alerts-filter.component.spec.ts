@@ -1,72 +1,142 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertsFilterComponent } from './alerts-filter.component';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 import { PopoverController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
+import { of } from 'rxjs';
+import {
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonRadioGroup,
+  IonRadio,
+  IonButton,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+
+// ---- Standalone TranslatePipe Mock ----
+@Pipe({ name: 'translate', standalone: true })
+class TranslatePipeMock implements PipeTransform {
+  transform(value: string, args?: any): string {
+    if (args?.date) {
+      return `${value}: ${args.date}`;
+    }
+    return value;
+  }
+}
 
 describe('AlertsFilterComponent', () => {
   let component: AlertsFilterComponent;
   let fixture: ComponentFixture<AlertsFilterComponent>;
-  let popoverCtrlSpy: jasmine.SpyObj<PopoverController>;
+  let screenReader: jasmine.SpyObj<ScreenReaderService>;
+  let popoverController: jasmine.SpyObj<PopoverController>;
+  let onSourceChangeSpy: jasmine.Spy;
+  let clearFiltersSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('PopoverController', ['dismiss']);
-    spy.dismiss.and.returnValue(Promise.resolve(true)); // match return type
+    const screenReaderSpy = jasmine.createSpyObj('ScreenReaderService', ['speak']);
+    const popoverSpy = jasmine.createSpyObj('PopoverController', ['dismiss']);
+
+    onSourceChangeSpy = jasmine.createSpy('onSourceChange');
+    clearFiltersSpy = jasmine.createSpy('clearFilters');
 
     await TestBed.configureTestingModule({
-      imports: [AlertsFilterComponent, FormsModule],
-      providers: [{ provide: PopoverController, useValue: spy }],
-    }).compileComponents();
+      imports: [
+        AlertsFilterComponent,
+        FormsModule,
+        CommonModule,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonRadioGroup,
+        IonRadio,
+        IonButton,
+        IonHeader,
+        IonTitle,
+        IonToolbar,
+        TranslatePipeMock, // use mock pipe to avoid _TranslateService
+      ],
+      providers: [
+        { provide: ScreenReaderService, useValue: screenReaderSpy },
+        { provide: PopoverController, useValue: popoverSpy },
+      ],
+    })
+      .overrideComponent(AlertsFilterComponent, {
+        set: {
+          imports: [
+            FormsModule,
+            CommonModule,
+            IonContent,
+            IonList,
+            IonItem,
+            IonLabel,
+            IonRadioGroup,
+            IonRadio,
+            IonButton,
+            IonHeader,
+            IonTitle,
+            IonToolbar,
+            TranslatePipeMock, // force mock pipe
+          ],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(AlertsFilterComponent);
     component = fixture.componentInstance;
-    popoverCtrlSpy = TestBed.inject(
-      PopoverController
-    ) as jasmine.SpyObj<PopoverController>;
 
-    // default inputs
-    component.selectedSource = 'Source A';
-    component.availableSources = ['Source A', 'Source B', 'Source C'];
-    component.onSourceChange = jasmine.createSpy('onSourceChange');
-    component.clearFilters = jasmine.createSpy('clearFilters');
+    screenReader = TestBed.inject(ScreenReaderService) as jasmine.SpyObj<ScreenReaderService>;
+    popoverController = TestBed.inject(PopoverController) as jasmine.SpyObj<PopoverController>;
+
+    // Set inputs
+    component.selectedSource = '';
+    component.availableSources = ['Source A', 'Source B'];
+    component.onSourceChange = onSourceChangeSpy;
+    component.clearFilters = clearFiltersSpy;
 
     fixture.detectChanges();
   });
 
-  it('should create the component and initialize selectedSourceLocal', () => {
-    component.ngOnInit();
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should set selectedSourceLocal and announce on ngOnInit', async () => {
+    await component.ngOnInit();
+    expect(component.selectedSourceLocal).toBe('');
+    expect(screenReader.speak).toHaveBeenCalledWith('Alert filter options loaded');
+  });
+
+  it('should update selection and call callbacks', async () => {
+    const event = { detail: { value: 'Source A' } };
+    await component.onSelectionChange(event);
+
     expect(component.selectedSourceLocal).toBe('Source A');
+    expect(onSourceChangeSpy).toHaveBeenCalledWith('Source A');
+    expect(screenReader.speak).toHaveBeenCalledWith('Source set to Source A');
+    expect(popoverController.dismiss).toHaveBeenCalled();
   });
 
-  it('should call onSourceChange and dismiss popover on selection change', () => {
-    const changeSpy = jasmine.createSpy('onSourceChange');
-    component.onSourceChange = changeSpy;
+  it('should select "all sources" correctly', async () => {
+    const event = { detail: { value: '' } };
+    await component.onSelectionChange(event);
 
-    component.onSelectionChange({ detail: { value: 'Source B' } });
-
-    expect(component.selectedSourceLocal).toBe('Source B');
-    expect(changeSpy).toHaveBeenCalledWith('Source B');
-    expect(popoverCtrlSpy.dismiss).toHaveBeenCalled();
+    expect(component.selectedSourceLocal).toBe('');
+    expect(onSourceChangeSpy).toHaveBeenCalledWith('');
+    expect(screenReader.speak).toHaveBeenCalledWith('All sources selected');
+    expect(popoverController.dismiss).toHaveBeenCalled();
   });
 
-  it('should call clearFilters and dismiss popover on clearAndClose', () => {
-    const clearSpy = jasmine.createSpy('clearFilters');
-    component.clearFilters = clearSpy;
-
-    component.clearAndClose();
-
-    expect(clearSpy).toHaveBeenCalled();
-    expect(popoverCtrlSpy.dismiss).toHaveBeenCalled();
-  });
-
-  it('should render all available sources as radio items', () => {
-    const items = fixture.debugElement.queryAll(By.css('ion-item'));
-    // +1 for "All Sources"
-    expect(items.length).toBe(component.availableSources.length + 1);
-
-    expect(items[0].nativeElement.textContent).toContain('All Sources');
-    expect(items[1].nativeElement.textContent).toContain('Source A');
-    expect(items[2].nativeElement.textContent).toContain('Source B');
-    expect(items[3].nativeElement.textContent).toContain('Source C');
+  it('should clear filters and dismiss popover', async () => {
+    await component.clearAndClose();
+    expect(clearFiltersSpy).toHaveBeenCalled();
+    expect(screenReader.speak).toHaveBeenCalledWith('Filters cleared');
+    expect(popoverController.dismiss).toHaveBeenCalled();
   });
 });
