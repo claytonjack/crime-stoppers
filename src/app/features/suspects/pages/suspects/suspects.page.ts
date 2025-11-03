@@ -29,6 +29,8 @@ import { Suspect } from 'src/app/features/suspects/models/suspect.model';
 import { SuspectsFilterComponent } from 'src/app/features/suspects/components/suspects-filter.component';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 @Component({
   selector: 'app-suspects',
   templateUrl: './suspects.page.html',
@@ -50,6 +52,7 @@ import { PopoverController } from '@ionic/angular';
     IonButton,
     FormsModule,
     CommonModule,
+    TranslateModule,
   ],
   providers: [PopoverController],
 })
@@ -57,6 +60,7 @@ export class SuspectsPage implements OnInit {
   private readonly strapiService = inject(StrapiService);
   private readonly router = inject(Router);
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
   private readonly allSuspects = signal<Suspect[]>([]);
   readonly isLoading = signal<boolean>(false);
@@ -96,8 +100,13 @@ export class SuspectsPage implements OnInit {
     'Halton Hills',
   ];
 
-  onSearchChange(event: any) {
+  async onSearchChange(event: any) {
     this.searchTerm.set(event.detail?.value ?? event.target?.value ?? '');
+    await this.screenReader.speak(
+      this.searchTerm()
+        ? `Searching for ${this.searchTerm()}`
+        : 'Search cleared'
+    );
   }
 
   async openFilterPopover(event: Event) {
@@ -113,15 +122,20 @@ export class SuspectsPage implements OnInit {
       },
     });
     await popover.present();
+    await this.screenReader.speak('Filter popover opened');
   }
 
-  onSceneChange(scene: string) {
+  async onSceneChange(scene: string) {
     this.selectedScene.set(scene);
+    await this.screenReader.speak(
+      scene ? `Filter applied: ${scene}` : 'Filters cleared'
+    );
   }
 
-  clearFilters() {
+  async clearFilters() {
     this.selectedScene.set('');
     this.searchTerm.set('');
+    await this.screenReader.speak('Filters cleared');
   }
 
   async loadMore(event: any) {
@@ -133,8 +147,9 @@ export class SuspectsPage implements OnInit {
     } catch (err) {}
   }
 
-  ngOnInit() {
-    this.loadSuspects();
+  async ngOnInit() {
+    await this.loadSuspects();
+    await this.screenReader.speak('Suspects loaded');
   }
 
   private async loadSuspects(page: number = 1) {
@@ -155,12 +170,18 @@ export class SuspectsPage implements OnInit {
           this.allSuspects.update((current) => [...current, ...sortedSuspects]);
         }
         this.hasMoreData.set(false);
+        await this.screenReader.speak(
+          `${sortedSuspects.length} suspects loaded`
+        );
       }
-    } catch (error) {}
+    } catch (error) {
+      await this.screenReader.speak('Failed to load suspects');
+    }
     this.isLoading.set(false);
   }
 
-  navigateToDetails(suspect: Suspect) {
+  async navigateToDetails(suspect: Suspect) {
+    await this.screenReader.speak(`Opening details for ${suspect.Name}`);
     this.router.navigate(['/suspects/details', suspect.documentId]);
   }
 

@@ -1,37 +1,36 @@
-<app-header title="Community Watch"></app-header>
+<app-header [title]="'feature.communityWatch.headerTitle' | translate"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-label="Community Watch page content">
 	<ion-grid>
 		<!-- Hero -->
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
-				<h2>Prevent | Report | Community</h2>
+				<h2>{{ 'feature.communityWatch.hero.tagline' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
-					<div class="info-content hero-content">
-						Join your neighbours in Oakville's Ward 3 for the Community Watch pilot, a partnership between
-						<strong>Crime Stoppers of Halton</strong>, <strong>Halton Regional Police</strong>, and the
-						<strong>Halton Police Board</strong> working together to build a safer and stronger community.
-					</div>
+				<div class="info-item" role="region" aria-labelledby="hero-heading">
+					<div class="info-content hero-content" tabindex="0"
+						[innerHTML]="'feature.communityWatch.hero.description' | translate"></div>
 				</div>
 			</ion-col>
 		</ion-row>
 
 		<!-- Quick Actions -->
-		<ion-row>
+		<ion-row role="region" aria-label="Quick Actions">
 			<ion-col size="12" size-md="6" class="ion-text-center">
 				<ion-button fill="outline" size="large" class="btn-elevated"
-					href="https://lp.constantcontactpages.com/sl/guJGNOk" target="_blank" rel="noopener noreferrer">
-					Subscribe to Newsletter
+					href="https://lp.constantcontactpages.com/sl/guJGNOk" target="_blank" rel="noopener noreferrer"
+					aria-label="Subscribe to the Community Watch newsletter (opens in a new tab)">
+					{{ 'feature.communityWatch.actions.subscribe' | translate }}
 				</ion-button>
 			</ion-col>
 			<ion-col size="12" size-md="6" class="ion-text-center">
 				<ion-button fill="outline" size="large" class="btn-elevated"
-					(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/crime_stoppers_of_halton___cw_inspection_report_151830.pdf')">
-					Download<br>Inspection Report
+					(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/crime_stoppers_of_halton___cw_inspection_report_151830.pdf')"
+					aria-label="Download the Community Watch inspection report as a PDF">
+					<span [innerHTML]="'feature.communityWatch.actions.downloadReport' | translate"></span>
 				</ion-button>
 			</ion-col>
 		</ion-row>
@@ -39,17 +38,19 @@
 		<!-- Program Benefits -->
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
-				<h2>Program Benefits</h2>
+				<h2>{{ 'feature.communityWatch.benefits.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
-		<ion-row>
+		<ion-row role="region" aria-labelledby="benefits-heading">
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="Stay Informed benefit">
 					<ion-item class="info-header">
-						<ion-label>Stay Informed</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.stayInformed.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Regular email updates with local safety tips and crime trends.
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.stayInformed.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -57,12 +58,14 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="Anonymous Reporting benefit">
 					<ion-item class="info-header">
-						<ion-label>Anonymous Reporting</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.anonymousReporting.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Confidential way to report suspicious activities.
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.anonymousReporting.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -70,12 +73,14 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="Visibility Materials benefit">
 					<ion-item class="info-header">
-						<ion-label>Visibility Materials</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.visibilityMaterials.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Free window clings & lawn signs (Tue/Wed 8â€"4 at HRP HQ).
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.visibilityMaterials.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -83,12 +88,14 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="CamSafe Registration benefit">
 					<ion-item class="info-header">
-						<ion-label>CamSafe Registration</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.camsafe.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Connect security cameras to help solve crimes.
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.camsafe.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -96,12 +103,14 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="Partner Discounts benefit">
 					<ion-item class="info-header">
-						<ion-label>Partner Discounts</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.partnerDiscounts.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Savings on security products and services.
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.partnerDiscounts.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -109,31 +118,36 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-label="Build Connections benefit">
 					<ion-item class="info-header">
-						<ion-label>Build Connections</ion-label>
+						<ion-label>
+							{{ 'feature.communityWatch.benefits.buildConnections.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Meet neighbours and strengthen community bonds.
+					<div class="info-content" tabindex="0">
+						{{ 'feature.communityWatch.benefits.buildConnections.description' | translate }}
 					</div>
 				</div>
 			</ion-col>
-		</ion-row> <!-- Partners -->
+		</ion-row>
+
+		<!-- Partners -->
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
-				<h2>Our Partners</h2>
+				<h2>{{ 'feature.communityWatch.partners.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
-		<ion-row>
+		<ion-row role="region" aria-labelledby="partners-heading">
 			<ion-col size="12" class="ion-padding">
-				<div class="swiper-container">
+				<div class="swiper-container" aria-label="Partners logo carousel">
 					<swiper-container class="mySwiper" pagination="true" navigation="true" rewind="true" a11y="true" lazy="true"
-						preload-images="false" autoplay="true" autoplay-delay="5000">
+						preload-images="false" autoplay="true" autoplay-delay="5000" aria-roledescription="carousel"
+						aria-live="polite">
 						@for (slide of partnerSlides; track slide; let i = $index) {
-						<swiper-slide>
+						<swiper-slide role="group" [attr.aria-label]="'Slide ' + (i + 1) + ' of ' + partnerSlides.length">
 							<div class="slide-content">
 								<ion-img [src]="slide.src" [alt]="slide.alt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
-									[attr.loading]="i === 0 ? 'eager' : 'lazy'"></ion-img>
+									[attr.loading]="i === 0 ? 'eager' : 'lazy'" role="img" [attr.aria-label]="slide.alt"></ion-img>
 							</div>
 						</swiper-slide>
 						}

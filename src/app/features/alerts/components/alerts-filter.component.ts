@@ -14,6 +14,8 @@ import {
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-alerts-filter',
@@ -33,6 +35,7 @@ import { CommonModule } from '@angular/common';
     IonToolbar,
     FormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class AlertsFilterComponent implements OnInit {
@@ -43,20 +46,26 @@ export class AlertsFilterComponent implements OnInit {
 
   selectedSourceLocal = '';
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
-  ngOnInit() {
+  async ngOnInit() {
     this.selectedSourceLocal = this.selectedSource;
+    await this.screenReader.speak('Alert filter options loaded');
   }
 
-  onSelectionChange(event: any) {
+  async onSelectionChange(event: any) {
     const value = event.detail.value;
     this.selectedSourceLocal = value;
     this.onSourceChange(value);
+    await this.screenReader.speak(
+      value ? `Source set to ${value}` : 'All sources selected'
+    );
     this.popoverController.dismiss();
   }
 
-  clearAndClose() {
+  async clearAndClose() {
     this.clearFilters();
+    await this.screenReader.speak('Filters cleared');
     this.popoverController.dismiss();
   }
 }

@@ -1,3 +1,4 @@
+// Base Layout
 ion-content {
   --background: var(--app-background-color);
   color: var(--app-text-color);
@@ -12,172 +13,81 @@ ion-content {
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
+
+  @media (max-width: 640px) {
+    padding: var(--spacing-md);
+  }
 }
 
+// Card Styles
 .surface-card {
   background: var(--ion-card-background, var(--app-secondary-color));
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid rgba(var(--app-accent-color-rgb), 0.08);
-  color: var(--app-text-color);
   backdrop-filter: blur(6px);
+
+  .ion-palette-dark & {
+    background: var(--app-secondary-color);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 }
 
-.ion-palette-dark .surface-card {
-  background: var(--app-secondary-color);
-  border-color: rgba(255, 255, 255, 0.08);
+// Filter Panel
+.filters-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+
+  @media (max-width: 640px) {
+    padding: var(--spacing-md);
+  }
 }
 
-.overview-card {
-  width: 100%;
-}
-
-.overview-card ion-card-header {
-  border-bottom: 1px solid rgba(var(--app-accent-color-rgb), 0.08);
-  padding-bottom: var(--spacing-md);
-}
-
-.ion-palette-dark .overview-card ion-card-header {
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-.overview-subtitle {
-  margin-top: var(--spacing-2xs);
-  margin-bottom: 0;
-  color: var(--app-text-color-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.overview-grid {
+.filters-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.city-selector {
-  --background: transparent;
-  --inner-padding-end: 0;
-  --padding-start: 0;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-self: stretch;
-  border-radius: var(--border-radius-md);
-  border: 1px solid rgba(var(--app-accent-color-rgb), 0.16);
-  background: rgba(var(--app-accent-color-rgb), 0.08);
-  padding: var(--spacing-sm) var(--spacing-md);
-  box-sizing: border-box;
-}
-
-.ion-palette-dark .city-selector {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.city-selector ion-label {
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  margin-bottom: var(--spacing-xs);
-  color: var(--app-text-color-secondary);
-}
-
-.city-selector ion-select {
-  width: 100%;
-  border-radius: var(--border-radius-md);
-  border: 1px solid rgba(var(--app-accent-color-rgb), 0.15);
-  padding: var(--spacing-2xs) var(--spacing-sm);
-  --padding-start: var(--spacing-sm);
-  --padding-end: var(--spacing-sm);
-  --indicator-color: var(--app-accent-color);
-  --placeholder-color: var(--app-text-color-secondary);
-  --placeholder-opacity: 0.75;
-  --color: var(--app-text-color);
-  --min-height: 48px;
-}
-
-.metric-card {
+.filter-control {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2xs);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  background: rgba(var(--app-accent-color-rgb), 0.06);
-  border: 1px solid rgba(var(--app-accent-color-rgb), 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  min-height: 124px;
-  justify-content: space-between;
+  gap: var(--spacing-xs);
 }
 
-.ion-palette-dark .metric-card {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: none;
-}
-
-.metric-card--muted {
-  opacity: 0.75;
-}
-
-.metric-label {
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+.filter-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--app-text-color-secondary);
-}
-
-.metric-value {
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: var(--app-text-color);
-  line-height: 1.2;
-}
-
-.metric-value--ellipsis {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.metric-note {
-  font-size: 0.85rem;
-  color: var(--app-text-color-secondary);
-}
-
-.metric-trend {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   font-weight: 600;
 }
 
-.metric-trend::before {
-  font-size: 0.75rem;
+.filter-select {
+  width: 100%;
+  --background: rgba(var(--app-accent-color-rgb), 0.08);
+  --padding-top: var(--spacing-sm);
+  --padding-bottom: var(--spacing-sm);
+  --padding-start: var(--spacing-sm);
+  --padding-end: var(--spacing-sm);
+  --indicator-color: var(--app-accent-color);
+  --border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  min-height: 3.25rem;
+
+  .ion-palette-dark & {
+    --background: rgba(255, 255, 255, 0.04);
+  }
 }
 
-.metric-trend--up {
-  color: var(--ion-color-success);
-}
-
-.metric-trend--up::before {
-  content: '\25B2';
-}
-
-.metric-trend--down {
-  color: var(--ion-color-danger);
-}
-
-.metric-trend--down::before {
-  content: '\25BC';
-}
-
-.metric-trend:not(.metric-trend--up):not(.metric-trend--down)::before {
-  content: '\2022';
-  color: var(--app-text-color-secondary);
-}
-
+// Loading & Empty States
 .loading-card,
 .empty-state-card {
   display: flex;
@@ -187,129 +97,82 @@ ion-content {
   gap: var(--spacing-sm);
   padding: calc(var(--spacing-lg) * 1.25);
   text-align: center;
+
+  ion-spinner {
+    width: 40px;
+    height: 40px;
+    color: var(--app-accent-color);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--app-text-color);
+  }
+
+  p {
+    margin: 0;
+    color: var(--app-text-color-secondary);
+    max-width: 420px;
+  }
 }
 
-.loading-card ion-spinner {
-  width: 40px;
-  height: 40px;
-  color: var(--app-accent-color);
-}
-
-.empty-state-card h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: var(--app-text-color);
-}
-
-.empty-state-card p,
-.loading-card p {
-  margin: 0;
-  color: var(--app-text-color-secondary);
-  max-width: 420px;
-}
-
+// Charts
 .charts-grid {
   display: grid;
   gap: var(--spacing-lg);
-}
 
-@media (min-width: 960px) {
-  .charts-grid {
+  @media (min-width: 960px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.chart-card ion-card-header {
-  border-bottom: 1px solid rgba(var(--app-accent-color-rgb), 0.08);
-  margin-bottom: var(--spacing-md);
-}
+.chart-card {
+  ion-card-header {
+    border-bottom: 1px solid rgba(var(--app-accent-color-rgb), 0.08);
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
 
-.ion-palette-dark .chart-card ion-card-header {
-  border-color: rgba(255, 255, 255, 0.08);
+    .ion-palette-dark & {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  ion-card-content {
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  }
 }
 
 .chart-container {
   width: 100%;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-  height: 420px;
-  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
   box-sizing: border-box;
+}
+
+.chart-container.type-chart {
+  min-height: 220px;
+}
+
+.chart-container.timeline-chart {
+  height: 420px;
+
+  @media (min-width: 960px) {
+    height: 480px;
+  }
+
+  @media (max-width: 640px) {
+    height: 340px;
+  }
 }
 
 .chart {
   width: 100%;
   height: 100%;
-=======
-  height: 360px;
->>>>>>> theirs
-=======
-  height: 360px;
->>>>>>> theirs
-=======
-  height: 360px;
->>>>>>> theirs
-=======
-  height: 360px;
->>>>>>> theirs
 }
 
-@media (min-width: 960px) {
-  .chart-container {
-<<<<<<< ours
-    height: 480px;
-    padding: var(--spacing-lg) calc(var(--spacing-xl) * 1.1);
-=======
-    height: 420px;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  }
-}
-
+// Footnote
 .footnote-card p {
   margin: 0;
   font-size: 0.8rem;
   color: var(--app-text-color-secondary);
   line-height: 1.6;
-}
-
-@media (max-width: 640px) {
-  .page-shell {
-    padding: var(--spacing-md);
-  }
-
-  .overview-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .metric-card {
-    min-height: auto;
-  }
-
-  .chart-container {
-    height: 320px;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-    padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  }
 }

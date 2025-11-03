@@ -1,28 +1,28 @@
-<app-header title="Alert Details" [showMenuButton]="false">
-	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+<app-header [title]="'feature.alertDetails.headerTitle' | translate" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBack' | translate">
 		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
 	</ion-button>
 </app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-live="polite">
 	@if (isLoading()) {
-	<div class="loading-container">
-		<ion-spinner name="crescent"></ion-spinner>
+	<div class="loading-container" aria-busy="true">
+		<ion-spinner name="crescent" [attr.aria-label]="'feature.alertDetails.loadingAriaLabel' | translate"></ion-spinner>
 		<ion-text>
-			<p>Loading alert...</p>
+			<p>{{ 'feature.alertDetails.loading' | translate }}</p>
 		</ion-text>
 	</div>
 	}
 
 	@if (error() && !isLoading()) {
-	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
+	<div class="error-container" role="alert">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" aria-hidden="true"></ng-icon>
 		<ion-text color="danger">
-			<h3>Error</h3>
-			<p>{{ error() }}</p>
+			<h3>{{ 'core.common.error' | translate }}</h3>
+			<p>{{ error() | translate }}</p>
 		</ion-text>
-		<ion-button fill="outline" (click)="goBack()">
-			Go Back
+		<ion-button fill="outline" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBackToPrevious' | translate">
+			{{ 'core.common.goBack' | translate }}
 		</ion-button>
 	</div>
 	}
@@ -32,12 +32,13 @@
 		@if (alert()!.Images && alert()!.Images!.length > 0) {
 		<div class="images-section">
 			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
-				(swiperslidechange)="onSwiperSlideChange($event)">
+				(swiperslidechange)="onSwiperSlideChange($event)" aria-roledescription="Image carousel"
+				[attr.aria-label]="'feature.alertDetails.imageCarouselAriaLabel' | translate">
 				@for (image of alert()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
 					<div class="slide-container">
 						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || alert()!.Title"
-							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+							(click)="onImageClick(i)" class="slide-image" loading="lazy" role="img">
 						</ion-img>
 					</div>
 				</swiper-slide>
@@ -45,7 +46,7 @@
 			</swiper-container>
 
 			@if (alert()!.Images!.length > 1) {
-			<div class="image-counter">
+			<div class="image-counter" aria-live="polite">
 				{{ selectedImageIndex() + 1 }} / {{ alert()!.Images!.length }}
 			</div>
 			}
@@ -53,15 +54,17 @@
 		}
 
 		<div class="info-section">
-			<div class="info-card">
+			<div class="info-card" aria-labelledby="alert-title">
 				<div class="card-header-section">
-					<h1 class="detail-title">{{ alert()!.Title }}</h1>
+					<h1 class="detail-title" id="alert-title">{{ alert()!.Title }}</h1>
 					<div class="metadata-container">
-						<div class="metadata-item">
-							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+						<div class="metadata-item"
+							[attr.aria-label]="('feature.alertDetails.publishedOnAriaLabel' | translate:{ date: formatDate(alert()!.createdAt) })">
+							<ng-icon name="bootstrapCalendarEvent" aria-hidden="true"></ng-icon>
 							<span>{{ formatDate(alert()!.createdAt) }}</span>
 						</div>
-						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge">
+						<ion-badge [color]="getSourceBadgeColor(alert()!.Source)" class="info-badge"
+							[attr.aria-label]="('feature.alertDetails.sourceAriaLabel' | translate:{ source: alert()!.Source })">
 							{{ alert()!.Source }}
 						</ion-badge>
 					</div>
@@ -70,7 +73,8 @@
 				<div class="card-content-section">
 					<div class="detail-body">
 						<ion-text>
-							<div [innerHTML]="alert()!.Body"></div>
+							<div [innerHTML]="alert()!.Body" [attr.aria-label]="'feature.alertDetails.contentAriaLabel' | translate">
+							</div>
 						</ion-text>
 					</div>
 				</div>
@@ -79,13 +83,17 @@
 	</div>
 	}
 
-	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()"
+		[attr.aria-label]="'feature.alertDetails.imageViewerAriaLabel' | translate">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
-					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ alert()?.Images?.length || 0 }}</ion-title>
+					<ion-title>
+						{{ 'core.common.modal.imageTitle' | translate:{ current: selectedImageIndex() + 1, total:
+						alert()?.Images?.length || 0 } }}
+					</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="closeImageModal()">
+						<ion-button (click)="closeImageModal()" [attr.aria-label]="'core.common.aria.closeImageViewer' | translate">
 							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
 						</ion-button>
 					</ion-buttons>

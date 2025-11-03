@@ -27,8 +27,10 @@ import { StrapiService } from 'src/app/core/services/strapi.service';
 import { Alert } from 'src/app/features/alerts/models/alert.model';
 import { StrapiResponse } from 'src/app/core/models/strapi.model';
 import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 import { register } from 'swiper/element/bundle';
 import { SwiperContainer } from 'swiper/element';
+import { TranslateModule } from '@ngx-translate/core';
 register();
 
 @Component({
@@ -51,6 +53,7 @@ register();
     IonImg,
     NgIcon,
     HeaderComponent,
+    TranslateModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -60,6 +63,7 @@ export class AlertDetailsPage implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly modalController = inject(ModalController);
+  private readonly screenReader = inject(ScreenReaderService);
 
   readonly alert = signal<Alert | null>(null);
   readonly isLoading = signal<boolean>(true);
@@ -69,14 +73,16 @@ export class AlertDetailsPage implements OnInit {
 
   ngOnInit() {
     this.loadAlert();
+    this.screenReader.speak('Alert details page opened');
   }
 
   private async loadAlert() {
     const documentId = this.route.snapshot.paramMap.get('documentId');
 
     if (!documentId) {
-      this.error.set('Invalid alert ID');
+      this.error.set('feature.alertDetails.errors.invalidId');
       this.isLoading.set(false);
+      await this.screenReader.speak('Invalid alert ID');
       return;
     }
 
@@ -87,18 +93,22 @@ export class AlertDetailsPage implements OnInit {
 
       if (response?.data) {
         this.alert.set(response.data);
+        await this.screenReader.speak(`Alert loaded: ${response.data.Title}`);
       } else {
-        this.error.set('Alert not found');
+        this.error.set('feature.alertDetails.errors.notFound');
+        await this.screenReader.speak('Alert not found');
       }
     } catch (error) {
       console.error('Error loading alert:', error);
-      this.error.set('Failed to load alert');
+      this.error.set('feature.alertDetails.errors.failed');
+      await this.screenReader.speak('Failed to load alert');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  goBack() {
+  async goBack() {
+    await this.screenReader.speak('Going back');
     this.location.back();
   }
 
@@ -128,18 +138,22 @@ export class AlertDetailsPage implements OnInit {
     return this.strapiService.getImageUrl(imageUrl);
   }
 
-  onImageClick(index: number) {
+  async onImageClick(index: number) {
     this.selectedImageIndex.set(index);
     this.isImageModalOpen.set(true);
+    await this.screenReader.speak(`Image ${index + 1} opened`);
   }
 
-  closeImageModal() {
+  async closeImageModal() {
     this.isImageModalOpen.set(false);
+    await this.screenReader.speak('Image viewer closed');
   }
 
-  onSwiperSlideChange(event: any) {
+  async onSwiperSlideChange(event: any) {
     if (event.detail && event.detail[0]) {
-      this.selectedImageIndex.set(event.detail[0].activeIndex);
+      const newIndex = event.detail[0].activeIndex;
+      this.selectedImageIndex.set(newIndex);
+      await this.screenReader.speak(`Image ${newIndex + 1} selected`);
     }
   }
 }

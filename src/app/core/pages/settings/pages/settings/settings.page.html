@@ -11,29 +11,29 @@
 		<div class="settings-section">
 			<h3 class="section-title">Appearance</h3>
 			<div class="settings-card">
-				<ion-item button (click)="onThemeClick()" lines="none">
+				<ion-item button (click)="onThemeClick()" lines="none" aria-label="Theme settings">
 					<div class="setting-icon-container theme-icon" slot="start">
 						<ng-icon name="bootstrapPalette"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.theme.title' | translate }}</h4>
-						<p>{{ 'settings.theme.description' | translate }}</p>
+						<h4>{{ 'core.settings.theme.title' | translate }}</h4>
+						<p>{{ 'core.settings.theme.description' | translate }}</p>
 					</ion-label>
 					<div class="setting-value" slot="end">
-						<span>{{ themeDisplayName$ | async }}</span>
+						<span>{{ (themeDisplayName$ | async) | translate }}</span>
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
-				<ion-item button (click)="onFontSizeClick()" lines="none">
+				<ion-item button (click)="onFontSizeClick()" lines="none" aria-label="Font size settings">
 					<div class="setting-icon-container font-icon" slot="start">
 						<ng-icon name="bootstrapType"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.fontSize.title' | translate }}</h4>
-						<p>{{ 'settings.fontSize.description' | translate }}</p>
+						<h4>{{ 'core.settings.fontSize.title' | translate }}</h4>
+						<p>{{ 'core.settings.fontSize.description' | translate }}</p>
 					</ion-label>
 					<div class="setting-value" slot="end">
-						<span>{{ fontSizeDisplayName$ | async }}</span>
+						<span>{{ (fontSizeDisplayName$ | async) | translate }}</span>
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
@@ -43,31 +43,30 @@
 		<div class="settings-section">
 			<h3 class="section-title">Accessibility</h3>
 			<div class="settings-card">
-				<ion-item button (click)="onLanguageClick()" lines="none">
+				<ion-item button (click)="onLanguageClick()" lines="none" aria-label="Language settings">
 					<div class="setting-icon-container language-icon" slot="start">
 						<ng-icon name="bootstrapTranslate"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.language.title' | translate }}</h4>
-						<p>{{ 'settings.language.description' | translate }}</p>
+						<h4>{{ 'core.settings.language.title' | translate }}</h4>
+						<p>{{ 'core.settings.language.description' | translate }}</p>
 					</ion-label>
 					<div class="setting-value" slot="end">
-						<span>{{ languageDisplayName$ | async }}</span>
+						<span>{{ (languageDisplayName$ | async) | translate }}</span>
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
 
-
-				<ion-item button (click)="onScreenReaderClick()" lines="none">
+				<ion-item button (click)="onScreenReaderClick()" lines="none" aria-label="Screen reader settings">
 					<div class="setting-icon-container screen-reader-icon" slot="start">
 						<ng-icon name="bootstrapSoundwave"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.screenReader.title' | translate }}</h4>
-						<p>{{ 'settings.screenReader.description' | translate }}</p>
+						<h4>{{ 'core.settings.screenReader.title' | translate }}</h4>
+						<p>{{ 'core.settings.screenReader.description' | translate }}</p>
 					</ion-label>
 					<div class="setting-value" slot="end">
-						<span>{{ 'settings.screenReader.enabled' | translate }}</span>
+						<span>{{ 'core.settings.screenReader.enabled' | translate }}</span>
 						<ng-icon name="bootstrapChevronRight"></ng-icon>
 					</div>
 				</ion-item>
@@ -78,29 +77,27 @@
 			<h3 class="section-title">Security</h3>
 			<div class="settings-card">
 				<ion-item lines="none">
-					<div class="setting-icon-container privacy-icon" slot="start">
-						<ng-icon name="bootstrapIncognito"></ng-icon>
-					</div>
-					<ion-label>
-						<h4>{{ 'settings.privacyMode.title' | translate }}</h4>
-						<p>{{ 'settings.privacyMode.description' | translate }}</p>
-					</ion-label>
-					<ion-toggle slot="end" [checked]="privacyMode$ | async"
-						(ionChange)="onPrivacyModeToggle($event.detail.checked)"></ion-toggle>
-				</ion-item>
-
-				<ion-item button (click)="onLoginAuthClick()" lines="none">
 					<div class="setting-icon-container auth-icon" slot="start">
 						<ng-icon name="bootstrapFingerprint"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.authentication.title' | translate }}</h4>
-						<p>{{ 'settings.authentication.description' | translate }}</p>
+						<h4>{{ 'core.settings.authentication.title' | translate }}</h4>
+						<p>{{ 'core.settings.authentication.description' | translate }}</p>
 					</ion-label>
-					<div class="setting-value" slot="end">
-						<span>{{ 'settings.authentication.disabled' | translate }}</span>
-						<ng-icon name="bootstrapChevronRight"></ng-icon>
+					<ion-toggle slot="end" [checked]="biometricAuthEnabled$ | async"
+						(ionChange)="onBiometricAuthToggle($event)"></ion-toggle>
+				</ion-item>
+
+				<ion-item lines="none">
+					<div class="setting-icon-container privacy-icon" slot="start">
+						<ng-icon name="bootstrapIncognito"></ng-icon>
 					</div>
+					<ion-label>
+						<h4>{{ 'core.settings.privacyMode.title' | translate }}</h4>
+						<p>{{ 'core.settings.privacyMode.description' | translate }}</p>
+					</ion-label>
+					<ion-toggle slot="end" [checked]="privacyMode$ | async"
+						(ionChange)="onPrivacyModeToggle($event.detail.checked)"></ion-toggle>
 				</ion-item>
 			</div>
 		</div>
@@ -113,19 +110,19 @@
 						<ng-icon name="bootstrapBell"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.notifications.title' | translate }}</h4>
-						<p>{{ 'settings.notifications.description' | translate }}</p>
+						<h4>{{ 'core.settings.notifications.title' | translate }}</h4>
+						<p>{{ 'core.settings.notifications.description' | translate }}</p>
 					</ion-label>
 					<ion-toggle slot="end" [checked]="(notificationEnabled$ | async)"
 						(ionChange)="onNotificationEnabledToggle($event)"></ion-toggle>
 				</ion-item>
-				<ion-item button (click)="onResetSettings()" lines="none">
+				<ion-item button (click)="onResetSettings()" lines="none" aria-label="Reset settings">
 					<div class="setting-icon-container reset-icon" slot="start">
 						<ng-icon name="bootstrapArrowClockwise"></ng-icon>
 					</div>
 					<ion-label>
-						<h4>{{ 'settings.reset.title' | translate }}</h4>
-						<p>{{ 'settings.reset.description' | translate }}</p>
+						<h4>{{ 'core.settings.reset.title' | translate }}</h4>
+						<p>{{ 'core.settings.reset.description' | translate }}</p>
 					</ion-label>
 					<div class="setting-value" slot="end">
 						<ng-icon name="bootstrapChevronRight"></ng-icon>

@@ -19,6 +19,7 @@ import { FontSizeService } from 'src/app/core/pages/settings/services/font-size.
 import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
 import { StatusBarService } from 'src/app/core/services/status-bar.service';
+import { BiometricAuthService } from '@app/core/services/authentication.service';
 
 import {
   // Navigation Icons
@@ -115,6 +116,7 @@ export const appConfig: ApplicationConfig = {
     PrivacyModeService,
     NotificationsService,
     StatusBarService,
+    BiometricAuthService,
 
     provideIcons({
       // Navigation Icons

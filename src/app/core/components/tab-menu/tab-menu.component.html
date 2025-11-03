@@ -2,29 +2,29 @@
 <ion-tabs>
 	<!-- Floating Action Button as Home Tab -->
 	<ion-fab slot="fixed" vertical="bottom" horizontal="center">
-		<ion-fab-button href="/home">
+		<ion-fab-button href="/home" aria-label="Go to home screen" (click)="onHomeFabClick()">
 			<ng-icon name="bootstrapHouseFill" class="fab-icon"></ng-icon>
 		</ion-fab-button>
 	</ion-fab>
 
 	<ion-tab-bar slot="bottom">
-		<ion-tab-button tab="alerts" href="/alerts">
+		<ion-tab-button tab="alerts" href="/alerts" aria-label="View alerts tab">
 			<ng-icon name="bootstrapMegaphoneFill"></ng-icon>
-			<ion-label>Alerts</ion-label>
+			<ion-label>{{ 'core.tabMenu.alerts' | translate }}</ion-label>
 		</ion-tab-button>
-		<ion-tab-button tab="events" href="/events">
+		<ion-tab-button tab="events" href="/events" aria-label="View events tab">
 			<ng-icon name="bootstrapCalendarFill"></ng-icon>
-			<ion-label>Events</ion-label>
+			<ion-label>{{ 'core.tabMenu.events' | translate }}</ion-label>
 		</ion-tab-button>
 		<!-- Invisible tab button to Maintain Spacing when using FAB -->
-		<ion-tab-button disabled class="fab-placeholder"></ion-tab-button>
-		<ion-tab-button tab="crime-map" href="/crime-map">
+		<ion-tab-button disabled class="fab-placeholder" aria-hidden="true"></ion-tab-button>
+		<ion-tab-button tab="crime-map" href="/crime-map" aria-label="View crime map tab">
 			<ng-icon name="bootstrapMapFill"></ng-icon>
-			<ion-label>Map</ion-label>
+			<ion-label>{{ 'core.tabMenu.map' | translate }}</ion-label>
 		</ion-tab-button>
-		<ion-tab-button tab="crime-stats" href="/crime-stats">
+		<ion-tab-button tab="crime-stats" href="/crime-stats" aria-label="View crime statistics tab">
 			<ng-icon name="bootstrapBarChartFill"></ng-icon>
-			<ion-label>Stats</ion-label>
+			<ion-label>{{ 'core.tabMenu.stats' | translate }}</ion-label>
 		</ion-tab-button>
 	</ion-tab-bar>
 </ion-tabs>

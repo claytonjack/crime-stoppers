@@ -14,6 +14,8 @@ import {
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-suspects-filter',
@@ -33,6 +35,7 @@ import { CommonModule } from '@angular/common';
     IonToolbar,
     FormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class SuspectsFilterComponent implements OnInit {
@@ -43,20 +46,27 @@ export class SuspectsFilterComponent implements OnInit {
 
   selectedSceneLocal = '';
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
-  ngOnInit() {
+  async ngOnInit() {
     this.selectedSceneLocal = this.selectedScene;
+    await this.screenReader.speak('Suspect filter options loaded');
   }
 
-  onSelectionChange(event: any) {
+  async onSelectionChange(event: any) {
     const value = event.detail.value;
     this.selectedSceneLocal = value;
     this.onSceneChange(value);
+    const announcement = value
+      ? `Location selected: ${value}`
+      : 'All Locations selected';
+    await this.screenReader.speak(announcement);
     this.popoverController.dismiss();
   }
 
-  clearAndClose() {
+  async clearAndClose() {
     this.clearFilters();
+    await this.screenReader.speak('Filters cleared');
     this.popoverController.dismiss();
   }
 }

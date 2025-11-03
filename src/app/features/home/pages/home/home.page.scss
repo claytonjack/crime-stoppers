@@ -32,33 +32,46 @@
   --box-shadow: var(--shadow-accent);
   --padding-start: 12px;
   --padding-end: 12px;
+  --justify-content: center;
+  width: clamp(300px, 92vw, 520px);
+  margin-inline: auto;
 
   ng-icon {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 1.1rem + 0.4vw, 1.5rem);
+    flex-shrink: 0;
   }
 
   ng-icon[slot="start"] {
-    margin-right: auto;
+    margin-right: var(--spacing-xs);
   }
 
   ng-icon[slot="end"] {
-    margin-left: auto;
+    margin-left: var(--spacing-xs);
   }
 
   .button-text {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     margin: 0 var(--spacing-xs);
+    min-width: 0;
+    width: 100%;
+    flex: 1 1 auto;
 
     .main-text {
-      font-size: 1.2rem;
+      font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.3rem);
       font-weight: 700;
+      line-height: 1.15;
+      white-space: nowrap;
     }
 
     .sub-text {
-      font-size: 0.8rem;
+      font-size: clamp(0.75rem, 0.65rem + 0.4vw, 1rem);
       opacity: 0.9;
       padding-top: 0.4rem;
+      line-height: 1.25;
+      text-align: center;
     }
   }
 }
@@ -126,8 +139,27 @@
 // ===== SEGMENT SELECTOR STYLING =====
 
 ion-segment {
+  justify-content: center;
+  gap: var(--spacing-2xs);
+
   ion-segment-button {
     --color: rgba(var(--app-text-color-rgb), 0.6);
     --color-checked: var(--app-accent-color);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-size: clamp(0.7rem, 0.6rem + 0.7vw, 1rem);
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+.segment-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  ion-segment {
+    width: auto;
   }
 }

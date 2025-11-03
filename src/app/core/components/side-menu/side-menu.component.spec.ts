@@ -5,6 +5,8 @@ import { MenuController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 import { provideRouter } from '@angular/router';
 import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateServiceMock } from '@app/core/test/translate-service.mock';
 
 describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
@@ -28,6 +30,7 @@ describe('SideMenuComponent', () => {
       providers: [
         { provide: MenuController, useValue: menuControllerSpy },
         { provide: PrivacyModeService, useValue: privacyModeServiceSpy },
+        { provide: TranslateService, useClass: TranslateServiceMock },
         provideIonicAngular(),
         provideRouter([{ path: 'settings', component: SideMenuComponent }]),
       ],

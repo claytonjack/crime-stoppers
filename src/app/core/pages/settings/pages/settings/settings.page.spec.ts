@@ -24,7 +24,7 @@ describe('SettingsPage', () => {
     settingsPageServiceSpy = jasmine.createSpyObj('SettingsPageService', [
       'presentThemeActionSheet',
       'presentFontSizeActionSheet',
-      'presentResetSettingsAlert',
+      'presentResetSettingsActionSheet',
       'setPrivacyMode',
     ]);
 
@@ -89,8 +89,10 @@ describe('SettingsPage', () => {
     }
   });
 
-  it('should call presentResetSettingsAlert on onResetSettings', async () => {
+  it('should call presentResetSettingsActionSheet on onResetSettings', async () => {
     await component.onResetSettings();
-    expect(settingsPageServiceSpy.presentResetSettingsAlert).toHaveBeenCalled();
+    expect(
+      settingsPageServiceSpy.presentResetSettingsActionSheet
+    ).toHaveBeenCalled();
   });
 });

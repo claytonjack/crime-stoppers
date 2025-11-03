@@ -37,6 +37,8 @@ import {
   IonCardContent,
   IonSearchbar,
 } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-alerts',
@@ -61,6 +63,7 @@ import {
     FormsModule,
     NgIcon,
     HeaderComponent,
+    TranslateModule,
   ],
   providers: [PopoverController],
 })
@@ -72,6 +75,7 @@ export class AlertsPage implements OnInit, OnDestroy {
   private readonly languageService = inject(LanguageService);
   private readonly router = inject(Router);
   private readonly popoverController = inject(PopoverController);
+  private readonly screenReader = inject(ScreenReaderService);
 
   private languageSubscription?: Subscription;
 
@@ -113,24 +117,28 @@ export class AlertsPage implements OnInit, OnDestroy {
     return [...new Set(sources)].sort();
   });
 
-  ngOnInit() {
+  async ngOnInit() {
     // Set initial locale in Strapi service
     const currentLang: LanguageOption =
       this.languageService.getCurrentLanguage();
     this.strapiService.setLocale(currentLang);
 
     // Load alerts with current locale
-    this.loadAlerts();
+    await this.loadAlerts();
+    await this.screenReader.speak('Alerts loaded');
 
     // Subscribe to language changes and reload alerts
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(
-      (language: LanguageOption) => {
+      async (language: LanguageOption) => {
         console.log(
           'Language changed, reloading alerts with locale:',
           language
         );
         this.strapiService.setLocale(language);
-        this.loadAlerts(1); // Reload from page 1
+        await this.loadAlerts(1); // Reload from page 1
+        await this.screenReader.speak(
+          `Language changed. Alerts reloaded in ${language}`
+        );
       }
     );
   }
@@ -173,16 +181,24 @@ export class AlertsPage implements OnInit, OnDestroy {
         }
 
         this.hasMoreData.set(false);
+
+        await this.screenReader.speak(`${sortedAlerts.length} alerts loaded`);
       }
     } catch (error) {
       console.error('Error loading alerts:', error);
+      await this.screenReader.speak('Error loading alerts');
     }
 
     this.isLoading.set(false);
   }
 
-  onSearchChange(event: any) {
+  async onSearchChange(event: any) {
     this.searchTerm.set(event.detail?.value ?? event.target?.value ?? '');
+    await this.screenReader.speak(
+      this.searchTerm()
+        ? `Searching alerts for ${this.searchTerm()}`
+        : 'Search cleared'
+    );
   }
 
   async openFilterPopover(event: Event) {
@@ -199,19 +215,25 @@ export class AlertsPage implements OnInit, OnDestroy {
     });
 
     await popover.present();
+    await this.screenReader.speak('Filter options opened');
   }
 
-  onSourceChange(source: string) {
+  async onSourceChange(source: string) {
     this.selectedSource.set(source);
+    await this.screenReader.speak(
+      source ? `Filter applied: ${source}` : 'Filter cleared'
+    );
   }
 
-  clearFilters() {
+  async clearFilters() {
     this.selectedSource.set('');
     this.searchTerm.set('');
+    await this.screenReader.speak('All filters cleared');
   }
 
   navigateToDetails(alert: Alert) {
     this.router.navigate(['/alerts', 'details', alert.documentId]);
+    this.screenReader.speak(`Viewing details for alert titled ${alert.Title}`);
   }
 
   getImageUrl(alert: Alert): string {

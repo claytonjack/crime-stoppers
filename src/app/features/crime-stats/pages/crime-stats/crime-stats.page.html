@@ -1,7 +1,93 @@
-<app-header title="Crime Statistics"></app-header>
+<app-header [title]="'feature.crimeStats.headerTitle' | translate"></app-header>
 
 <ion-content [fullscreen]="true">
-	<div class="ion-padding">
-		<p>Crime Stats content here</p>
+	<div class="page-shell">
+		<section class="filters-panel surface-card">
+			<div class="filters-row">
+				<div class="filter-control">
+					<span class="filter-label">{{ 'feature.crimeStats.filters.location' | translate }}</span>
+					<ion-select [value]="selectedCity" (ionChange)="onCityChange($event)" interface="popover"
+						[interfaceOptions]="selectInterfaceOptions"
+						class="filter-select">
+						@for (city of cities; track city.value) {
+						<ion-select-option [value]="city.value">
+							{{ city.label | translate }}
+						</ion-select-option>
+						}
+					</ion-select>
+				</div>
+
+				<div class="filter-control">
+					<span class="filter-label">{{ 'feature.crimeStats.filters.category' | translate }}</span>
+					<ion-select [value]="selectedCategory" (ionChange)="onCategoryChange($event)" interface="popover"
+						[interfaceOptions]="selectInterfaceOptions"
+						class="filter-select">
+						@for (category of categories; track category.value) {
+						<ion-select-option [value]="category.value">
+							{{ category.label | translate }}
+						</ion-select-option>
+						}
+					</ion-select>
+				</div>
+
+				<div class="filter-control">
+					<span class="filter-label">{{ 'feature.crimeStats.filters.timeframe' | translate }}</span>
+					<ion-select [value]="selectedTimeframe" (ionChange)="onTimeframeChange($event)" interface="popover"
+						[interfaceOptions]="selectInterfaceOptions"
+						class="filter-select">
+						@for (timeframe of timeframes; track timeframe.value) {
+						<ion-select-option [value]="timeframe.value">
+							{{ timeframe.label | translate }}
+						</ion-select-option>
+						}
+					</ion-select>
+				</div>
+			</div>
+		</section>
+
+		@if (loading) {
+		<div class="loading-card surface-card">
+			<ion-spinner name="crescent"></ion-spinner>
+			<p>{{ 'feature.crimeStats.loading' | translate }}</p>
+		</div>
+		} @else {
+		@if (!visibleIncidents.length) {
+		<div class="empty-state-card surface-card">
+			<h3>{{ 'feature.crimeStats.empty.title' | translate }}</h3>
+			<p>{{ 'feature.crimeStats.empty.description' | translate }}</p>
+			<p>{{ 'feature.crimeStats.empty.suggestion' | translate }}</p>
+		</div>
+		} @else {
+		<div class="charts-grid">
+			<ion-card class="chart-card surface-card">
+				<ion-card-header>
+					<ion-card-title>{{ 'feature.crimeStats.charts.breakdownTitle' | translate }}</ion-card-title>
+				</ion-card-header>
+				<ion-card-content>
+					<div class="chart-container type-chart" [style.height.px]="crimeTypeChartHeight">
+						<div echarts [options]="crimeTypeChartOption" class="chart"></div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+
+			<ion-card class="chart-card surface-card">
+				<ion-card-header>
+					<ion-card-title>{{ 'feature.crimeStats.charts.trendsTitle' | translate }}</ion-card-title>
+				</ion-card-header>
+				<ion-card-content>
+					<div class="chart-container timeline-chart">
+						<div echarts [options]="crimeTimelineChartOption" class="chart"></div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+
+		<ion-card class="footnote-card surface-card">
+			<ion-card-content>
+				<p>{{ 'feature.crimeStats.footnote' | translate }}</p>
+			</ion-card-content>
+		</ion-card>
+		}
+		}
 	</div>
 </ion-content>

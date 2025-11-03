@@ -2,19 +2,21 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 	<div class="cta-section">
-		<ion-button expand="block" size="large" class="tip-button" (click)="openTipModal()">
-			<ng-icon name="bootstrapLightbulbFill" slot="start"></ng-icon>
+		<ion-button expand="block" size="large" class="tip-button" (click)="openTipModal()"
+			aria-label="Submit an anonymous tip securely">
+			<ng-icon name="bootstrapLightbulbFill" slot="start" aria-hidden="true"></ng-icon>
 			<div class="button-text">
-				<div class="main-text">{{ 'home.cta.submitTip' | translate }}</div>
-				<div class="sub-text">{{ 'home.cta.anonymousSecureRewarded' | translate }}</div>
+				<div class="main-text">{{ 'feature.home.tipButton.submitTip' | translate }}</div>
+				<div class="sub-text">{{ 'feature.home.tipButton.anonymousSecureRewarded' | translate }}</div>
 			</div>
-			<ng-icon name="bootstrapChevronRight" slot="end"></ng-icon>
+			<ng-icon name="bootstrapChevronRight" slot="end" aria-hidden="true"></ng-icon>
 		</ion-button>
 	</div>
 
 	<div class="gallery-section">
 		<div class="swiper-container">
-			<swiper-container class="mySwiper" pagination="true" navigation="true">
+			<swiper-container class="mySwiper" pagination="true" navigation="true" aria-label="Image gallery"
+				(slideChange)="onSlideChange($event)">
 				@for (slide of slides; track slide; let i = $index) {
 				<swiper-slide>
 					<div class="card-image-wrapper">
@@ -29,20 +31,24 @@
 
 	<div class="info-section">
 		<div class="segment-container">
-			<ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged()">
-				<ion-segment-button value="about-us">{{ 'home.segments.aboutUs' | translate }}</ion-segment-button>
-				<ion-segment-button value="tip-procedure">{{ 'home.segments.tipProcedure' | translate }}</ion-segment-button>
+			<ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged()" scrollable="true"
+				aria-label="Home page sections">
+				<ion-segment-button value="about-us" aria-label="About Us section">{{ 'feature.home.segments.aboutUs' |
+					translate }}</ion-segment-button>
+				<ion-segment-button value="tip-procedure" aria-label="Tip Procedure section">{{
+					'feature.home.segments.tipProcedure' | translate
+					}}</ion-segment-button>
 			</ion-segment>
 		</div>
 
 		<div class="content-container">
 			@if (selectedSegment === 'about-us') {
-			<div class="content-panel">
+			<div class="content-panel" role="region" aria-label="About Us content">
 				<ion-list lines="none" class="about-us-list">
 					@for (item of aboutItems; track item) {
 					<div class="about-item">
-						<ion-item class="about-header">
-							<ng-icon [name]="item.icon" slot="start" class="about-icon"></ng-icon>
+						<ion-item class="about-header" [attr.aria-label]="item.title | translate">
+							<ng-icon [name]="item.icon" slot="start" class="about-icon" aria-hidden="true"></ng-icon>
 							<ion-label>{{ item.title | translate }}</ion-label>
 						</ion-item>
 						<div class="about-content">
@@ -55,12 +61,12 @@
 			}
 
 			@if (selectedSegment === 'tip-procedure') {
-			<div class="content-panel">
+			<div class="content-panel" role="region" aria-label="Tip Procedure content">
 				<ion-accordion-group multiple="true" class="tip-procedure-accordion">
 					@for (step of procedureSteps; track step) {
 					<ion-accordion>
-						<ion-item slot="header" class="procedure-header">
-							<ng-icon [name]="step.icon" slot="start" class="procedure-icon"></ng-icon>
+						<ion-item slot="header" class="procedure-header" [attr.aria-label]="step.title | translate">
+							<ng-icon [name]="step.icon" slot="start" class="procedure-icon" aria-hidden="true"></ng-icon>
 							<ion-label>{{ step.title | translate }}</ion-label>
 						</ion-item>
 						<div class="procedure-content" slot="content">
@@ -74,5 +80,6 @@
 		</div>
 	</div>
 
-	<app-tip-info [isOpen]="isModalOpen" (closeModal)="closeTipModal()" (submitTip)="openTipOptions()"></app-tip-info>
+	<app-tip-info [isOpen]="isModalOpen" (closeModal)="closeTipModal()" (submitTip)="openTipOptions()"
+		aria-label="Tip form modal"></app-tip-info>
 </ion-content>

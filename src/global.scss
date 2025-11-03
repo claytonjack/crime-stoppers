@@ -163,6 +163,23 @@ ng-icon {
 }
 
 /**
+ * Accordion Styling
+ * -----------------------------------------------------
+ */
+ion-accordion {
+  .ion-accordion-toggle-icon {
+    color: var(--app-text-color);
+    transition: color var(--transition-normal);
+  }
+
+  &.accordion-expanded .ion-accordion-toggle-icon,
+  &:hover .ion-accordion-toggle-icon,
+  &:focus-within .ion-accordion-toggle-icon {
+    color: var(--app-accent-color);
+  }
+}
+
+/**
  * Swiper/Carousel Styling
  * -----------------------------------------------------
  */
@@ -220,11 +237,16 @@ ng-icon {
   box-shadow: var(--shadow-accent);
   transition: var(--transition-normal);
   border-radius: var(--border-radius-lg);
-  width: 250px;
-  height: 48px;
+  width: 100%;
+  max-width: 100%;
+  min-width: clamp(240px, 60vw, 360px);
+  min-height: 48px;
   --padding-start: 16px;
   --padding-end: 16px;
   text-transform: none;
+  font-size: clamp(0.85rem, 0.78rem + 0.3vw, 0.95rem);
+  line-height: 1.25;
+  margin-inline: auto;
 
   &:hover {
     box-shadow: var(--shadow-accent-hover);

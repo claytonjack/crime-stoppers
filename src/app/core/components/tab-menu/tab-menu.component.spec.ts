@@ -3,6 +3,8 @@ import { TabMenuComponent } from './tab-menu.component';
 import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideRouter } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateServiceMock } from '@app/core/test/translate-service.mock';
 
 describe('TabMenuComponent', () => {
   let component: TabMenuComponent;
@@ -24,6 +26,7 @@ describe('TabMenuComponent', () => {
         provideIonicAngular(),
         provideRouter([]),
         { provide: PrivacyModeService, useValue: privacyModeServiceSpy },
+        { provide: TranslateService, useClass: TranslateServiceMock },
       ],
     }).compileComponents();
 

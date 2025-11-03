@@ -1,27 +1,28 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Filter Alerts</ion-title>
+		<ion-title id="filter-title">{{ 'feature.alerts.filter.title' | translate }}</ion-title>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-list>
+<ion-content aria-labelledby="filter-title">
+	<ion-list role="radiogroup" [attr.aria-label]="'feature.alerts.filter.selectSourceAriaLabel' | translate">
 		<ion-radio-group [(ngModel)]="selectedSourceLocal" (ionChange)="onSelectionChange($event)">
 			<ion-item>
-				<ion-label>All Sources</ion-label>
-				<ion-radio slot="start" value=""></ion-radio>
+				<ion-label>{{ 'feature.alerts.filter.allSources' | translate }}</ion-label>
+				<ion-radio slot="start" value="" [attr.aria-label]="'feature.alerts.filter.allSources' | translate"></ion-radio>
 			</ion-item>
 
 			<ion-item *ngFor="let source of availableSources">
 				<ion-label>{{ source }}</ion-label>
-				<ion-radio slot="start" [value]="source"></ion-radio>
+				<ion-radio slot="start" [value]="source" [attr.aria-label]="source"></ion-radio>
 			</ion-item>
 		</ion-radio-group>
 	</ion-list>
 
 	<div class="filter-footer">
-		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()">
-			Clear Filters
+		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()"
+			[attr.aria-label]="'feature.alerts.filter.clearFiltersAriaLabel' | translate">
+			{{ 'core.common.buttons.clearFilters' | translate }}
 		</ion-button>
 	</div>
 </ion-content>

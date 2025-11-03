@@ -1,43 +1,46 @@
-<app-header title="Event Details" [showMenuButton]="false">
-	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+<app-header [title]="'feature.eventDetails.headerTitle' | translate" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBack' | translate">
 		<ng-icon slot="icon-only" name="bootstrapArrowLeft"></ng-icon>
 	</ion-button>
 </app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" [attr.aria-label]="'feature.eventDetails.contentAriaLabel' | translate">
 	@if (isLoading()) {
-	<div class="loading-container">
-		<ion-spinner name="crescent"></ion-spinner>
+	<div class="loading-container" role="status" aria-live="polite">
+		<ion-spinner name="crescent" aria-hidden="true"></ion-spinner>
 		<ion-text>
-			<p>Loading event...</p>
+			<p>{{ 'feature.eventDetails.loading' | translate }}</p>
 		</ion-text>
 	</div>
 	}
 
 	@if (error() && !isLoading()) {
-	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
+	<div class="error-container" role="alert" aria-live="assertive">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" aria-hidden="true"></ng-icon>
 		<ion-text color="danger">
-			<h3>Error</h3>
-			<p>{{ error() }}</p>
+			<h3>{{ 'core.common.error' | translate }}</h3>
+			<p>{{ error() | translate }}</p>
 		</ion-text>
-		<ion-button fill="outline" (click)="goBack()">
-			Go Back
+		<ion-button fill="outline" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBackToPrevious' | translate">
+			{{ 'core.common.goBack' | translate }}
 		</ion-button>
 	</div>
 	}
 
 	@if (event() && !isLoading() && !error()) {
-	<div class="content-wrapper">
+	<div class="content-wrapper" tabindex="0" [attr.aria-label]="'feature.eventDetails.sectionAriaLabel' | translate">
 		@if (event()!.Images && event()!.Images!.length > 0) {
-		<div class="images-section">
+		<div class="images-section" role="region"
+			[attr.aria-label]="'feature.eventDetails.imageGalleryAriaLabel' | translate">
 			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
-				(swiperslidechange)="onSwiperSlideChange($event)">
+				(swiperslidechange)="onSwiperSlideChange($event)" aria-roledescription="carousel">
 				@for (image of event()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
 					<div class="slide-container">
 						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || event()!.Title"
-							(click)="onImageClick(i)" class="slide-image" loading="lazy">
+							(click)="onImageClick(i)" class="slide-image" tabindex="0" role="img"
+							[attr.aria-label]="('feature.eventDetails.imageAriaLabel' | translate:{ index: i + 1, total: event()!.Images!.length })"
+							loading="lazy">
 						</ion-img>
 					</div>
 				</swiper-slide>
@@ -45,39 +48,43 @@
 			</swiper-container>
 
 			@if (event()!.Images!.length > 1) {
-			<div class="image-counter">
+			<div class="image-counter" aria-live="polite" tabindex="0">
 				{{ selectedImageIndex() + 1 }} / {{ event()!.Images!.length }}
 			</div>
 			}
 		</div>
 		}
 
-		<div class="info-section">
+		<div class="info-section" role="region" [attr.aria-label]="'feature.eventDetails.infoAriaLabel' | translate">
 			<div class="info-card">
 				<div class="card-header-section">
-					<h1 class="detail-title">{{ event()!.Title }}</h1>
+					<h1 class="detail-title" tabindex="0">{{ event()!.Title }}</h1>
 
 					<div class="metadata-container">
-						<div class="metadata-item">
-							<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+						<div class="metadata-item" [attr.aria-label]="'feature.eventDetails.dateTimeAriaLabel' | translate">
+							<ng-icon name="bootstrapCalendarEvent" aria-hidden="true"></ng-icon>
 							<span>{{ formatDate(event()!.Event_Time) }}</span>
 						</div>
-						<ion-badge class="info-badge" (click)="addToCalendar(event())">
-							<ng-icon name="bootstrapPlusCircle" class="icon-size" style="margin-right: 6px;"></ng-icon>
-							Save
+						<ion-badge class="info-badge" (click)="addToCalendar(event())" tabindex="0" role="button"
+							[attr.aria-label]="'feature.eventDetails.saveToCalendarAria' | translate">
+							<ng-icon name="bootstrapPlusCircle" class="icon-size" style="margin-right: 6px;"
+								aria-hidden="true"></ng-icon>
+							{{ 'core.common.buttons.save' | translate }}
 						</ion-badge>
 					</div>
 
 					@if (event()!.Location) {
-					<div class="metadata-item location-item">
-						<ng-icon name="bootstrapGeoAlt"></ng-icon>
+					<div class="metadata-item location-item" role="group"
+						[attr.aria-label]="'feature.eventDetails.locationAriaLabel' | translate">
+						<ng-icon name="bootstrapGeoAlt" aria-hidden="true"></ng-icon>
 						<span>{{ event()!.Location }}</span>
 					</div>
 					}
 				</div>
 
 				@if (event()!.Body) {
-				<div class="card-content-section">
+				<div class="card-content-section" role="region"
+					[attr.aria-label]="'feature.eventDetails.descriptionAriaLabel' | translate">
 					<div class="detail-body">
 						<ion-text>
 							<div [innerHTML]="event()!.Body"></div>
@@ -90,20 +97,24 @@
 	</div>
 	}
 
-	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()"
+		[attr.aria-label]="'feature.eventDetails.imageModalAriaLabel' | translate">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
-					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ event()?.Images?.length || 0 }}</ion-title>
+					<ion-title aria-live="polite">
+						{{ 'core.common.modal.imageTitle' | translate:{ current: selectedImageIndex() + 1, total:
+						event()?.Images?.length || 0 } }}
+					</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="closeImageModal()">
+						<ion-button (click)="closeImageModal()" [attr.aria-label]="'core.common.aria.closeImageViewer' | translate">
 							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
 						</ion-button>
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
 
-			<ion-content>
+			<ion-content role="region" [attr.aria-label]="'feature.eventDetails.fullSizeImageAriaLabel' | translate">
 				@if (event()?.Images && event()!.Images![selectedImageIndex()]) {
 				<div class="modal-image-container">
 					<ion-img [src]="getImageUrl(event()!.Images![selectedImageIndex()].url)"

@@ -15,7 +15,6 @@ export const routes: Routes = [
   // Main Application Routes
   {
     path: '',
-    canActivate: [PrivacyModeGuard],
     component: TabMenuComponent,
     children: [
       // Tab Pages

@@ -1,32 +1,34 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Filter Events</ion-title>
+		<ion-title id="filter-title">{{ 'feature.events.filter.title' | translate }}</ion-title>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-list>
+<ion-content aria-labelledby="filter-title">
+	<ion-list role="radiogroup" [attr.aria-label]="'feature.events.filter.selectTypeAriaLabel' | translate">
 		<ion-radio-group [(ngModel)]="selectedType" (ionChange)="onSelectionChange($event)">
 			<ion-item>
-				<ion-label>All Events</ion-label>
-				<ion-radio slot="start" value=""></ion-radio>
+				<ion-label>{{ 'feature.events.filter.allEvents' | translate }}</ion-label>
+				<ion-radio slot="start" value="" [attr.aria-label]="'feature.events.filter.allEvents' | translate"></ion-radio>
 			</ion-item>
 
 			<ion-item>
-				<ion-label>Upcoming Events</ion-label>
-				<ion-radio slot="start" value="upcoming"></ion-radio>
+				<ion-label>{{ 'feature.events.filter.upcoming' | translate }}</ion-label>
+				<ion-radio slot="start" value="upcoming"
+					[attr.aria-label]="'feature.events.filter.upcoming' | translate"></ion-radio>
 			</ion-item>
 
 			<ion-item>
-				<ion-label>Past Events</ion-label>
-				<ion-radio slot="start" value="past"></ion-radio>
+				<ion-label>{{ 'feature.events.filter.past' | translate }}</ion-label>
+				<ion-radio slot="start" value="past" [attr.aria-label]="'feature.events.filter.past' | translate"></ion-radio>
 			</ion-item>
 		</ion-radio-group>
 	</ion-list>
 
 	<div class="filter-footer">
-		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()">
-			Clear Filters
+		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()"
+			[attr.aria-label]="'feature.events.filter.clearFiltersAriaLabel' | translate">
+			{{ 'core.common.buttons.clearFilters' | translate }}
 		</ion-button>
 	</div>
 </ion-content>

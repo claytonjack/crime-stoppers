@@ -1,36 +1,44 @@
-<app-header title="Events" [showMenuButton]="true"></app-header>
+<app-header [title]="'feature.events.headerTitle' | translate" [showMenuButton]="true"></app-header>
 
 <ion-content>
-	<div class="search-filter">
-		<ion-searchbar placeholder="Search events" [(ngModel)]="searchQuery"
-			(ionInput)="onSearchChange($event)"></ion-searchbar>
-		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+	<div class="search-filter" role="search" [attr.aria-label]="'feature.events.searchFilterAriaLabel' | translate">
+		<ion-searchbar [placeholder]="'feature.events.searchPlaceholder' | translate" [(ngModel)]="searchQuery"
+			(ionInput)="onSearchChange($event)"
+			[attr.aria-label]="'feature.events.searchAriaLabel' | translate"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" [attr.aria-label]="'feature.events.filterButtonAria' | translate"
+			(click)="openFilterPopover($event)">
 			<ng-icon name="bootstrapFilter"></ng-icon>
 		</ion-button>
 	</div>
 
-	<ion-list>
-		<ion-card *ngFor="let event of filteredEvents()" (click)="navigateToDetails(event)">
+	<ion-list role="list" [attr.aria-label]="'feature.events.listAriaLabel' | translate">
+		<ion-card *ngFor="let event of filteredEvents()" (click)="navigateToDetails(event)" tabindex="0" role="listitem"
+			(keyup.enter)="navigateToDetails(event)" [attr.aria-label]="
+        ('feature.events.cardAriaLabel' | translate:{ title: event.Title, date: formatDate(event.Event_Time) })
+      ">
 			<div class="card-image-wrapper" *ngIf="getImageUrl(event)">
-				<ion-img class="card-image" [src]="getImageUrl(event)"></ion-img>
+				<ion-img class="card-image" [src]="getImageUrl(event)"
+					[alt]="('feature.events.imageAlt' | translate:{ title: event.Title })"></ion-img>
 			</div>
 
 			<ion-card-header>
 				<ion-card-title>{{ event.Title }}</ion-card-title>
 				<ion-card-subtitle class="card-subtitle">
 					<div class="icon-text-group">
-						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+						<ng-icon name="bootstrapCalendarEvent" aria-hidden="true"></ng-icon>
 						<span>{{ formatDate(event.Event_Time) }}</span>
 					</div>
 					<ion-badge class="info-badge" [color]="getTypeBadgeColorSafe(event.Type)"
-						(click)="addToCalendar(event, $event)">
-						<ng-icon name="bootstrapPlusCircle" class="icon-size" style="margin-right: 6px;"></ng-icon>
-						Save
+						(click)="addToCalendar(event, $event)"
+						[attr.aria-label]="('feature.events.saveToCalendarAria' | translate:{ title: event.Title })">
+						<ng-icon name="bootstrapPlusCircle" class="icon-size" style="margin-right: 6px;"
+							aria-hidden="true"></ng-icon>
+						{{ 'core.common.buttons.save' | translate }}
 					</ion-badge>
 				</ion-card-subtitle>
 				@if (event.Location) {
 				<div class="metadata-item location-item">
-					<ng-icon name="bootstrapGeoAlt"></ng-icon>
+					<ng-icon name="bootstrapGeoAlt" aria-hidden="true"></ng-icon>
 					<span>{{ event.Location }}</span>
 				</div>
 				}
@@ -43,6 +51,6 @@
 	</ion-list>
 
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
-		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+		<ion-infinite-scroll-content aria-live="polite" [attr.aria-busy]="isLoading()"></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
 </ion-content>

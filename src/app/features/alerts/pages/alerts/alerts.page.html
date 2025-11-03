@@ -1,28 +1,34 @@
-<app-header title="Alerts" [showMenuButton]="true"></app-header>
+<app-header [title]="'feature.alerts.headerTitle' | translate" [showMenuButton]="true"></app-header>
 
 <ion-content>
-	<div class="search-filter">
-		<ion-searchbar placeholder="Search alerts" [(ngModel)]="searchQuery"
-			(ionInput)="onSearchChange($event)"></ion-searchbar>
-		<ion-button class="filter-button" fill="solid" aria-label="Filter" (click)="openFilterPopover($event)">
+	<div class="search-filter" role="search" [attr.aria-label]="'feature.alerts.searchFilterAriaLabel' | translate">
+		<ion-searchbar [placeholder]="'feature.alerts.searchPlaceholder' | translate" [(ngModel)]="searchQuery"
+			(ionInput)="onSearchChange($event)"
+			[attr.aria-label]="'feature.alerts.searchAriaLabel' | translate"></ion-searchbar>
+		<ion-button class="filter-button" fill="solid" [attr.aria-label]="'feature.alerts.filterButtonAria' | translate"
+			(click)="openFilterPopover($event)">
 			<ng-icon name="bootstrapFilter"></ng-icon>
 		</ion-button>
 	</div>
 
 	<ion-list>
-		<ion-card *ngFor="let alert of filteredAlerts()" (click)="navigateToDetails(alert)">
+		<ion-card *ngFor="let alert of filteredAlerts()" (click)="navigateToDetails(alert)" tabindex="0" role="button"
+			[attr.aria-label]="('feature.alerts.cardAriaLabel' | translate:{ title: alert.Title })">
 			<div class="card-image-wrapper" *ngIf="getImageUrl(alert)">
-				<ion-img class="card-image" [src]="getImageUrl(alert)"></ion-img>
+				<ion-img class="card-image" [src]="getImageUrl(alert)"
+					[alt]="('feature.alerts.imageAlt' | translate:{ title: alert.Title })"></ion-img>
 			</div>
 
 			<ion-card-header>
-				<ion-card-title>{{ alert.Title }}</ion-card-title>
-				<ion-card-subtitle class="card-subtitle">
-					<div class="icon-text-group">
-						<ng-icon name="bootstrapCalendarEvent"></ng-icon>
+				<ion-card-title role="heading" aria-level="2" [id]="'alert-title-' + alert.documentId">{{ alert.Title
+					}}</ion-card-title>
+				<ion-card-subtitle class="card-subtitle" [attr.aria-describedby]="'alert-title-' + alert.documentId">
+					<div class="icon-text-group" [attr.aria-label]="'feature.alerts.dateAriaLabel' | translate">
+						<ng-icon name="bootstrapCalendarEvent" aria-hidden="true"></ng-icon>
 						<span>{{ formatDate(alert.createdAt) }}</span>
 					</div>
-					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge">
+					<ion-badge [color]="getSourceBadgeColor(alert.Source)" class="info-badge" role="status"
+						[attr.aria-label]="('feature.alerts.sourceAriaLabel' | translate:{ source: alert.Source })">
 						{{ alert.Source }}
 					</ion-badge>
 				</ion-card-subtitle>
@@ -35,6 +41,7 @@
 	</ion-list>
 
 	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
-		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+		<ion-infinite-scroll-content
+			[attr.aria-label]="'feature.alerts.loadingMoreAriaLabel' | translate"></ion-infinite-scroll-content>
 	</ion-infinite-scroll>
 </ion-content>

@@ -33,6 +33,8 @@ import { Event } from 'src/app/features/events/models/event.model';
 import { StrapiResponse } from 'src/app/core/models/strapi.model';
 import { CalendarService } from 'src/app/features/events/calendar.service';
 import { EventsFilterComponent } from 'src/app/features/events/components/events-filter.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-events',
@@ -60,6 +62,7 @@ import { EventsFilterComponent } from 'src/app/features/events/components/events
     IonBadge,
     IonBadge,
     HeaderComponent,
+    TranslateModule,
   ],
 })
 export class EventsPage implements OnInit {
@@ -71,6 +74,8 @@ export class EventsPage implements OnInit {
   private readonly calendarService = inject(CalendarService);
   private readonly alertController = inject(AlertController);
   private readonly popoverController = inject(PopoverController);
+  private readonly translate = inject(TranslateService);
+  private readonly screenReader = inject(ScreenReaderService);
 
   readonly searchTerm = signal<string>('');
   get searchQuery() {
@@ -82,18 +87,29 @@ export class EventsPage implements OnInit {
 
   readonly selectedEventType = signal<string>('');
 
-  onSearchChange(event: any) {
+  async onSearchChange(event: any) {
     const value = event.detail?.value ?? event.target?.value ?? '';
     this.searchTerm.set(value);
+    await this.screenReader.speak(
+      value ? `Searching events for ${value}` : 'Search cleared'
+    );
   }
 
-  onEventTypeChange(type: string) {
+  async onEventTypeChange(type: string) {
     this.selectedEventType.set(type);
+    await this.screenReader.speak(
+      type === 'upcoming'
+        ? 'Filter applied: Upcoming events'
+        : type === 'past'
+        ? 'Filter applied: Past events'
+        : 'Filter cleared: All events'
+    );
   }
 
-  clearFilters() {
+  async clearFilters() {
     this.selectedEventType.set('');
     this.searchTerm.set('');
+    await this.screenReader.speak('All filters cleared');
   }
 
   readonly allEvents = signal<Event[]>([]);
@@ -139,8 +155,9 @@ export class EventsPage implements OnInit {
     return events;
   });
 
-  ngOnInit() {
-    this.loadEvents();
+  async ngOnInit() {
+    await this.loadEvents();
+    await this.screenReader.speak('Events loaded');
   }
 
   private async loadEvents() {
@@ -161,11 +178,15 @@ export class EventsPage implements OnInit {
         this.displayedEvents.set([]);
         this.hasMoreData.set(true);
         this.loadMoreEvents();
+        await this.screenReader.speak(
+          `${this.displayedEvents().length} events loaded`
+        );
       }
     } catch (error) {
       this.allEvents.set([]);
       this.displayedEvents.set([]);
       this.hasMoreData.set(false);
+      await this.screenReader.speak('Failed to load events');
     } finally {
       this.isLoading.set(false);
     }
@@ -201,6 +222,7 @@ export class EventsPage implements OnInit {
 
   navigateToDetails(event: Event) {
     this.router.navigate(['/events', 'details', event.documentId]);
+    this.screenReader.speak(`Viewing details for event titled ${event.Title}`);
   }
 
   getImageUrl(event: Event): string {
@@ -261,6 +283,7 @@ export class EventsPage implements OnInit {
     });
 
     await popover.present();
+    await this.screenReader.speak('Filter options opened');
   }
 
   async addToCalendar(evnt: Event, mouseEvent?: MouseEvent) {
@@ -273,7 +296,8 @@ export class EventsPage implements OnInit {
       const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
 
       const res = await this.calendarService.addEvent(
-        evnt.Title || 'Community Event',
+        evnt.Title ||
+          this.translate.instant('feature.events.calendar.defaultTitle'),
         evnt.Location || '',
         '',
         startDate,
@@ -284,12 +308,20 @@ export class EventsPage implements OnInit {
       let message = '';
 
       if (res?.success) {
-        header = 'Saved to calendar';
-        message = 'This event was added to your calendar.';
+        header = this.translate.instant('feature.events.calendar.savedTitle');
+        message = this.translate.instant(
+          'feature.events.calendar.savedMessage'
+        );
+        await this.screenReader.speak('Event saved to calendar');
       } else {
         header =
-          res?.reason === 'permission' ? 'Permission required' : 'Save failed';
-        message = res?.message || 'Could not save this event to your calendar.';
+          res?.reason === 'permission'
+            ? this.translate.instant('feature.events.calendar.permissionTitle')
+            : this.translate.instant('feature.events.calendar.failureTitle');
+        message =
+          res?.message ||
+          this.translate.instant('feature.events.calendar.failureMessage');
+        await this.screenReader.speak('Failed to save event to calendar');
       }
 
       const alert = await this.alertController.create({
@@ -297,7 +329,7 @@ export class EventsPage implements OnInit {
         message,
         buttons: [
           {
-            text: 'Ok',
+            text: this.translate.instant('core.common.buttons.ok'),
             role: 'ok',
           },
         ],
@@ -306,10 +338,11 @@ export class EventsPage implements OnInit {
 
       await alert.present();
     } catch (err) {
+      await this.screenReader.speak('An error occurred while saving the event');
       const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'An unexpected error occurred while saving the event.',
-        buttons: ['Ok'],
+        header: this.translate.instant('core.common.error'),
+        message: this.translate.instant('feature.events.calendar.errorMessage'),
+        buttons: [this.translate.instant('core.common.buttons.ok')],
         backdropDismiss: false,
       });
       await alert.present();

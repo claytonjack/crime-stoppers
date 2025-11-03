@@ -1,24 +1,19 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
   IonSelect,
   IonSelectOption,
-  IonLabel,
-  IonItem,
   IonSpinner,
 } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgxEchartsModule, NGX_ECHARTS_CONFIG } from 'ngx-echarts';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-// ✅ Import and register ECharts modules (ESM-safe)
 import * as echarts from 'echarts/core';
 import { use } from 'echarts/core';
 import { BarChart, LineChart } from 'echarts/charts';
@@ -43,13 +38,18 @@ use([
 import {
   CrimeStatsService,
   CrimeIncident,
-  CrimeByType,
-  CrimeByMonth,
-  TRACKED_CRIME_TYPE_LABELS,
+  CrimeByTimeframe,
 } from '@app/features/crime-stats/services/crime-stats.service';
 import { ThemeService } from '@app/core/pages/settings/services/theme.service';
-
-type TrendDirection = 'up' | 'down' | 'flat';
+import { ChartsService } from '@app/features/crime-stats/services/charts.service';
+import {
+  CITIES,
+  CRIME_CATEGORIES,
+  CRIME_CATEGORY_MAPPING,
+  TimelineSummary,
+  TIMEFRAMES,
+  TimeframeValue,
+} from '@app/features/crime-stats/models/crime-stats.model';
 
 @Component({
   selector: 'app-crime-stats',
@@ -57,21 +57,17 @@ type TrendDirection = 'up' | 'down' | 'flat';
   imports: [
     CommonModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
+    HeaderComponent,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
     IonSelect,
     IonSelectOption,
-    IonLabel,
-    IonItem,
     IonSpinner,
     NgxEchartsModule,
+    TranslateModule,
   ],
-  // ✅ Required for standalone components using ngx-echarts
   providers: [{ provide: NGX_ECHARTS_CONFIG, useValue: { echarts } }],
   templateUrl: './crime-stats.page.html',
   styleUrls: ['./crime-stats.page.scss'],
@@ -79,38 +75,33 @@ type TrendDirection = 'up' | 'down' | 'flat';
 export class CrimeStatsPage implements OnInit {
   private crimeStatsService = inject(CrimeStatsService);
   private themeService = inject(ThemeService);
+  private chartsService = inject(ChartsService);
   private destroyRef = inject(DestroyRef);
 
-  selectedCity: string = 'all';
+  selectedCity = 'all';
+  selectedCategory = 'all';
+  selectedTimeframe: TimeframeValue = 'year';
   loading = false;
+
   incidents: CrimeIncident[] = [];
   visibleIncidents: CrimeIncident[] = [];
-
-  topCrimeType: CrimeByType | null = null;
   timelineSummary: TimelineSummary | null = null;
+  timelineData: CrimeByTimeframe[] = [];
 
   crimeTypeChartOption: echarts.EChartsCoreOption = {};
   crimeTimelineChartOption: echarts.EChartsCoreOption = {};
+  crimeTypeChartHeight = 420;
 
-  readonly cities = [
-    { value: 'all', label: 'Halton Region' },
-    { value: 'Oakville', label: 'Oakville' },
-    { value: 'Burlington', label: 'Burlington' },
-    { value: 'Milton', label: 'Milton' },
-    { value: 'Halton Hills', label: 'Halton Hills' },
-  ];
-
-  private readonly excludedCrimeKeywords = [
-    'roadside test',
-    'roadside screening',
-  ];
-  private readonly trackedCrimeTypes = TRACKED_CRIME_TYPE_LABELS;
-  private readonly trackedCrimeTypeSet = new Set(TRACKED_CRIME_TYPE_LABELS);
+  readonly cities = CITIES;
+  readonly categories = CRIME_CATEGORIES;
+  readonly timeframes = TIMEFRAMES;
+  readonly selectInterfaceOptions = { side: 'end' as const };
 
   ngOnInit() {
     this.themeService.theme$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.updateCharts());
+
     this.loadCrimeData();
   }
 
@@ -119,15 +110,24 @@ export class CrimeStatsPage implements OnInit {
     this.loadCrimeData();
   }
 
-  loadCrimeData() {
+  onCategoryChange(event: any) {
+    this.selectedCategory = event.detail.value;
+    this.applyFilters();
+  }
+
+  onTimeframeChange(event: any) {
+    this.selectedTimeframe = event.detail.value;
+    this.applyFilters();
+  }
+
+  private loadCrimeData() {
     this.loading = true;
     const city = this.selectedCity === 'all' ? undefined : this.selectedCity;
 
     this.crimeStatsService.getCrimeIncidents(city).subscribe({
       next: (incidents) => {
         this.incidents = incidents;
-        this.visibleIncidents = this.filterIncidents(incidents);
-        this.updateCharts();
+        this.applyFilters();
         this.loading = false;
       },
       error: (error) => {
@@ -137,175 +137,88 @@ export class CrimeStatsPage implements OnInit {
     });
   }
 
+  private applyFilters() {
+    const normalizedAllowedTypes =
+      this.selectedCategory === 'all'
+        ? null
+        : new Set(
+            (CRIME_CATEGORY_MAPPING[this.selectedCategory] || []).map((t) =>
+              t.toLowerCase()
+            )
+          );
+
+    const categoryFiltered = normalizedAllowedTypes
+      ? this.incidents.filter((incident) => {
+          const formattedType = this.crimeStatsService.formatCrimeTypePublic(
+            incident.DESCRIPTION
+          );
+          return normalizedAllowedTypes.has(formattedType.toLowerCase());
+        })
+      : this.incidents;
+
+    this.timelineData = this.crimeStatsService.getCrimesByTimeframe(
+      categoryFiltered,
+      this.selectedTimeframe
+    );
+
+    if (this.timelineData.length) {
+      const timeframeStart = this.timelineData[0].rangeStart;
+      const timeframeEnd =
+        this.timelineData[this.timelineData.length - 1].rangeEnd;
+      this.visibleIncidents = categoryFiltered.filter((incident) => {
+        const timestamp = this.getIncidentTimestamp(incident);
+        if (timestamp === null) return false;
+        const normalized = this.normalizeTimestamp(timestamp);
+        return normalized >= timeframeStart && normalized <= timeframeEnd;
+      });
+    } else {
+      this.visibleIncidents = [];
+    }
+
+    this.updateCharts();
+  }
+
   private updateCharts() {
-    const incidents = this.visibleIncidents ?? [];
-    this.updateCrimeTypeChart(incidents);
-    this.updateCrimeTimelineChart(incidents);
-  }
+    const theme = this.chartsService.getChartTheme();
 
-  private updateCrimeTypeChart(incidents: CrimeIncident[]) {
-    const crimesByType =
-      this.crimeStatsService.getCrimesByType(incidents) ?? [];
-    const trackedCrimes = this.trackedCrimeTypes.map((label) => {
-      const match = crimesByType.find((crime) => crime.type === label);
-      return {
-        type: label,
-        count: match?.count ?? 0,
-      };
-    });
-    const otherTotal = crimesByType
-      .filter((crime) => !this.trackedCrimeTypeSet.has(crime.type))
-      .reduce((sum, crime) => sum + crime.count, 0);
-    const chartCrimes =
-      otherTotal > 0
-        ? [...trackedCrimes, { type: 'Other', count: otherTotal }]
-        : trackedCrimes;
-    this.topCrimeType = crimesByType[0] ?? chartCrimes[0] ?? null;
+    const crimesByType = this.crimeStatsService.getCrimesByType(
+      this.visibleIncidents,
+      { includeEmptyTypes: false }
+    );
 
-    const theme = this.getThemeTokens();
+    this.crimeTypeChartHeight = this.calculateCrimeTypeChartHeight(
+      crimesByType.length
+    );
 
-    this.crimeTypeChartOption = {
-      backgroundColor: 'transparent',
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: { type: 'shadow' },
-        backgroundColor: theme.tooltipBackground,
-        borderColor: theme.tooltipBorder,
-        textStyle: { color: theme.text },
-      },
-      grid: {
-        left: '3%',
-        right: '3%',
-        bottom: '3%',
-        top: '3%',
-        containLabel: true,
-      },
-      xAxis: {
-        type: 'value',
-        axisLabel: { color: theme.subtleText, fontSize: 12 },
-        splitLine: { lineStyle: { color: theme.gridLine } },
-        axisLine: { lineStyle: { color: theme.gridLine } },
-        axisTick: { show: false },
-      },
-      yAxis: {
-        type: 'category',
-        data: chartCrimes.map((c) => this.truncateLabel(c.type, 30)),
-        axisLabel: {
-          color: theme.text,
-          fontSize: 12,
-          lineHeight: 16,
-        },
-        axisLine: { show: false },
-        axisTick: { show: false },
-      },
-      series: [
-        {
-          name: 'Incidents',
-          type: 'bar',
-          data: chartCrimes.map((c) => c.count),
-          barWidth: 14,
-          itemStyle: {
-            color: theme.accent,
-            borderRadius: [4, 4, 4, 4],
-          },
-          label: {
-            show: true,
-            position: 'right',
-            fontSize: 11,
-            color: theme.text,
-          },
-        },
-      ],
-    };
-  }
+    this.crimeTypeChartOption = crimesByType.length
+      ? this.chartsService.createCrimeTypeChart(crimesByType, theme)
+      : {};
 
-  private updateCrimeTimelineChart(incidents: CrimeIncident[]) {
-    const crimesByMonth =
-      this.crimeStatsService.getCrimesByMonth(incidents) ?? [];
-    const theme = this.getThemeTokens();
-
-    this.timelineSummary = this.buildTimelineSummary(crimesByMonth);
-
-    this.crimeTimelineChartOption = {
-      backgroundColor: 'transparent',
-      tooltip: {
-        trigger: 'axis',
-        backgroundColor: theme.tooltipBackground,
-        borderColor: theme.tooltipBorder,
-        textStyle: { color: theme.text },
-      },
-      grid: {
-        left: '3%',
-        right: '3%',
-        bottom: '15%',
-        top: '3%',
-        containLabel: true,
-      },
-      xAxis: {
-        type: 'category',
-        data: crimesByMonth.map((c) => this.formatMonth(c.month)),
-        axisLabel: {
-          rotate: 45,
-          color: theme.subtleText,
-          fontSize: 11,
-        },
-        axisLine: { lineStyle: { color: theme.gridLine } },
-        axisTick: { show: false },
-      },
-      yAxis: {
-        type: 'value',
-        axisLabel: { color: theme.subtleText, fontSize: 11 },
-        splitLine: { lineStyle: { color: theme.gridLine } },
-      },
-      series: [
-        {
-          name: 'Total Crimes',
-          type: 'line',
-          data: crimesByMonth.map((c) => c.count),
-          smooth: true,
-          symbolSize: 8,
-          lineStyle: { color: theme.line },
-          itemStyle: {
-            color: theme.line,
-            borderWidth: 2,
-            borderColor: theme.lineBorder,
-          },
-          areaStyle: {
-            color: theme.lineArea,
-          },
-        },
-      ],
-    };
-  }
-
-  private filterIncidents(incidents: CrimeIncident[]): CrimeIncident[] {
-    return incidents.filter((incident) => {
-      const description = incident.DESCRIPTION?.toLowerCase() ?? '';
-      return !this.excludedCrimeKeywords.some((keyword) =>
-        description.includes(keyword)
+    if (this.timelineData.length) {
+      this.timelineSummary = this.buildTimelineSummary(this.timelineData);
+      this.crimeTimelineChartOption = this.chartsService.createTimelineChart(
+        this.timelineData,
+        theme
       );
-    });
+    } else {
+      this.timelineSummary = null;
+      this.crimeTimelineChartOption = {};
+    }
   }
 
   private buildTimelineSummary(
-    crimesByMonth: CrimeByMonth[]
+    data: CrimeByTimeframe[]
   ): TimelineSummary | null {
-    if (!crimesByMonth.length) {
-      return null;
-    }
+    if (!data.length) return null;
 
-    const latest = crimesByMonth[crimesByMonth.length - 1];
-    const previous =
-      crimesByMonth.length > 1 ? crimesByMonth[crimesByMonth.length - 2] : null;
+    const latest = data[data.length - 1];
+    const previous = data.length > 1 ? data[data.length - 2] : null;
 
-    const label = this.formatMonth(latest.month);
-    const previousLabel = previous ? this.formatMonth(previous.month) : null;
-    const changePercent =
-      previous && previous.count
-        ? ((latest.count - previous.count) / previous.count) * 100
-        : null;
+    const changePercent = previous?.count
+      ? ((latest.count - previous.count) / previous.count) * 100
+      : null;
 
-    const trend: TrendDirection =
+    const trend =
       changePercent === null
         ? 'flat'
         : changePercent > 0.5
@@ -315,8 +228,8 @@ export class CrimeStatsPage implements OnInit {
         : 'flat';
 
     return {
-      label,
-      previousLabel,
+      label: latest.label,
+      previousLabel: previous ? previous.label : null,
       count: latest.count,
       changePercent,
       previousCount: previous?.count ?? null,
@@ -324,137 +237,38 @@ export class CrimeStatsPage implements OnInit {
     };
   }
 
-  private truncateLabel(label: string, maxLength: number): string {
-    return label.length > maxLength
-      ? label.substring(0, maxLength) + '...'
-      : label;
-  }
-
-  private formatMonth(monthKey: string): string {
-    const [year, month] = monthKey.split('-');
-    const date = new Date(parseInt(year), parseInt(month) - 1);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-    });
-  }
-
-  private getThemeTokens(): ThemeTokens {
-    const styles = getComputedStyle(document.documentElement);
-    const accent = this.getCssValue(styles, '--app-accent-color', '#3880ff');
-    const text = this.getCssValue(styles, '--app-text-color', '#1f2937');
-    const secondaryVar = this.getCssValue(
-      styles,
-      '--app-text-color-secondary',
-      ''
-    );
-    const cardBackground = this.getCssValue(
-      styles,
-      '--ion-card-background',
-      '#ffffff'
-    );
-
-    const subtleText =
-      secondaryVar || this.toRgba(text, 0.7, 'rgba(100, 116, 139, 0.9)');
-
-    return {
-      accent,
-      text,
-      subtleText,
-      tooltipBackground: this.toRgba(
-        cardBackground,
-        0.96,
-        'rgba(15, 23, 42, 0.92)'
-      ),
-      tooltipBorder: this.toRgba(accent, 0.4, 'rgba(56, 128, 255, 0.4)'),
-      gridLine: this.toRgba(text, 0.15, 'rgba(148, 163, 184, 0.18)'),
-      line: accent,
-      lineBorder: this.toRgba(accent, 0.75, accent),
-      lineArea: this.toRgba(accent, 0.18, 'rgba(37, 99, 235, 0.18)'),
-    };
-  }
-
-  private getCssValue(
-    styles: CSSStyleDeclaration,
-    variable: string,
-    fallback: string
-  ): string {
-    const value = styles.getPropertyValue(variable);
-    return value?.trim() || fallback;
-  }
-
-  private toRgba(color: string, alpha: number, fallback: string): string {
-    const rgb = this.parseColor(color);
-    if (!rgb) {
-      return fallback;
-    }
-    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
-  }
-
-  private parseColor(
-    color: string
-  ): { r: number; g: number; b: number } | null {
-    if (!color) {
+  private getIncidentTimestamp(incident: CrimeIncident): number | null {
+    if (!incident?.DATE) {
       return null;
     }
 
-    const normalized = color.trim();
-
-    if (normalized.startsWith('#')) {
-      let hex = normalized.slice(1);
-      if (hex.length === 3) {
-        hex = hex
-          .split('')
-          .map((char) => char + char)
-          .join('');
-      }
-
-      if (hex.length !== 6) {
-        return null;
-      }
-
-      const intVal = parseInt(hex, 16);
-      return {
-        r: (intVal >> 16) & 255,
-        g: (intVal >> 8) & 255,
-        b: intVal & 255,
-      };
+    if (typeof incident.DATE === 'number') {
+      return incident.DATE;
     }
 
-    const rgbMatch =
-      normalized.match(
-        /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*[\d.]+\s*)?\)/
-      ) ?? null;
-
-    if (rgbMatch) {
-      return {
-        r: Number(rgbMatch[1]),
-        g: Number(rgbMatch[2]),
-        b: Number(rgbMatch[3]),
-      };
+    const numeric = Number(incident.DATE);
+    if (!Number.isNaN(numeric)) {
+      return numeric;
     }
 
-    return null;
+    const parsed = new Date(incident.DATE);
+    const time = parsed.getTime();
+    return Number.isNaN(time) ? null : time;
   }
-}
 
-interface TimelineSummary {
-  label: string;
-  previousLabel: string | null;
-  count: number;
-  changePercent: number | null;
-  previousCount: number | null;
-  trend: TrendDirection;
-}
+  private normalizeTimestamp(timestamp: number): number {
+    const normalized = new Date(timestamp);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized.getTime();
+  }
 
-interface ThemeTokens {
-  accent: string;
-  text: string;
-  subtleText: string;
-  tooltipBackground: string;
-  tooltipBorder: string;
-  gridLine: string;
-  line: string;
-  lineBorder: string;
-  lineArea: string;
+  private calculateCrimeTypeChartHeight(categoryCount: number): number {
+    if (!categoryCount) {
+      return 220;
+    }
+    const baseHeight = 220;
+    const perCategoryHeight = 34;
+    const buffer = 80;
+    return Math.max(baseHeight, categoryCount * perCategoryHeight + buffer);
+  }
 }

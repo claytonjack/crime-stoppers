@@ -28,6 +28,8 @@ import { Event } from 'src/app/features/events/models/event.model';
 import { StrapiResponse } from 'src/app/core/models/strapi.model';
 import { HeaderComponent } from 'src/app/core/components/header/header.component';
 import { CalendarService } from 'src/app/features/events/calendar.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ScreenReaderService } from 'src/app/core/pages/settings/services/screen-reader.service';
 
 import { register } from 'swiper/element/bundle';
 import { SwiperContainer } from 'swiper/element';
@@ -53,6 +55,7 @@ register();
     IonButton,
     NgIcon,
     HeaderComponent,
+    TranslateModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -64,6 +67,8 @@ export class EventDetailsPage implements OnInit {
   private readonly modalController = inject(ModalController);
   private readonly calendarService = inject(CalendarService);
   private readonly alertController = inject(AlertController);
+  private readonly translate = inject(TranslateService);
+  private readonly screenReader = inject(ScreenReaderService);
 
   readonly event = signal<Event | null>(null);
   readonly isLoading = signal<boolean>(true);
@@ -71,16 +76,17 @@ export class EventDetailsPage implements OnInit {
   readonly selectedImageIndex = signal<number>(0);
   readonly isImageModalOpen = signal<boolean>(false);
 
-  ngOnInit() {
-    this.loadEvent();
+  async ngOnInit() {
+    await this.loadEvent();
   }
 
   private async loadEvent() {
     const documentId = this.route.snapshot.paramMap.get('documentId');
 
     if (!documentId) {
-      this.error.set('Invalid event ID');
+      this.error.set('feature.eventDetails.errors.invalidId');
       this.isLoading.set(false);
+      await this.screenReader.speak('Invalid event ID. Unable to load event.');
       return;
     }
 
@@ -91,18 +97,24 @@ export class EventDetailsPage implements OnInit {
 
       if (response?.data) {
         this.event.set(response.data);
+        await this.screenReader.speak(
+          `Event ${response.data.Title} loaded successfully`
+        );
       } else {
-        this.error.set('Event not found');
+        this.error.set('feature.eventDetails.errors.notFound');
+        await this.screenReader.speak('Event not found');
       }
     } catch (error) {
       console.error('Error loading event:', error);
-      this.error.set('Failed to load event');
+      this.error.set('feature.eventDetails.errors.failed');
+      await this.screenReader.speak('Failed to load event due to an error');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  goBack() {
+  async goBack() {
+    await this.screenReader.speak('Navigated back to the previous page');
     this.location.back();
   }
 
@@ -135,18 +147,24 @@ export class EventDetailsPage implements OnInit {
     return this.strapiService.getImageUrl(imageUrl);
   }
 
-  onImageClick(index: number) {
+  async onImageClick(index: number) {
     this.selectedImageIndex.set(index);
     this.isImageModalOpen.set(true);
+    await this.screenReader.speak(`Opening image ${index + 1}`);
   }
 
-  closeImageModal() {
+  async closeImageModal() {
     this.isImageModalOpen.set(false);
+    await this.screenReader.speak('Closed image preview');
   }
 
-  onSwiperSlideChange(event: any) {
+  async onSwiperSlideChange(event: any) {
     if (event.detail && event.detail[0]) {
-      this.selectedImageIndex.set(event.detail[0].activeIndex);
+      const newIndex = event.detail[0].activeIndex;
+      this.selectedImageIndex.set(newIndex);
+      await this.screenReader.speak(
+        `Image ${newIndex + 1} of ${this.event()?.Images?.length || 0}`
+      );
     }
   }
 
@@ -158,7 +176,8 @@ export class EventDetailsPage implements OnInit {
       const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
 
       const res = await this.calendarService.addEvent(
-        evnt.Title || 'Community Event',
+        evnt.Title ||
+          this.translate.instant('feature.events.calendar.defaultTitle'),
         evnt.Location || '',
         '',
         startDate,
@@ -169,12 +188,20 @@ export class EventDetailsPage implements OnInit {
       let message = '';
 
       if (res?.success) {
-        header = 'Saved to calendar';
-        message = 'This event was added to your calendar.';
+        header = this.translate.instant('feature.events.calendar.savedTitle');
+        message = this.translate.instant(
+          'feature.events.calendar.savedMessage'
+        );
+        await this.screenReader.speak('Event saved to calendar');
       } else {
         header =
-          res?.reason === 'permission' ? 'Permission required' : 'Save failed';
-        message = res?.message || 'Could not save this event to your calendar.';
+          res?.reason === 'permission'
+            ? this.translate.instant('feature.events.calendar.permissionTitle')
+            : this.translate.instant('feature.events.calendar.failureTitle');
+        message =
+          res?.message ||
+          this.translate.instant('feature.events.calendar.failureMessage');
+        await this.screenReader.speak('Failed to save event to calendar');
       }
 
       const alert = await this.alertController.create({
@@ -182,7 +209,7 @@ export class EventDetailsPage implements OnInit {
         message,
         buttons: [
           {
-            text: 'Ok',
+            text: this.translate.instant('core.common.buttons.ok'),
             role: 'ok',
           },
         ],
@@ -191,10 +218,13 @@ export class EventDetailsPage implements OnInit {
 
       await alert.present();
     } catch (err) {
+      await this.screenReader.speak(
+        'An unexpected error occurred while saving the event to calendar'
+      );
       const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'An unexpected error occurred while saving the event.',
-        buttons: ['Ok'],
+        header: this.translate.instant('core.common.error'),
+        message: this.translate.instant('feature.events.calendar.errorMessage'),
+        buttons: [this.translate.instant('core.common.buttons.ok')],
         backdropDismiss: false,
       });
       await alert.present();

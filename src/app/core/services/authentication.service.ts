@@ -42,7 +42,6 @@ export class BiometricAuthService {
     const enabled = value === 'true';
     this.authEnabledSubject.next(enabled);
 
-    // If auth is enabled, start as not authenticated
     if (enabled) {
       this.authenticatedSubject.next(false);
     } else {
@@ -50,18 +49,12 @@ export class BiometricAuthService {
     }
   }
 
-  /**
-   * Mark user as not authenticated (called when app goes to background)
-   */
   public markAsUnauthenticated(): void {
     if (this.authEnabledSubject.value) {
       this.authenticatedSubject.next(false);
     }
   }
 
-  /**
-   * Check if biometric authentication is available on this device
-   */
   public async checkBiometryAvailability(): Promise<CheckBiometryResult> {
     try {
       return await BiometricAuth.checkBiometry();
@@ -79,9 +72,6 @@ export class BiometricAuthService {
     }
   }
 
-  /**
-   * Get a user-friendly name for the available biometry type
-   */
   public async getBiometryTypeName(): Promise<string> {
     const result = await this.checkBiometryAvailability();
 
@@ -101,9 +91,6 @@ export class BiometricAuthService {
     }
   }
 
-  /**
-   * Enable biometric authentication
-   */
   public async enableAuth(): Promise<boolean> {
     const availability = await this.checkBiometryAvailability();
 
@@ -113,7 +100,6 @@ export class BiometricAuthService {
       );
     }
 
-    // Test authentication before enabling
     const success = await this.authenticate('Enable biometric authentication');
 
     if (success) {
@@ -126,18 +112,12 @@ export class BiometricAuthService {
     return false;
   }
 
-  /**
-   * Disable biometric authentication
-   */
   public async disableAuth(): Promise<void> {
     await Preferences.set({ key: AUTH_ENABLED_KEY, value: 'false' });
     this.authEnabledSubject.next(false);
     this.authenticatedSubject.next(true);
   }
 
-  /**
-   * Authenticate the user
-   */
   public async authenticate(reason?: string): Promise<boolean> {
     try {
       const biometryType = await this.getBiometryTypeName();
@@ -146,7 +126,7 @@ export class BiometricAuthService {
       await BiometricAuth.authenticate({
         reason: reason || defaultReason,
         cancelTitle: 'Cancel',
-        allowDeviceCredential: true, // Allow PIN/password fallback
+        allowDeviceCredential: true,
         iosFallbackTitle: 'Use Passcode',
         androidTitle: 'Authenticate',
         androidSubtitle: biometryType,
@@ -158,34 +138,23 @@ export class BiometricAuthService {
     } catch (error: any) {
       console.error('Authentication failed:', error);
 
-      // User cancelled
       if (error.code === 10 || error.code === 13) {
         return false;
       }
 
-      // Other errors
       this.authenticatedSubject.next(false);
       return false;
     }
   }
 
-  /**
-   * Check if user is currently authenticated
-   */
   public isAuthenticated(): boolean {
     return this.authenticatedSubject.value;
   }
 
-  /**
-   * Check if auth is enabled
-   */
   public isAuthEnabled(): boolean {
     return this.authEnabledSubject.value;
   }
 
-  /**
-   * Reset authentication state (for testing or logout)
-   */
   public resetAuthentication(): void {
     if (this.authEnabledSubject.value) {
       this.authenticatedSubject.next(false);

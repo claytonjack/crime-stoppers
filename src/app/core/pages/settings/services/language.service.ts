@@ -23,8 +23,8 @@ const LANGUAGE_KEY = 'app_language';
 
 export const AVAILABLE_LANGUAGES: LanguageConfig[] = [
   { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'fr-CA', name: 'French (CA)', nativeName: 'Français (CA)' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español' },
+  { code: 'fr-CA', name: 'French (CA)', nativeName: 'Fran\u00e7ais (CA)' },
+  { code: 'es', name: 'Spanish', nativeName: 'Espa\u00f1ol' },
 ];
 
 @Injectable({

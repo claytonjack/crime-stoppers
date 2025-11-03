@@ -1,20 +1,21 @@
-<app-header title="Donate"></app-header>
+<app-header [title]="'feature.donate.headerTitle' | translate"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-label="Donate page content">
 	<ion-grid>
-		<ion-row>
+		<ion-row role="region" aria-labelledby="why-donate-heading">
 			<ion-col size="12" class="ion-text-center">
-				<h2>Why Donate to Us?</h2>
+				<h2>{{ 'feature.donate.sections.why.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-labelledby="direct-community-impact">
 					<ion-item class="info-header">
-						<ion-label>Direct Community Impact</ion-label>
+						<ion-label tabindex="0">{{ 'feature.donate.sections.why.directImpact.title' | translate }}</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Your donation helps solve crimes and keeps your neighborhood safe
+					<div class="info-content" tabindex="0"
+						[attr.aria-label]="'feature.donate.sections.why.directImpact.description' | translate">
+						{{ 'feature.donate.sections.why.directImpact.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -22,12 +23,13 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-labelledby="community-funded">
 					<ion-item class="info-header">
-						<ion-label>100% Community Funded</ion-label>
+						<ion-label tabindex="0">{{ 'feature.donate.sections.why.communityFunded.title' | translate }}</ion-label>
 					</ion-item>
-					<div class="info-content">
-						We rely on donations from our sponsors, community organizations and members of the public
+					<div class="info-content" tabindex="0"
+						[attr.aria-label]="'feature.donate.sections.why.communityFunded.description' | translate">
+						{{ 'feature.donate.sections.why.communityFunded.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -35,12 +37,13 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-labelledby="safe-secure">
 					<ion-item class="info-header">
-						<ion-label>Safe & Secure</ion-label>
+						<ion-label tabindex="0">{{ 'feature.donate.sections.why.safeSecure.title' | translate }}</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Donations processed through CanadaHelps with industry-leading security
+					<div class="info-content" tabindex="0"
+						[attr.aria-label]="'feature.donate.sections.why.safeSecure.description' | translate">
+						{{ 'feature.donate.sections.why.safeSecure.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -48,12 +51,12 @@
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-labelledby="trusted-transparent">
 					<ion-item class="info-header">
-						<ion-label>Trusted & Transparent</ion-label>
+						<ion-label tabindex="0">{{ 'feature.donate.sections.why.transparent.title' | translate }}</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Registered charity with full accountability and transparency. Charitable Registration Number:
+					<div class="info-content" tabindex="0" aria-label="Charitable Registration Number: 134475375RR0001">
+						{{ 'feature.donate.sections.why.transparent.description' | translate }}
 						<strong>134475375RR0001</strong>
 					</div>
 				</div>
@@ -63,11 +66,12 @@
 		<ion-row>
 			<ion-col size="12">
 				<div class="info-item">
-					<ion-item class="info-header">
-						<ion-label>Tax Deductible</ion-label>
+					<ion-item class="info-header" role="group" aria-labelledby="tax-deductible">
+						<ion-label tabindex="0">{{ 'feature.donate.sections.why.taxDeductible.title' | translate }}</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Receive an official charitable tax receipt for your donation
+					<div class="info-content" tabindex="0"
+						[attr.aria-label]="'feature.donate.sections.why.taxDeductible.description' | translate">
+						{{ 'feature.donate.sections.why.taxDeductible.description' | translate }}
 					</div>
 				</div>
 			</ion-col>
@@ -76,13 +80,15 @@
 		<!-- Donation Form -->
 		<ion-row id="donation-form">
 			<ion-col size="12" class="ion-text-center">
-				<h2>Donate Now</h2>
+				<h2 tabindex="0" aria-label="Donate Now Section">{{ 'feature.donate.sections.form.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12" class="ion-padding">
-				<iframe src="https://www.canadahelps.org/en/dn/93928" title="Donate Now" width="100%" height="800"
-					style="border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);"></iframe>
+				<iframe src="https://www.canadahelps.org/en/dn/93928"
+					[attr.title]="'feature.donate.sections.form.iframeTitle' | translate" width="100%" height="800"
+					style="border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);" role="application"
+					aria-label="Donation form from CanadaHelps"></iframe>
 			</ion-col>
 		</ion-row>
 	</ion-grid>

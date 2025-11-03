@@ -1,47 +1,47 @@
-<app-header title="Volunteer"></app-header>
+<app-header [title]="'feature.volunteer.headerTitle' | translate"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-label="Volunteer page content">
 	<ion-grid>
 		<!-- Why Join Our Team -->
-		<ion-row>
+		<ion-row role="region" aria-labelledby="why-join-heading">
 			<ion-col size="12" class="ion-text-center">
-				<h2>Why Join Our Team?</h2>
+				<h2 tabindex="0" aria-label="Why Join Our Team section">{{ 'feature.volunteer.hero.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
-					<div class="info-content hero-content">
-						Volunteering with Crime Stoppers Halton offers you the opportunity to make a real impact in your community
-						while developing valuable skills and connections. You'll join a supportive team where your contributions
-						matter, gain meaningful experience, and help create a safer Halton region for everyone.
+				<div class="info-item" role="group" aria-labelledby="why-join-content">
+					<div class="info-content hero-content" [attr.aria-label]="'feature.volunteer.hero.description' | translate">
+						{{ 'feature.volunteer.hero.description' | translate }}
 					</div>
 				</div>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
-				<ion-text>
-					<p>Note: You must work, reside in, or have a substantial interest in the Halton Region to be
-						considered.</p>
+				<ion-text [attr.aria-label]="'feature.volunteer.hero.note' | translate">
+					<p>{{ 'feature.volunteer.hero.note' | translate }}</p>
 				</ion-text>
 			</ion-col>
 		</ion-row>
 
 		<!-- How to Apply -->
-		<ion-row>
+		<ion-row role="region" aria-labelledby="how-to-apply-heading">
 			<ion-col size="12" class="ion-text-center">
-				<h2>How to Apply</h2>
+				<h2 (click)="announceSection('How to Apply')">{{ 'feature.volunteer.howToApply.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col size="12">
-				<div class="info-item">
+				<div class="info-item" role="group" aria-labelledby="step1-label">
 					<ion-item class="info-header">
-						<ion-label>Step 1: Download Form</ion-label>
+						<ion-label aria-label="Step 1: Download Form">
+							{{ 'feature.volunteer.howToApply.steps.step1.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Select the button below to download the form related to your age group or skill set
+					<div class="info-content"
+						[attr.aria-label]="'feature.volunteer.howToApply.steps.step1.description' | translate">
+						{{ 'feature.volunteer.howToApply.steps.step1.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -50,11 +50,14 @@
 		<ion-row>
 			<ion-col size="12">
 				<div class="info-item">
-					<ion-item class="info-header">
-						<ion-label>Step 2: Complete the Application</ion-label>
+					<ion-item class="info-header" aria-label="Step 2: Complete the Application">
+						<ion-label>
+							{{ 'feature.volunteer.howToApply.steps.step2.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Fill out all sections of the application form completely and accurately
+					<div class="info-content"
+						[attr.aria-label]="'feature.volunteer.howToApply.steps.step2.description' | translate">
+						{{ 'feature.volunteer.howToApply.steps.step2.description' | translate }}
 					</div>
 				</div>
 				<ion-item-divider></ion-item-divider>
@@ -63,12 +66,15 @@
 		<ion-row>
 			<ion-col size="12">
 				<div class="info-item">
-					<ion-item class="info-header">
-						<ion-label>Step 3: Submit Your Application</ion-label>
+					<ion-item class="info-header" aria-label="Step 3: Submit Your Application">
+						<ion-label>
+							{{ 'feature.volunteer.howToApply.steps.step3.title' | translate }}
+						</ion-label>
 					</ion-item>
-					<div class="info-content">
-						Email your completed application and personal resume to <strong>info@haltoncrimestoppers.ca</strong>
-					</div>
+					<div class="info-content" aria-label="Email your completed application and personal resume to" [innerHTML]="
+							'feature.volunteer.howToApply.steps.step3.description'
+								| translate : { email: '<strong>info@haltoncrimestoppers.ca</strong>' }
+						"></div>
 				</div>
 			</ion-col>
 		</ion-row>
@@ -76,7 +82,7 @@
 		<!-- Apply Now -->
 		<ion-row>
 			<ion-col size="12" class="ion-text-center">
-				<h2>Apply Now</h2>
+				<h2 (click)="announceSection('Apply Now')">{{ 'feature.volunteer.applyNow.title' | translate }}</h2>
 			</ion-col>
 		</ion-row>
 
@@ -84,33 +90,36 @@
 			<ion-col size="12">
 				<div class="ion-text-center ion-margin-bottom">
 					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
-						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_volunteer_application___fillable_013519.pdf_182433.pdf')">
-						Adult Volunteer
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_volunteer_application___fillable_013519.pdf_182433.pdf','Adult Volunteer')"
+						[attr.aria-label]="'feature.volunteer.applyNow.adult.label' | translate">
+						{{ 'feature.volunteer.applyNow.adult.label' | translate }}
 					</ion-button>
 					<div class="info-content">
-						Assist with community events, fundraising activities, and awareness campaigns
+						{{ 'feature.volunteer.applyNow.adult.description' | translate }}
 					</div>
 				</div>
 			</ion-col>
 			<ion-col size="12">
 				<div class="ion-text-center ion-margin-bottom">
 					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
-						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_youth_volunteer_application___fillable_013546.pdf_182502.pdf')">
-						Youth Volunteer
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2025_youth_volunteer_application___fillable_013546.pdf_182502.pdf','Youth Volunteer')"
+						[attr.aria-label]="'feature.volunteer.applyNow.youth.label' | translate">
+						{{ 'feature.volunteer.applyNow.youth.label' | translate }}
 					</ion-button>
 					<div class="info-content">
-						High school and university students can gain valuable experience through co-op placements
+						{{ 'feature.volunteer.applyNow.youth.description' | translate }}
 					</div>
 				</div>
 			</ion-col>
 			<ion-col size="12">
 				<div class="ion-text-center ion-margin-bottom">
 					<ion-button fill="outline" size="large" class="btn-elevated ion-margin-bottom"
-						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2018_board_of_directors_application___fillable_013608.pdf')">
-						Board Member
+						(click)="openPdf('https://www.haltoncrimestoppers.ca/file_uploads/2018_board_of_directors_application___fillable_013608.pdf','Board Member')"
+						[attr.aria-label]="'feature.volunteer.applyNow.board.label' | translate">
+						{{ 'feature.volunteer.applyNow.board.label' | translate }}
 					</ion-button>
-					<div class="info-content">
-						Provide leadership and strategic guidance through our Board of Directors
+					<div class="info-content" [attr.aria-label]="'feature.volunteer.applyNow.board.description' | translate">
+						{{ 'feature.volunteer.applyNow.board.description' | translate }}
 					</div>
 				</div>
 			</ion-col>

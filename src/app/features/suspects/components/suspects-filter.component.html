@@ -1,26 +1,28 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Filter Suspects</ion-title>
+		<ion-title id="filter-title">{{ 'feature.suspects.filter.title' | translate }}</ion-title>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-list>
+<ion-content aria-labelledby="filter-title">
+	<ion-list role="radiogroup" [attr.aria-label]="'feature.suspects.filter.selectLocationAriaLabel' | translate">
 		<ion-radio-group [(ngModel)]="selectedSceneLocal" (ionChange)="onSelectionChange($event)">
 			<ion-item>
-				<ion-label>All Locations</ion-label>
-				<ion-radio slot="start" value=""></ion-radio>
+				<ion-label>{{ 'feature.suspects.filter.allLocations' | translate }}</ion-label>
+				<ion-radio slot="start" value=""
+					[attr.aria-label]="'feature.suspects.filter.allLocations' | translate"></ion-radio>
 			</ion-item>
 			<ion-item *ngFor="let scene of scenes">
 				<ion-label>{{ scene }}</ion-label>
-				<ion-radio slot="start" [value]="scene"></ion-radio>
+				<ion-radio slot="start" [value]="scene" [attr.aria-label]="scene"></ion-radio>
 			</ion-item>
 		</ion-radio-group>
 	</ion-list>
 
 	<div class="filter-footer">
-		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()">
-			Clear Filters
+		<ion-button expand="block" fill="clear" color="medium" (click)="clearAndClose()"
+			[attr.aria-label]="'feature.suspects.filter.clearFiltersAriaLabel' | translate">
+			{{ 'core.common.buttons.clearFilters' | translate }}
 		</ion-button>
 	</div>
 </ion-content>

@@ -1,116 +1,456 @@
 {
-  "home": {
-    "cta": {
-      "submitTip": "Submit a Tip",
-      "anonymousSecureRewarded": "Anonymous • Secure • Rewarded"
+  "core": {
+    "tabMenu": {
+      "alerts": "Alerts",
+      "events": "Events",
+      "map": "Map",
+      "stats": "Stats"
     },
-    "segments": {
-      "aboutUs": "About Us",
-      "tipProcedure": "Tip Procedure"
-    },
-    "aboutItems": {
-      "ourStory": {
-        "title": "Our Story",
-        "details": "Crime Stoppers of Halton is a non-profit organization with 35+ years of service, working as part of a global network of 1,800 crime prevention programs."
-      },
-      "whatWeDo": {
-        "title": "What We Do",
-        "details": "We enable anonymous crime reporting with rewards up to $2,000 for successful tips, connecting citizens with police while guaranteeing complete anonymity."
-      },
-      "communityImpact": {
-        "title": "Community Impact",
-        "details": "Together, we create a safer Halton Region through community-powered crime prevention that protects tipsters while helping solve crimes."
+    "sideMenu": {
+      "suspects": "Suspects",
+      "communityWatch": "Community Watch",
+      "donate": "Donate",
+      "volunteer": "Volunteer",
+      "contact": "Contact Us",
+      "settings": "Settings",
+      "testNotifications": {
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "inactivity": "Inactivity"
       }
     },
-    "procedureSteps": {
-      "step1": {
-        "title": "Step 1: Submit Your Tip",
-        "details": "Submit your tip anonymously and we will issue you a code number that you can use to inquire about the status of your tip."
+    "settings": {
+      "theme": {
+        "title": "Theme",
+        "description": "Choose colour scheme",
+        "select": "Select Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
       },
-      "step2": {
-        "title": "Step 2: Sharing Your Tip'",
-        "details": "The valuable information you provide anonymously is shared with law enforcement."
+      "fontSize": {
+        "title": "Font Size",
+        "description": "Adjust text size",
+        "select": "Select Font Size",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
       },
-      "step3": {
-        "title": "Step 3: The Investigation",
-        "details": "Once the investigation is complete, Crime Stoppers of Halton is advised of the case results."
+      "language": {
+        "title": "Language",
+        "description": "Select defualt language",
+        "select": "Select Language",
+        "options": {
+          "en": "English",
+          "fr-CA": "Français (CA)",
+          "es": "Español"
+        }
       },
-      "step4": {
-        "title": "Step 4: Reward Amount",
-        "details": "The usefulness of your tip will be reviewed by Crime Stoppers of Halton to determine the amount of your cash reward."
+      "screenReader": {
+        "title": "Screen Reader",
+        "description": "Enable screen reader support",
+        "enabled": "Enabled"
       },
-      "step5": {
-        "title": "Step 5: Tip Inquiry",
-        "details": "Use your tip number to inquire by phone or online about the status of your tip and possible cash reward up to $2000."
+      "authentication": {
+        "title": "Authentication",
+        "description": "Require biometrics or bin for access",
+        "disabled": "Disabled"
       },
-      "step6": {
-        "title": "Step 6: Reward Arranged",
-        "details": "Crime Stoppers of Halton will authorize the bank (or other public outlet) to prepare your cash reward identifiable by your tip number."
+      "privacyMode": {
+        "title": "Privacy Mode",
+        "description": "Control app content visibility",
+        "select": "Select Privacy Mode",
+        "enabled": "Enabled",
+        "disabled": "Disabled"
       },
-      "step7": {
-        "title": "Step 7: Cash Pick-up",
-        "details": "A tip inquiry will tell you the amount of your cash award & where you can pick it up by providing your tip number only – no ID needed."
+      "notifications": {
+        "title": "Notifications",
+        "description": "Enable or disable notifications"
+      },
+      "reset": {
+        "title": "Reset Settings",
+        "description": "Restore default values",
+        "confirm": "Are you sure you want to reset all settings to their default values?",
+        "cancel": "Cancel",
+        "reset": "Reset"
+      }
+    },
+    "header": {
+      "openMenu": "Open side menu"
+    },
+    "lockScreen": {
+      "logoAlt": "Crime Stoppers logo",
+      "title": "App Locked",
+      "authenticate": "Authenticate",
+      "authFailed": "Authentication failed. Please try again."
+    },
+    "privacyMode": {
+      "headerTitle": "Privacy Mode",
+      "selectedDate": "Date: {{date}}",
+      "noDate": "Not selected",
+      "noEvents": "No events scheduled for this day"
+    },
+    "common": {
+      "error": "Error",
+      "goBack": "Go Back",
+      "aria": {
+        "filter": "Filter",
+        "goBack": "Go back"
+      },
+      "buttons": {
+        "save": "Save",
+        "clearFilters": "Clear Filters",
+        "ok": "Ok"
+      },
+      "modal": {
+        "imageTitle": "Image {{current}} of {{total}}"
       }
     }
   },
-  "tipInfo": {
-    "title": "Tip Information",
-    "close": "Close",
-    "intro": "For emergencies, call the police. This tip system is for non-urgent information about past or potential crimes. Examples:",
-    "example1": "Information about unsolved crimes.",
-    "example2": "Suspected illegal activities.",
-    "example3": "Knowledge of potential threats to the community.",
-    "details": "To aid investigations, provide comprehensive details. Your anonymity is guaranteed.",
-    "continue": "Continue to Tip"
-  },
-  "settings": {
-    "language": {
-      "title": "Language",
-      "description": "Choose your preferred language",
-      "select": "Select Language"
+  "feature": {
+    "home": {
+      "tipButton": {
+        "submitTip": "Submit a Tip",
+        "anonymousSecureRewarded": "Anonymous | Secure | Rewarded"
+      },
+      "segments": {
+        "aboutUs": "About Us",
+        "tipProcedure": "Tip Procedure"
+      },
+      "aboutItems": {
+        "ourStory": {
+          "title": "Our Story",
+          "details": "Crime Stoppers of Halton is a non-profit organization with 35+ years of service, working as part of a global network of 1,800 crime prevention programs."
+        },
+        "whatWeDo": {
+          "title": "What We Do",
+          "details": "We enable anonymous crime reporting with rewards up to $2,000 for successful tips, connecting citizens with police while guaranteeing complete anonymity."
+        },
+        "communityImpact": {
+          "title": "Community Impact",
+          "details": "Together, we create a safer Halton Region through community-powered crime prevention that protects tipsters while helping solve crimes."
+        }
+      },
+      "procedureSteps": {
+        "step1": {
+          "title": "Step 1: Submit Your Tip",
+          "details": "Submit your tip anonymously and we will issue you a code number that you can use to inquire about the status of your tip."
+        },
+        "step2": {
+          "title": "Step 2: Sharing Your Tip'",
+          "details": "The valuable information you provide anonymously is shared with law enforcement."
+        },
+        "step3": {
+          "title": "Step 3: The Investigation",
+          "details": "Once the investigation is complete, Crime Stoppers of Halton is advised of the case results."
+        },
+        "step4": {
+          "title": "Step 4: Reward Amount",
+          "details": "The usefulness of your tip will be reviewed by Crime Stoppers of Halton to determine the amount of your cash reward."
+        },
+        "step5": {
+          "title": "Step 5: Tip Inquiry",
+          "details": "Use your tip number to inquire by phone or online about the status of your tip and possible cash reward up to $2000."
+        },
+        "step6": {
+          "title": "Step 6: Reward Arranged",
+          "details": "Crime Stoppers of Halton will authorize the bank (or other public outlet) to prepare your cash reward identifiable by your tip number."
+        },
+        "step7": {
+          "title": "Step 7: Cash Pick-up",
+          "details": "A tip inquiry will tell you the amount of your cash award & where you can pick it up by providing your tip number only - no ID needed."
+        }
+      },
+      "tipInfo": {
+        "title": "Tip Information",
+        "close": "Close",
+        "intro": "For emergencies, call the police. This tip system is for non-urgent information about past or potential crimes. Examples:",
+        "example1": "Information about unsolved crimes.",
+        "example2": "Suspected illegal activities.",
+        "example3": "Knowledge of potential threats to the community.",
+        "details": "To aid investigations, provide comprehensive details. Your anonymity is guaranteed.",
+        "continue": "Continue to Tip"
+      }
     },
-    "theme": {
-      "title": "Theme",
-      "description": "Choose your preferred color scheme",
-      "select": "Select Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System"
+    "contact": {
+      "headerTitle": "Contact Us",
+      "columns": {
+        "name": "Name",
+        "title": "Title"
+      },
+      "sections": {
+        "generalInquiries": {
+          "title": "General Inquiries"
+        },
+        "board": {
+          "title": "Board of Directors"
+        }
+      },
+      "roles": {
+        "executiveDirector": "Executive Director",
+        "policeCoordinator": "HRPS Police Coordinator",
+        "chair": "Chair",
+        "viceChair": "Vice-Chair",
+        "secretary": "Secretary",
+        "treasurer": "Treasurer",
+        "immediatePastChair": "Immediate Past-Chair",
+        "director": "Director"
+      },
+      "fields": {
+        "phone": {
+          "label": "Phone",
+          "value": "905-825-4747 ext.5139"
+        },
+        "mail": {
+          "label": "Mail",
+          "value": "2485 North Service Road W,<br>Oakville ON, L6M 3H8"
+        }
+      }
     },
-    "fontSize": {
-      "title": "Font Size",
-      "description": "Adjust text size for better readability",
-      "select": "Select Font Size",
-      "small": "Small",
-      "medium": "Medium",
-      "large": "Large"
+    "communityWatch": {
+      "headerTitle": "Community Watch",
+      "hero": {
+        "tagline": "Prevent | Report | Community",
+        "description": "Join your neighbours in Oakville's Ward 3 for the Community Watch pilot, a partnership between <strong>Crime Stoppers of Halton</strong>, <strong>Halton Regional Police</strong>, and the <strong>Halton Police Board</strong> working together to build a safer and stronger community."
+      },
+      "actions": {
+        "subscribe": "Subscribe to Newsletter",
+        "downloadReport": "Download<br>Inspection Report"
+      },
+      "benefits": {
+        "title": "Program Benefits",
+        "stayInformed": {
+          "title": "Stay Informed",
+          "description": "Regular email updates with local safety tips and crime trends."
+        },
+        "anonymousReporting": {
+          "title": "Anonymous Reporting",
+          "description": "Confidential way to report suspicious activities."
+        },
+        "visibilityMaterials": {
+          "title": "Visibility Materials",
+          "description": "Free window clings and lawn signs (Tue/Wed 8-4 at HRP HQ)."
+        },
+        "camsafe": {
+          "title": "CamSafe Registration",
+          "description": "Connect security cameras to help solve crimes."
+        },
+        "partnerDiscounts": {
+          "title": "Partner Discounts",
+          "description": "Savings on security products and services."
+        },
+        "buildConnections": {
+          "title": "Build Connections",
+          "description": "Meet neighbours and strengthen community bonds."
+        }
+      },
+      "partners": {
+        "title": "Our Partners"
+      }
     },
-    "privacyMode": {
-      "title": "Privacy Mode",
-      "description": "Control data collection and visibility",
-      "select": "Select Privacy Mode",
-      "enabled": "Enabled",
-      "disabled": "Disabled"
+    "donate": {
+      "headerTitle": "Donate",
+      "sections": {
+        "why": {
+          "title": "Why Donate to Us?",
+          "directImpact": {
+            "title": "Direct Community Impact",
+            "description": "Your donation helps solve crimes and keeps your neighborhood safe."
+          },
+          "communityFunded": {
+            "title": "100% Community Funded",
+            "description": "We rely on donations from our sponsors, community organizations, and members of the public."
+          },
+          "safeSecure": {
+            "title": "Safe & Secure",
+            "description": "Donations processed through CanadaHelps with industry-leading security."
+          },
+          "transparent": {
+            "title": "Trusted & Transparent",
+            "description": "Registered charity with full accountability and transparency. Charitable Registration Number:"
+          },
+          "taxDeductible": {
+            "title": "Tax Deductible",
+            "description": "Receive an official charitable tax receipt for your donation."
+          }
+        },
+        "form": {
+          "title": "Donate Now",
+          "iframeTitle": "Donate Now"
+        }
+      }
     },
-    "notifications": {
-      "title": "Notifications",
-      "description": "Enable or disable notifications"
+    "volunteer": {
+      "headerTitle": "Volunteer",
+      "hero": {
+        "title": "Why Join Our Team?",
+        "description": "Volunteering with Crime Stoppers Halton offers you the opportunity to make a real impact in your community while developing valuable skills and connections. You'll join a supportive team where your contributions matter, gain meaningful experience, and help create a safer Halton region for everyone.",
+        "note": "Note: You must work, reside in, or have a substantial interest in the Halton Region to be considered."
+      },
+      "howToApply": {
+        "title": "How to Apply",
+        "steps": {
+          "step1": {
+            "title": "Step 1: Download Form",
+            "description": "Select the button below to download the form related to your age group or skill set."
+          },
+          "step2": {
+            "title": "Step 2: Complete the Application",
+            "description": "Fill out all sections of the application form completely and accurately."
+          },
+          "step3": {
+            "title": "Step 3: Submit Your Application",
+            "description": "Email your completed application and personal resume to {{email}}."
+          }
+        }
+      },
+      "applyNow": {
+        "title": "Apply Now",
+        "adult": {
+          "label": "Adult Volunteer",
+          "description": "Assist with community events, fundraising activities, and awareness campaigns."
+        },
+        "youth": {
+          "label": "Youth Volunteer",
+          "description": "High school and university students can gain valuable experience through co-op placements."
+        },
+        "board": {
+          "label": "Board Member",
+          "description": "Provide leadership and strategic guidance through our Board of Directors."
+        }
+      }
     },
-    "reset": {
-      "title": "Reset Settings",
-      "description": "Restore all settings to default values",
-      "confirm": "Are you sure you want to reset all settings to their default values?",
-      "reset": "Reset"
+    "alerts": {
+      "headerTitle": "Alerts",
+      "searchPlaceholder": "Search alerts",
+      "filterButtonAria": "Filter alerts",
+      "filter": {
+        "title": "Filter Alerts",
+        "allSources": "All Sources"
+      }
     },
-    "authentication": {
-      "title": "Authentication",
-      "description": "Sign in with biometrics or password (*WIP*)",
-      "disabled": "Disabled"
+    "alertDetails": {
+      "headerTitle": "Alert Details",
+      "loading": "Loading alert...",
+      "errors": {
+        "invalidId": "Invalid alert ID",
+        "notFound": "Alert not found",
+        "failed": "Failed to load alert"
+      }
     },
-    "screenReader": {
-      "title": "Screen Reader",
-      "description": "Enable accessibility features (*WIP*)",
-      "enabled": "Enabled"
+    "events": {
+      "headerTitle": "Events",
+      "searchPlaceholder": "Search events",
+      "filterButtonAria": "Filter events",
+      "filter": {
+        "title": "Filter Events",
+        "allEvents": "All Events",
+        "upcoming": "Upcoming Events",
+        "past": "Past Events"
+      },
+      "calendar": {
+        "defaultTitle": "Community Event",
+        "savedTitle": "Saved to calendar",
+        "savedMessage": "This event was added to your calendar.",
+        "permissionTitle": "Permission required",
+        "failureTitle": "Save failed",
+        "failureMessage": "Could not save this event to your calendar.",
+        "errorMessage": "An unexpected error occurred while saving the event."
+      }
+    },
+    "eventDetails": {
+      "headerTitle": "Event Details",
+      "loading": "Loading event...",
+      "errors": {
+        "invalidId": "Invalid event ID",
+        "notFound": "Event not found",
+        "failed": "Failed to load event"
+      }
+    },
+    "suspects": {
+      "headerTitle": "Suspects",
+      "searchPlaceholder": "Search suspects",
+      "filterButtonAria": "Filter suspects",
+      "filter": {
+        "title": "Filter Suspects",
+        "allLocations": "All Locations"
+      }
+    },
+    "suspectDetails": {
+      "headerTitle": "Suspect Details",
+      "loading": "Loading suspect...",
+      "attributes": {
+        "crime": "Crime",
+        "scene": "Scene",
+        "residence": "Residence",
+        "age": "Age",
+        "height": "Height",
+        "weight": "Weight"
+      },
+      "cards": {
+        "reward": {
+          "title": "Reward",
+          "description": "Cash rewards of up to <b>$2,000</b> are available for information leading to an arrest or the solving of a crime."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "description": "If seen, do not approach the suspect. Instead, Call <b>9-1-1</b> or contact Crime Stoppers."
+        }
+      },
+      "errors": {
+        "invalidId": "Invalid suspect ID",
+        "notFound": "Suspect not found",
+        "failed": "Failed to load suspect"
+      }
+    },
+    "crimeMap": {
+      "headerTitle": "Map",
+      "iframeTitle": "Map"
+    },
+    "crimeStats": {
+      "headerTitle": "Crime Stats",
+      "filters": {
+        "location": "Select Location",
+        "category": "Select Category",
+        "timeframe": "Select Timeframe",
+        "locations": {
+          "all": "Halton Region",
+          "oakville": "Oakville",
+          "burlington": "Burlington",
+          "milton": "Milton",
+          "haltonHills": "Halton Hills"
+        },
+        "categories": {
+          "all": "All Crimes",
+          "violent": "Violent",
+          "breakEnter": "Break and Enter",
+          "theft": "Theft",
+          "traffic": "Traffic",
+          "propertyDamage": "Property Damage",
+          "other": "Other"
+        },
+        "timeframes": {
+          "year": "Year",
+          "quarter": "Quarter",
+          "month": "Month"
+        }
+      },
+      "loading": "Loading crime data...",
+      "empty": {
+        "title": "No reportable incidents",
+        "description": "We couldn't find crime incidents for this selection right now.",
+        "suggestion": "Try a different location or category, or check back later."
+      },
+      "charts": {
+        "breakdownTitle": "Crime Breakdown",
+        "trendsTitle": "Crime Trends",
+        "series": {
+          "incidents": "Incidents",
+          "totalCrimes": "Total Crimes"
+        }
+      },
+      "footnote": "Data provided by the Halton Regional Police Service Crime Map. Figures exclude roadside testing reports to highlight actionable incidents."
     }
   }
 }
+

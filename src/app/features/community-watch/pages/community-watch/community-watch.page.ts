@@ -1,4 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { BaseImport } from 'src/app/core/base-import';
 import {
   IonItem,
@@ -14,6 +19,7 @@ import {
   InAppBrowser,
   DefaultSystemBrowserOptions,
 } from '@capacitor/inappbrowser';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-community-watch',
@@ -33,7 +39,7 @@ import {
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CommunityWatchPage {
+export class CommunityWatchPage implements OnInit {
   heroImage = 'assets/images/community-watch.png';
   partnerSlides = [
     { src: 'assets/images/cw1-lorex.jpg', alt: 'Lorex Security' },
@@ -49,19 +55,38 @@ export class CommunityWatchPage {
     },
   ];
 
+  private readonly screenReader = inject(ScreenReaderService);
+
+  async ngOnInit() {
+    // Announce page load
+    await this.screenReader.speak('Community Watch page loaded.');
+
+    // Announce hero content
+    await this.screenReader.speak(
+      "Join your neighbours in Oakville's Ward 3 for the Community Watch pilot, a partnership with Crime Stoppers of Halton, Halton Regional Police, and the Halton Police Board."
+    );
+  }
+
   async openPdf(url: string) {
     try {
       await InAppBrowser.openInSystemBrowser({
         url: url,
         options: DefaultSystemBrowserOptions,
       });
+      await this.screenReader.speak(
+        'Opened Community Watch inspection report.'
+      );
     } catch (error) {
       console.error('Error opening PDF:', error);
+      await this.screenReader.speak('Failed to open PDF.');
     }
   }
 
-  openHomeInspection(): void {
+  async openHomeInspection(): Promise<void> {
     const pdfPath = 'assets/HomeInspectionReport.pdf';
     window.open(pdfPath, '_blank');
+    await this.screenReader.speak(
+      'Opened Home Inspection report in a new window.'
+    );
   }
 }

@@ -35,6 +35,7 @@ import { ScreenReaderService } from '@app/core/pages/settings/services/screen-re
 import { TipInfoComponent } from '@app/features/home/components/tip-info/tip-info.component';
 import { BaseImport } from '@app/core/base-import';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { Swiper } from 'swiper/types';
 
 @Component({
   selector: 'app-home',
@@ -92,56 +93,56 @@ export class HomePage {
 
   aboutItems = [
     {
-      title: 'home.aboutItems.ourStory.title',
-      details: 'home.aboutItems.ourStory.details',
+      title: 'feature.home.aboutItems.ourStory.title',
+      details: 'feature.home.aboutItems.ourStory.details',
       icon: 'bootstrapBook',
     },
     {
-      title: 'home.aboutItems.whatWeDo.title',
-      details: 'home.aboutItems.whatWeDo.details',
+      title: 'feature.home.aboutItems.whatWeDo.title',
+      details: 'feature.home.aboutItems.whatWeDo.details',
       icon: 'bootstrapShieldCheck',
     },
     {
-      title: 'home.aboutItems.communityImpact.title',
-      details: 'home.aboutItems.communityImpact.details',
+      title: 'feature.home.aboutItems.communityImpact.title',
+      details: 'feature.home.aboutItems.communityImpact.details',
       icon: 'bootstrapEmojiSmile',
     },
   ];
 
   procedureSteps = [
     {
-      title: 'home.procedureSteps.step1.title',
-      details: 'home.procedureSteps.step1.details',
+      title: 'feature.home.procedureSteps.step1.title',
+      details: 'feature.home.procedureSteps.step1.details',
       icon: 'bootstrap1Circle',
     },
     {
-      title: 'home.procedureSteps.step2.title',
-      details: 'home.procedureSteps.step2.details',
+      title: 'feature.home.procedureSteps.step2.title',
+      details: 'feature.home.procedureSteps.step2.details',
       icon: 'bootstrap2Circle',
     },
     {
-      title: 'home.procedureSteps.step3.title',
-      details: 'home.procedureSteps.step3.details',
+      title: 'feature.home.procedureSteps.step3.title',
+      details: 'feature.home.procedureSteps.step3.details',
       icon: 'bootstrap3Circle',
     },
     {
-      title: 'home.procedureSteps.step4.title',
-      details: 'home.procedureSteps.step4.details',
+      title: 'feature.home.procedureSteps.step4.title',
+      details: 'feature.home.procedureSteps.step4.details',
       icon: 'bootstrap4Circle',
     },
     {
-      title: 'home.procedureSteps.step5.title',
-      details: 'home.procedureSteps.step5.details',
+      title: 'feature.home.procedureSteps.step5.title',
+      details: 'feature.home.procedureSteps.step5.details',
       icon: 'bootstrap5Circle',
     },
     {
-      title: 'home.procedureSteps.step6.title',
-      details: 'home.procedureSteps.step6.details',
+      title: 'feature.home.procedureSteps.step6.title',
+      details: 'feature.home.procedureSteps.step6.details',
       icon: 'bootstrap6Circle',
     },
     {
-      title: 'home.procedureSteps.step7.title',
-      details: 'home.procedureSteps.step7.details',
+      title: 'feature.home.procedureSteps.step7.title',
+      details: 'feature.home.procedureSteps.step7.details',
       icon: 'bootstrap7Circle',
     },
   ];
@@ -200,6 +201,19 @@ export class HomePage {
       });
     } catch (error) {
       console.error('Error opening browser:', error);
+    }
+  }
+
+  onSlideChange(event: any) {
+    // `event` is the swiper instance
+    const swiper: Swiper = event?.detail?.swiper || event;
+    const currentIndex = swiper?.activeIndex ?? 0;
+
+    if (this.slides[currentIndex]) {
+      const slideAlt = this.slides[currentIndex].alt;
+      this.screenReader.speak(
+        `Slide ${currentIndex + 1} of ${this.slides.length}: ${slideAlt}`
+      );
     }
   }
 

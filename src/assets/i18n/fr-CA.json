@@ -1,116 +1,459 @@
 {
-  "home": {
-    "cta": {
-      "submitTip": "Soumettre un renseignement",
-      "anonymousSecureRewarded": "Anonyme • Sécurisé • Récompensé"
+  "core": {
+    "tabMenu": {
+      "alerts": "Alertes",
+      "events": "Événements",
+      "map": "Carte",
+      "stats": "Statistiques"
     },
-    "segments": {
-      "aboutUs": "À propos de nous",
-      "tipProcedure": "Procédure de signalement"
-    },
-    "aboutItems": {
-      "ourStory": {
-        "title": "Notre histoire",
-        "details": "Crime Stoppers de Halton est un organisme à but non lucratif avec plus de 35 ans de service, faisant partie d’un réseau mondial de 1 800 programmes de prévention du crime."
-      },
-      "whatWeDo": {
-        "title": "Ce que nous faisons",
-        "details": "Nous permettons de signaler anonymement des crimes avec des récompenses allant jusqu’à 2 000 $ pour des renseignements utiles, reliant les citoyens à la police tout en garantissant un anonymat complet."
-      },
-      "communityImpact": {
-        "title": "Impact communautaire",
-        "details": "Ensemble, nous créons une région de Halton plus sécuritaire grâce à une prévention du crime axée sur la communauté qui protège les informateurs tout en aidant à résoudre des crimes."
+    "sideMenu": {
+      "suspects": "Suspects",
+      "communityWatch": "Surveillance locale",
+      "donate": "Faire un don",
+      "volunteer": "Bénévolat",
+      "contact": "Contactez-nous",
+      "settings": "Paramètres",
+      "testNotifications": {
+        "weekly": "Hebdomadaire",
+        "monthly": "Mensuel",
+        "inactivity": "Inactivité"
       }
     },
-    "procedureSteps": {
-      "step1": {
-        "title": "Étape 1 : Soumettez votre renseignement",
-        "details": "Soumettez votre renseignement de façon anonyme et nous vous attribuerons un numéro de code que vous pourrez utiliser pour vérifier l’état de votre signalement."
+    "settings": {
+      "theme": {
+        "title": "Thème",
+        "description": "Choisir le jeu de couleurs",
+        "select": "Sélectionner le thème",
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
       },
-      "step2": {
-        "title": "Étape 2 : Partage de votre renseignement",
-        "details": "Les informations précieuses que vous fournissez anonymement sont transmises aux forces de l’ordre."
+      "fontSize": {
+        "title": "Taille de police",
+        "description": "Ajuster la taille du texte",
+        "select": "Sélectionner la taille de police",
+        "small": "Petit",
+        "medium": "Moyen",
+        "large": "Grand"
       },
-      "step3": {
-        "title": "Étape 3 : L’enquête",
-        "details": "Une fois l’enquête terminée, Crime Stoppers de Halton est informé des résultats du dossier."
+      "language": {
+        "title": "Langue",
+        "description": "Sélectionner la langue par défaut",
+        "select": "Sélectionner la langue",
+        "options": {
+          "en": "English",
+          "fr-CA": "Français (CA)",
+          "es": "Español"
+        }
       },
-      "step4": {
-        "title": "Étape 4 : Montant de la récompense",
-        "details": "L’utilité de votre renseignement sera évaluée par Crime Stoppers de Halton afin de déterminer le montant de votre récompense en argent."
+      "screenReader": {
+        "title": "Lecteur d'écran",
+        "description": "Activer la prise en charge du lecteur d'écran",
+        "enabled": "Activé"
       },
-      "step5": {
-        "title": "Étape 5 : Suivi de votre renseignement",
-        "details": "Utilisez votre numéro de code pour vérifier par téléphone ou en ligne l’état de votre renseignement et le montant possible d’une récompense allant jusqu’à 2 000 $."
+      "authentication": {
+        "title": "Authentification",
+        "description": "Exiger les données biométriques ou un NIP pour l'accès",
+        "disabled": "Désactivé"
       },
-      "step6": {
-        "title": "Étape 6 : Récompense organisée",
-        "details": "Crime Stoppers de Halton autorisera la banque (ou un autre établissement public) à préparer votre récompense en argent identifiable uniquement par votre numéro de code."
+      "privacyMode": {
+        "title": "Mode confidentialité",
+        "description": "Contrôler la visibilité du contenu de l'application",
+        "select": "Sélectionner le mode de confidentialité",
+        "enabled": "Activé",
+        "disabled": "Désactivé"
       },
-      "step7": {
-        "title": "Étape 7 : Cueillette de l’argent",
-        "details": "Une vérification vous indiquera le montant de votre récompense et où la récupérer simplement en fournissant votre numéro de code – aucune pièce d’identité n’est requise."
+      "notifications": {
+        "title": "Notifications",
+        "description": "Activer ou désactiver les notifications"
+      },
+      "reset": {
+        "title": "Réinitialiser les paramètres",
+        "description": "Restaurer les valeurs par défaut",
+        "confirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
+        "cancel": "Annuler",
+        "reset": "Réinitialiser"
+      }
+    },
+    "header": {
+      "openMenu": "Ouvrir le menu latéral"
+    },
+    "lockScreen": {
+      "logoAlt": "Logo de Crime Stoppers",
+      "title": "Application verrouillée",
+      "authenticate": "S'authentifier",
+      "authFailed": "L'authentification a échoué. Veuillez réessayer."
+    },
+    "privacyMode": {
+      "headerTitle": "Mode confidentialité",
+      "selectedDate": "Date : {{date}}",
+      "noDate": "Non sélectionné",
+      "noEvents": "Aucun événement prévu pour cette journée"
+    },
+    "common": {
+      "error": "Erreur",
+      "goBack": "Retour",
+      "aria": {
+        "filter": "Filtrer",
+        "goBack": "Retour"
+      },
+      "buttons": {
+        "save": "Enregistrer",
+        "clearFilters": "Effacer les filtres",
+        "ok": "OK"
+      },
+      "modal": {
+        "imageTitle": "Image {{current}} sur {{total}}"
       }
     }
   },
-  "tipInfo": {
-    "title": "Informations sur le renseignement",
-    "close": "Fermer",
-    "intro": "En cas d’urgence, appelez la police. Ce système est destiné aux informations non urgentes sur des crimes passés ou potentiels. Exemples :",
-    "example1": "Informations sur des crimes non résolus.",
-    "example2": "Activités illégales suspectées.",
-    "example3": "Connaissance de menaces potentielles pour la communauté.",
-    "details": "Pour aider les enquêtes, fournissez des renseignements complets. Votre anonymat est garanti.",
-    "continue": "Continuer vers le renseignement"
-  },
-  "settings": {
-    "language": {
-      "title": "Langue",
-      "description": "Choisissez votre langue préférée",
-      "select": "Sélectionner la langue"
+  "feature": {
+    "home": {
+      "tipButton": {
+        "submitTip": "Soumettre un renseignement",
+        "anonymousSecureRewarded": "Anonyme | Sécurisé | Récompensé"
+      },
+      "segments": {
+        "aboutUs": "À propos de nous",
+        "tipProcedure": "Procédure de signalement"
+      },
+      "aboutItems": {
+        "ourStory": {
+          "title": "Notre histoire",
+          "details": "Crime Stoppers de Halton est un organisme à but non lucratif avec plus de 35 ans de service, faisant partie d'un réseau mondial de 1 800 programmes de prévention du crime."
+        },
+        "whatWeDo": {
+          "title": "Ce que nous faisons",
+          "details": "Nous permettons de signaler anonymement des crimes avec des récompenses allant jusqu'à 2 000 $ pour des renseignements utiles, reliant les citoyens à la police tout en garantissant un anonymat complet."
+        },
+        "communityImpact": {
+          "title": "Impact communautaire",
+          "details": "Ensemble, nous créons une région de Halton plus sûre grâce à une prévention du crime axée sur la communauté qui protège les informateurs tout en aidant à résoudre des crimes."
+        }
+      },
+      "procedureSteps": {
+        "step1": {
+          "title": "Étape 1 : Soumettez votre renseignement",
+          "details": "Soumettez votre renseignement de façon anonyme et nous vous attribuerons un numéro de code que vous pourrez utiliser pour vérifier l'état de votre signalement."
+        },
+        "step2": {
+          "title": "Étape 2 : Partage de votre renseignement",
+          "details": "Les informations précieuses que vous fournissez anonymement sont transmises aux forces de l'ordre."
+        },
+        "step3": {
+          "title": "Étape 3 : L'enquête",
+          "details": "Une fois l'enquête terminée, Crime Stoppers de Halton est informé des résultats du dossier."
+        },
+        "step4": {
+          "title": "Étape 4 : Montant de la récompense",
+          "details": "L'utilité de votre renseignement sera évaluée par Crime Stoppers de Halton afin de déterminer le montant de votre récompense en argent."
+        },
+        "step5": {
+          "title": "Étape 5 : Suivi de votre renseignement",
+          "details": "Utilisez votre numéro de code pour vérifier par téléphone ou en ligne l'état de votre renseignement et le montant possible d'une récompense allant jusqu'à 2 000 $."
+        },
+        "step6": {
+          "title": "Étape 6 : Récompense préparée",
+          "details": "Crime Stoppers de Halton autorisera la banque (ou un autre établissement public) à préparer votre récompense en argent identifiable uniquement par votre numéro de code."
+        },
+        "step7": {
+          "title": "Étape 7 : Récupération de l'argent",
+          "details": "Une vérification vous indiquera le montant de votre récompense et où la récupérer en fournissant seulement votre numéro de code – aucune pièce d'identité n'est requise."
+        }
+      },
+      "tipInfo": {
+        "title": "Informations sur le renseignement",
+        "close": "Fermer",
+        "intro": "En cas d'urgence, appelez la police. Ce système est destiné aux informations non urgentes sur des crimes passés ou potentiels. Exemples :",
+        "example1": "Informations sur des crimes non résolus.",
+        "example2": "Activités illégales suspectées.",
+        "example3": "Connaissance de menaces potentielles pour la communauté.",
+        "details": "Pour aider les enquêtes, fournissez des renseignements complets. Votre anonymat est garanti.",
+        "continue": "Continuer vers le renseignement"
+      }
     },
-    "theme": {
-      "title": "Thème",
-      "description": "Choisissez votre thème de couleur préféré",
-      "select": "Sélectionner le thème",
-      "light": "Clair",
-      "dark": "Sombre",
-      "system": "Système"
+    "contact": {
+      "headerTitle": "Contactez-nous",
+      "columns": {
+        "name": "Nom",
+        "title": "Titre"
+      },
+      "sections": {
+        "generalInquiries": {
+          "title": "Demandes générales"
+        },
+        "board": {
+          "title": "Conseil d'administration"
+        }
+      },
+      "roles": {
+        "executiveDirector": "Directeur général",
+        "policeCoordinator": "Coordonnateur policier du HRPS",
+        "chair": "Président",
+        "viceChair": "Vice-président",
+        "secretary": "Secrétaire",
+        "treasurer": "Trésorier",
+        "immediatePastChair": "Président sortant",
+        "director": "Administrateur"
+      },
+      "fields": {
+        "phone": {
+          "label": "Téléphone",
+          "value": "905-825-4747 ext.5139"
+        },
+        "mail": {
+          "label": "Courrier",
+          "value": "2485 North Service Road W,<br>Oakville ON, L6M 3H8"
+        }
+      }
     },
-    "fontSize": {
-      "title": "Taille de police",
-      "description": "Ajustez la taille du texte pour une meilleure lisibilité",
-      "select": "Sélectionner la taille de police",
-      "small": "Petit",
-      "medium": "Moyen",
-      "large": "Grand"
+    "communityWatch": {
+      "headerTitle": "Surveillance locale",
+      "hero": {
+        "tagline": "Prévenir | Signaler | Communauté",
+        "description": "Joignez-vous à vos voisins du quartier 3 d'Oakville pour le projet pilote Surveillance communautaire, un partenariat entre <strong>Crime Stoppers de Halton</strong>, le <strong>Service de police régional de Halton</strong> et la <strong>Commission de police de Halton</strong> afin de bâtir une communauté plus sûre et plus forte."
+      },
+      "actions": {
+        "subscribe": "S'abonner au bulletin",
+        "downloadReport": "Télécharger le rapport d'inspection"
+      },
+      "benefits": {
+        "title": "Avantages du programme",
+        "stayInformed": {
+          "title": "Restez informé",
+          "description": "Mises à jour par courriel avec des conseils de sécurité locaux et des tendances criminelles."
+        },
+        "anonymousReporting": {
+          "title": "Signalement anonyme",
+          "description": "Moyen confidentiel de signaler des activités suspectes."
+        },
+        "visibilityMaterials": {
+          "title": "Matériel de visibilité",
+          "description": "Autocollants de fenêtre et affiches de pelouse gratuits (mar/mer 8 h à 16 h au quartier général du HRP)."
+        },
+        "camsafe": {
+          "title": "Inscription CamSafe",
+          "description": "Connectez des caméras de sécurité pour aider à résoudre des crimes."
+        },
+        "partnerDiscounts": {
+          "title": "Rabais partenaires",
+          "description": "Rabais sur les produits et services de sécurité."
+        },
+        "buildConnections": {
+          "title": "Créez des liens",
+          "description": "Rencontrez vos voisins et renforcez les liens communautaires."
+        }
+      },
+      "partners": {
+        "title": "Nos partenaires"
+      }
     },
-    "privacyMode": {
-      "title": "Mode confidentialité",
-      "description": "Contrôlez la collecte de données et la visibilité",
-      "select": "Sélectionner le mode de confidentialité",
-      "enabled": "Activé",
-      "disabled": "Désactivé"
+    "donate": {
+      "headerTitle": "Faire un don",
+      "sections": {
+        "why": {
+          "title": "Pourquoi faire un don ?",
+          "directImpact": {
+            "title": "Impact direct sur la communauté",
+            "description": "Votre don aide à résoudre des crimes et à garder votre quartier sûr."
+          },
+          "communityFunded": {
+            "title": "Financé à 100 % par la communauté",
+            "description": "Nous comptons sur les dons de nos commanditaires, des organismes communautaires et du public."
+          },
+          "safeSecure": {
+            "title": "Sûr et protégé",
+            "description": "Dons traités par CanadaHelps avec une sécurité de pointe."
+          },
+          "transparent": {
+            "title": "Fiable et transparent",
+            "description": "Organisme de bienfaisance enregistré avec responsabilité et transparence complètes. Numéro d'enregistrement :"
+          },
+          "taxDeductible": {
+            "title": "Déductible d'impôt",
+            "description": "Recevez un reçu officiel d'impôt pour votre don."
+          }
+        },
+        "form": {
+          "title": "Faire un don maintenant",
+          "iframeTitle": "Faire un don maintenant"
+        }
+      }
     },
-    "notifications": {
-      "title": "Notifications",
-      "description": "Activer ou désactiver les notifications"
+    "volunteer": {
+      "headerTitle": "Bénévolat",
+      "hero": {
+        "title": "Pourquoi joindre notre équipe ?",
+        "description": "Faire du bénévolat avec Crime Stoppers Halton vous offre l'occasion d'avoir un impact réel sur votre communauté tout en développant des compétences et des liens précieux. Vous vous joindrez à une équipe solidaire où vos contributions comptent, gagnerez une expérience significative et aiderez à créer une région de Halton plus sûre pour tous.",
+        "note": "Remarque : Vous devez travailler, résider ou avoir un intérêt important dans la région de Halton pour être considéré."
+      },
+      "howToApply": {
+        "title": "Comment postuler",
+        "steps": {
+          "step1": {
+            "title": "Étape 1 : Télécharger le formulaire",
+            "description": "Sélectionnez le bouton ci-dessous pour télécharger le formulaire correspondant à votre groupe d'âge ou à vos compétences."
+          },
+          "step2": {
+            "title": "Étape 2 : Remplir la demande",
+            "description": "Remplissez toutes les sections du formulaire de demande avec exactitude."
+          },
+          "step3": {
+            "title": "Étape 3 : Soumettre votre demande",
+            "description": "Envoyez votre demande complète et votre CV personnel à {{email}}."
+          }
+        }
+      },
+      "applyNow": {
+        "title": "Postulez maintenant",
+        "adult": {
+          "label": "Bénévole adulte",
+          "description": "Participez à des événements communautaires, des collectes de fonds et des campagnes de sensibilisation."
+        },
+        "youth": {
+          "label": "Bénévole jeunesse",
+          "description": "Les étudiants du secondaire et du collège peuvent acquérir une expérience précieuse grâce à des stages."
+        },
+        "board": {
+          "label": "Membre du conseil",
+          "description": "Offrez un leadership et des orientations stratégiques au sein de notre conseil d'administration."
+        }
+      }
     },
-    "reset": {
-      "title": "Réinitialiser les paramètres",
-      "description": "Restaurer tous les paramètres aux valeurs par défaut",
-      "confirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
-      "reset": "Réinitialiser"
+    "alerts": {
+      "headerTitle": "Alertes",
+      "searchPlaceholder": "Rechercher des alertes",
+      "filterButtonAria": "Filtrer les alertes",
+      "filter": {
+        "title": "Filtrer les alertes",
+        "allSources": "Toutes les sources"
+      }
     },
-    "authentication": {
-      "title": "Authentification",
-      "description": "Connexion avec biométrie ou mot de passe (*WIP*)",
-      "disabled": "Désactivé"
+    "alertDetails": {
+      "headerTitle": "Détails de l'alerte",
+      "loading": "Chargement de l'alerte...",
+      "errors": {
+        "invalidId": "Identifiant d'alerte invalide",
+        "notFound": "Alerte introuvable",
+        "failed": "Impossible de charger l'alerte"
+      }
     },
-    "screenReader": {
-      "title": "Lecteur d’écran",
-      "description": "Activer les fonctionnalités d’accessibilité (*WIP*)",
-      "enabled": "Activé"
+    "events": {
+      "headerTitle": "Événements",
+      "searchPlaceholder": "Rechercher des événements",
+      "filterButtonAria": "Filtrer les événements",
+      "filter": {
+        "title": "Filtrer les événements",
+        "allEvents": "Tous les événements",
+        "upcoming": "Événements à venir",
+        "past": "Événements passés"
+      },
+      "calendar": {
+        "defaultTitle": "Événement communautaire",
+        "savedTitle": "Enregistré au calendrier",
+        "savedMessage": "Cet événement a été ajouté à votre calendrier.",
+        "permissionTitle": "Permission requise",
+        "failureTitle": "Échec de l'enregistrement",
+        "failureMessage": "Impossible d'enregistrer cet événement dans votre calendrier.",
+        "errorMessage": "Une erreur inattendue s'est produite lors de l'enregistrement de l'événement."
+      }
+    },
+    "eventDetails": {
+      "headerTitle": "Détails de l'événement",
+      "loading": "Chargement de l'événement...",
+      "errors": {
+        "invalidId": "Identifiant d'événement invalide",
+        "notFound": "Événement introuvable",
+        "failed": "Impossible de charger l'événement"
+      }
+    },
+    "suspects": {
+      "headerTitle": "Suspects",
+      "searchPlaceholder": "Rechercher des suspects",
+      "filterButtonAria": "Filtrer les suspects",
+      "filter": {
+        "title": "Filtrer les suspects",
+        "allLocations": "Tous les lieux"
+      }
+    },
+    "suspectDetails": {
+      "headerTitle": "Détails du suspect",
+      "loading": "Chargement du suspect...",
+      "attributes": {
+        "crime": "Crime",
+        "scene": "Lieu",
+        "residence": "Résidence",
+        "age": "Âge",
+        "height": "Taille",
+        "weight": "Poids"
+      },
+      "cards": {
+        "reward": {
+          "title": "Récompense",
+          "description": "Des récompenses en argent allant jusqu'à <b>2 000 $</b> sont offertes pour toute information menant à une arrestation ou à la résolution d'un crime."
+        },
+        "contact": {
+          "title": "Contactez-nous",
+          "description": "Si vous le voyez, n'approchez pas le suspect. Composez plutôt le <b>9-1-1</b> ou contactez Échec au crime."
+        }
+      },
+      "errors": {
+        "invalidId": "Identifiant de suspect invalide",
+        "notFound": "Suspect introuvable",
+        "failed": "Impossible de charger le suspect"
+      }
+    },
+    "crimeMap": {
+      "headerTitle": "Carte",
+      "iframeTitle": "Carte"
+    },
+    "crimeStats": {
+      "headerTitle": "Statistiques criminelles",
+      "filters": {
+        "location": "Sélectionner un lieu",
+        "category": "Sélectionner une catégorie",
+        "timeframe": "Sélectionner la période",
+        "locations": {
+          "all": "Région de Halton",
+          "oakville": "Oakville",
+          "burlington": "Burlington",
+          "milton": "Milton",
+          "haltonHills": "Halton Hills"
+        },
+        "categories": {
+          "all": "Tous les crimes",
+          "violent": "Crimes violents",
+          "breakEnter": "Introduction par effraction",
+          "theft": "Vol",
+          "traffic": "Infractions routières",
+          "propertyDamage": "Dommages à la propriété",
+          "other": "Autre"
+        },
+        "timeframes": {
+          "year": "Année",
+          "quarter": "Trimestre",
+          "month": "Mois"
+        }
+      },
+      "loading": "Chargement des données criminelles...",
+      "empty": {
+        "title": "Aucun incident signalable",
+        "description": "Nous n'avons trouvé aucun incident criminel pour cette sélection pour l'instant.",
+        "suggestion": "Essayez un autre lieu ou une autre catégorie, ou revenez plus tard."
+      },
+      "charts": {
+        "breakdownTitle": "Répartition des crimes",
+        "trendsTitle": "Tendances des crimes",
+        "series": {
+          "incidents": "Incidents",
+          "totalCrimes": "Total des crimes"
+        }
+      },
+      "footnote": "Données fournies par la carte du crime du Service de police régional de Halton. Les chiffres excluent les rapports de tests routiers afin de mettre en évidence les incidents exploitables."
     }
   }
 }
+
+
+
+

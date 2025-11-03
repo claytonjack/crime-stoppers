@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   IonContent,
   IonGrid,
@@ -9,6 +9,8 @@ import {
   IonItemDivider,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/core/components/header/header.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 @Component({
   selector: 'app-dontate',
@@ -24,6 +26,15 @@ import { HeaderComponent } from 'src/app/core/components/header/header.component
     IonContent,
     HeaderComponent,
     IonItemDivider,
+    TranslateModule,
   ],
 })
-export class DonatePage {}
+export class DonatePage implements OnInit {
+  private readonly screenReader = inject(ScreenReaderService);
+
+  async ngOnInit() {
+    await this.screenReader.speak(
+      'Donate page loaded. Why Donate section displayed.'
+    );
+  }
+}

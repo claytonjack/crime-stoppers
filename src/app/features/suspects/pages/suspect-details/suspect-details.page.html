@@ -1,43 +1,45 @@
-<app-header title="Suspect Details" [showMenuButton]="false">
-	<ion-button slot="start" (click)="goBack()" aria-label="Go back">
+<app-header [title]="'feature.suspectDetails.headerTitle' | translate" [showMenuButton]="false">
+	<ion-button slot="start" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBack' | translate">
 		<ng-icon slot="icon-only" name="bootstrapArrowLeft" class="icon-size"></ng-icon>
 	</ion-button>
 </app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-live="polite">
 	@if (isLoading()) {
-	<div class="loading-container">
-		<ion-spinner name="crescent"></ion-spinner>
+	<div class="loading-container" role="status" aria-live="polite">
+		<ion-spinner name="crescent" aria-hidden="true"></ion-spinner>
 		<ion-text>
-			<p>Loading suspect...</p>
+			<p>{{ 'feature.suspectDetails.loading' | translate }}</p>
 		</ion-text>
 	</div>
 	}
 
 	@if (error() && !isLoading()) {
-	<div class="error-container">
-		<ng-icon name="bootstrapExclamationTriangle" size="64"></ng-icon>
+	<div class="error-container" role="alert" aria-live="assertive">
+		<ng-icon name="bootstrapExclamationTriangle" size="64" aria-hidden="true"></ng-icon>
 		<ion-text color="danger">
-			<h3>Error</h3>
-			<p>{{ error() }}</p>
+			<h3>{{ 'core.common.error' | translate }}</h3>
+			<p>{{ error() | translate }}</p>
 		</ion-text>
-		<ion-button fill="outline" (click)="goBack()">
-			Go Back
+		<ion-button fill="outline" (click)="goBack()" [attr.aria-label]="'core.common.aria.goBackToPrevious' | translate">
+			{{ 'core.common.goBack' | translate }}
 		</ion-button>
 	</div>
 	}
 
 	@if (suspect() && !isLoading() && !error()) {
-	<div class="content-wrapper">
+	<div class="content-wrapper" tabindex="0" [attr.aria-label]="'feature.suspectDetails.contentAriaLabel' | translate">
 		@if (suspect()!.Images && suspect()!.Images!.length > 0) {
-		<div class="images-section">
+		<div class="images-section" role="region"
+			[attr.aria-label]="'feature.suspectDetails.imageGalleryAriaLabel' | translate">
 			<swiper-container slides-per-view="1" navigation="true" pagination="true" loop="false" class="detail-swiper"
-				(swiperslidechange)="onSwiperSlideChange($event)">
+				(swiperslidechange)="onSwiperSlideChange($event)" aria-roledescription="carousel">
 				@for (image of suspect()!.Images!; track image.documentId; let i = $index) {
 				<swiper-slide>
 					<div class="slide-container suspect-image-wrapper">
 						<ion-img [src]="getImageUrl(image.url)" [alt]="image.alternativeText || suspect()!.Name"
-							(click)="onImageClick(i)" class="suspect-image" loading="lazy">
+							(click)="onImageClick(i)" class="suspect-image" loading="lazy" tabindex="0" role="img"
+							[attr.aria-label]="('feature.suspectDetails.imageAriaLabel' | translate:{ index: i + 1, total: suspect()!.Images!.length })">
 						</ion-img>
 					</div>
 				</swiper-slide>
@@ -45,57 +47,57 @@
 			</swiper-container>
 
 			@if (suspect()!.Images!.length > 1) {
-			<div class="image-counter">
+			<div class="image-counter" aria-live="polite" tabindex="0">
 				{{ selectedImageIndex() + 1 }} / {{ suspect()!.Images!.length }}
 			</div>
 			}
 		</div>
 		}
 
-		<div class="info-section">
+		<div class="info-section" role="region" [attr.aria-label]="'feature.suspectDetails.infoAriaLabel' | translate">
 			<div class="info-card">
 				<div class="card-header-section">
-					<h1 class="detail-title">{{ suspect()!.Name }}</h1>
+					<h1 class="detail-title" tabindex="0">{{ suspect()!.Name }}</h1>
 					<div class="suspect-attributes">
 						@if (suspect()!.Crime) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapExclamationTriangle"></ng-icon>
-							<span class="attribute-label">Crime:</span>
+							<ng-icon name="bootstrapExclamationTriangle" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.crime' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Crime }}</span>
 						</div>
 						}
 						@if (suspect()!.Scene) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapPinAngle"></ng-icon>
-							<span class="attribute-label">Scene:</span>
+							<ng-icon name="bootstrapPinAngle" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.scene' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Scene }}</span>
 						</div>
 						}
 						@if (suspect()!.Residence) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapHouseDoor"></ng-icon>
-							<span class="attribute-label">Residence:</span>
+							<ng-icon name="bootstrapHouseDoor" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.residence' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Residence }}</span>
 						</div>
 						}
 						@if (suspect()!.Age) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapCake2"></ng-icon>
-							<span class="attribute-label">Age:</span>
+							<ng-icon name="bootstrapCake2" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.age' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Age }}</span>
 						</div>
 						}
 						@if (suspect()!.Height) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapArrowsExpand"></ng-icon>
-							<span class="attribute-label">Height:</span>
+							<ng-icon name="bootstrapArrowsExpand" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.height' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Height }}</span>
 						</div>
 						}
 						@if (suspect()!.Weight) {
 						<div class="metadata-item">
-							<ng-icon name="bootstrapArrowsExpandVertical"></ng-icon>
-							<span class="attribute-label">Weight:</span>
+							<ng-icon name="bootstrapArrowsExpandVertical" aria-hidden="true"></ng-icon>
+							<span class="attribute-label">{{ 'feature.suspectDetails.attributes.weight' | translate }}:</span>
 							<span class="attribute-value">{{ suspect()!.Weight }}</span>
 						</div>
 						}
@@ -103,7 +105,8 @@
 				</div>
 
 				@if (suspect()!.Body) {
-				<div class="card-content-section">
+				<div class="card-content-section" role="region"
+					[attr.aria-label]="'feature.suspectDetails.descriptionAriaLabel' | translate">
 					<div class="detail-body">
 						<ion-text>
 							<div [innerHTML]="suspect()!.Body"></div>
@@ -113,18 +116,17 @@
 				}
 			</div>
 
-			<div class="additional-info-section">
+			<div class="additional-info-section" role="region"
+				[attr.aria-label]="'feature.suspectDetails.additionalInfoAriaLabel' | translate">
 				<ion-card class="info-highlight-card">
 					<ion-card-header>
 						<ion-card-title>
-							<ng-icon name="bootstrapCash"></ng-icon>
-							<span>Reward</span>
+							<ng-icon name="bootstrapCash" aria-hidden="true"></ng-icon>
+							<span>{{ 'feature.suspectDetails.cards.reward.title' | translate }}</span>
 						</ion-card-title>
 					</ion-card-header>
 					<ion-card-content>
-						<ion-text>
-							Cash rewards of up to <b>$2,000</b> are available for information leading to an arrest or the solving of a
-							crime.
+						<ion-text [innerHTML]="'feature.suspectDetails.cards.reward.description' | translate">
 						</ion-text>
 					</ion-card-content>
 				</ion-card>
@@ -132,13 +134,12 @@
 				<ion-card class="info-highlight-card">
 					<ion-card-header>
 						<ion-card-title>
-							<ng-icon name="bootstrapTelephone"></ng-icon>
-							<span>Contact Us</span>
+							<ng-icon name="bootstrapTelephone" aria-hidden="true"></ng-icon>
+							<span>{{ 'feature.suspectDetails.cards.contact.title' | translate }}</span>
 						</ion-card-title>
 					</ion-card-header>
 					<ion-card-content>
-						<ion-text>
-							If seen, do not approach the suspect. Instead, Call <b>9-1-1</b> or contact Crime Stoppers.
+						<ion-text [innerHTML]="'feature.suspectDetails.cards.contact.description' | translate">
 						</ion-text>
 					</ion-card-content>
 				</ion-card>
@@ -147,20 +148,24 @@
 	</div>
 	}
 
-	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()">
+	<ion-modal [isOpen]="isImageModalOpen()" (didDismiss)="closeImageModal()"
+		[attr.aria-label]="'feature.suspectDetails.imageModalAriaLabel' | translate">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
-					<ion-title>Image {{ selectedImageIndex() + 1 }} of {{ suspect()?.Images?.length || 0 }}</ion-title>
+					<ion-title aria-live="polite">
+						{{ 'core.common.modal.imageTitle' | translate:{ current: selectedImageIndex() + 1, total:
+						suspect()?.Images?.length || 0 } }}
+					</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="closeImageModal()">
+						<ion-button (click)="closeImageModal()" [attr.aria-label]="'core.common.aria.closeImageViewer' | translate">
 							<ng-icon name="bootstrapX" slot="icon-only"></ng-icon>
 						</ion-button>
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
 
-			<ion-content>
+			<ion-content role="region" [attr.aria-label]="'feature.suspectDetails.fullSizeImageAriaLabel' | translate">
 				@if (suspect()?.Images && suspect()!.Images![selectedImageIndex()]) {
 				<div class="modal-image-container">
 					<ion-img [src]="getImageUrl(suspect()!.Images![selectedImageIndex()].url)"

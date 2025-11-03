@@ -1,9 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
-import {
-  ActionSheetController,
-  AlertController,
-} from '@ionic/angular/standalone';
+import { ActionSheetController } from '@ionic/angular/standalone';
 import { ThemeService } from './theme.service';
 import { FontSizeService } from './font-size.service';
 import { PrivacyModeService } from 'src/app/core/pages/privacy-mode/services/privacy-mode.service';
@@ -27,7 +24,6 @@ export class SettingsPageService {
   private readonly actionSheetController: ActionSheetController = inject(
     ActionSheetController
   );
-  private readonly alertController: AlertController = inject(AlertController);
   private readonly translate: TranslateService = inject(TranslateService);
 
   public get theme$(): Observable<ThemeType> {
@@ -47,29 +43,31 @@ export class SettingsPageService {
   }
 
   public async presentThemeActionSheet(): Promise<void> {
-    const [header, light, dark, system] = await Promise.all([
-      firstValueFrom(this.translate.get('settings.theme.select')),
-      firstValueFrom(this.translate.get('settings.theme.light')),
-      firstValueFrom(this.translate.get('settings.theme.dark')),
-      firstValueFrom(this.translate.get('settings.theme.system')),
-    ]);
+    const translations = await firstValueFrom(
+      this.translate.get([
+        'core.settings.theme.select',
+        'core.settings.theme.light',
+        'core.settings.theme.dark',
+        'core.settings.theme.system',
+      ])
+    );
     const actionSheet = await this.actionSheetController.create({
-      header,
+      header: translations['core.settings.theme.select'],
       buttons: [
         {
-          text: light,
+          text: translations['core.settings.theme.light'],
           handler: (): void => {
             this.setTheme('light');
           },
         },
         {
-          text: dark,
+          text: translations['core.settings.theme.dark'],
           handler: (): void => {
             this.setTheme('dark');
           },
         },
         {
-          text: system,
+          text: translations['core.settings.theme.system'],
           handler: (): void => {
             this.setTheme('system');
           },
@@ -80,29 +78,31 @@ export class SettingsPageService {
   }
 
   public async presentFontSizeActionSheet(): Promise<void> {
-    const [header, small, medium, large] = await Promise.all([
-      firstValueFrom(this.translate.get('settings.fontSize.select')),
-      firstValueFrom(this.translate.get('settings.fontSize.small')),
-      firstValueFrom(this.translate.get('settings.fontSize.medium')),
-      firstValueFrom(this.translate.get('settings.fontSize.large')),
-    ]);
+    const translations = await firstValueFrom(
+      this.translate.get([
+        'core.settings.fontSize.select',
+        'core.settings.fontSize.small',
+        'core.settings.fontSize.medium',
+        'core.settings.fontSize.large',
+      ])
+    );
     const actionSheet = await this.actionSheetController.create({
-      header,
+      header: translations['core.settings.fontSize.select'],
       buttons: [
         {
-          text: small,
+          text: translations['core.settings.fontSize.small'],
           handler: (): void => {
             this.setFontSize('small');
           },
         },
         {
-          text: medium,
+          text: translations['core.settings.fontSize.medium'],
           handler: (): void => {
             this.setFontSize('medium');
           },
         },
         {
-          text: large,
+          text: translations['core.settings.fontSize.large'],
           handler: (): void => {
             this.setFontSize('large');
           },
@@ -114,14 +114,20 @@ export class SettingsPageService {
 
   public async presentLanguageActionSheet(): Promise<void> {
     const languages = this.languageService.getAllLanguages();
-    const [header] = await Promise.all([
-      firstValueFrom(this.translate.get('settings.language.select')),
-    ]);
+    const translationKeys = [
+      'core.settings.language.select',
+      ...languages.map(
+        (lang) => `core.settings.language.options.${lang.code}`
+      ),
+    ];
+    const translations = await firstValueFrom(this.translate.get(translationKeys));
     const actionSheet = await this.actionSheetController.create({
-      header,
+      header: translations['core.settings.language.select'],
       buttons: [
         ...languages.map((lang) => ({
-          text: `${lang.nativeName} (${lang.name})`,
+          text:
+            translations[`core.settings.language.options.${lang.code}`] ||
+            lang.nativeName,
           handler: (): void => {
             this.setLanguage(lang.code);
           },
@@ -131,31 +137,31 @@ export class SettingsPageService {
     await actionSheet.present();
   }
 
-  public async presentResetSettingsAlert(): Promise<void> {
-    const [header, message, cancel, reset] = await Promise.all([
-      firstValueFrom(this.translate.get('settings.reset.title')),
-      firstValueFrom(this.translate.get('settings.reset.confirm')),
-      firstValueFrom(this.translate.get('settings.reset.cancel')),
-      firstValueFrom(this.translate.get('settings.reset.reset')),
-    ]);
-    const alert = await this.alertController.create({
-      header,
-      message,
+  public async presentResetSettingsActionSheet(): Promise<void> {
+    const translations = await firstValueFrom(
+      this.translate.get([
+        'core.settings.reset.title',
+        'core.settings.reset.reset',
+        'core.settings.reset.cancel',
+      ])
+    );
+    const actionSheet = await this.actionSheetController.create({
+      header: translations['core.settings.reset.title'],
       buttons: [
         {
-          text: cancel,
-          role: 'cancel',
-        },
-        {
-          text: reset,
+          text: translations['core.settings.reset.reset'],
           role: 'destructive',
           handler: (): void => {
             this.resetAllSettings();
           },
         },
+        {
+          text: translations['core.settings.reset.cancel'],
+          role: 'cancel',
+        },
       ],
     });
-    await alert.present();
+    await actionSheet.present();
   }
 
   public setTheme(theme: ThemeType): void {

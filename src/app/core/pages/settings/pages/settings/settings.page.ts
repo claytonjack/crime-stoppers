@@ -12,6 +12,7 @@ import {
   IonToolbar,
   IonTitle,
   IonToggle,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { SettingsPageService } from 'src/app/core/pages/settings/services/settings-page.service';
 import { Router } from '@angular/router';
@@ -23,6 +24,8 @@ import {
 } from 'src/app/core/pages/settings/models/settings.model';
 import { Preferences } from '@capacitor/preferences';
 import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
+import { BiometricAuthService } from '@app/core/services/authentication.service';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
 
 export const settingsPageSelector = 'app-settings';
 
@@ -50,13 +53,25 @@ export class SettingsPage {
   private readonly settingsPageService = inject(SettingsPageService);
   private readonly router = inject(Router);
   private readonly notificationsService = inject(NotificationsService);
+  private readonly biometricAuthService = inject(BiometricAuthService);
+  private readonly alertController = inject(AlertController);
+  private readonly screenReader = inject(ScreenReaderService);
 
   public notificationPermissionStatus: 'granted' | 'denied' | 'prompt' =
     'prompt';
   public notificationEnabled$ = this.notificationsService.notificationEnabled$;
+  public biometricAuthEnabled$ = this.biometricAuthService.authEnabled$;
+  public biometricTypeName$ = new Promise<string>((resolve) => {
+    this.biometricAuthService.getBiometryTypeName().then(resolve);
+  });
 
   constructor() {
     this.checkNotificationPermission();
+    this.announcePageLoad();
+  }
+
+  private async announcePageLoad() {
+    await this.screenReader.speak('Settings page loaded');
   }
 
   public async onNotificationEnabledToggle(event: any) {
@@ -93,25 +108,71 @@ export class SettingsPage {
     }
   }
 
+  public async onBiometricAuthToggle(event: any) {
+    const checked = event.detail.checked;
+
+    if (checked) {
+      // Try to enable biometric auth
+      const availability =
+        await this.biometricAuthService.checkBiometryAvailability();
+
+      if (!availability.isAvailable) {
+        // Show alert that biometrics are not available
+        const alert = await this.alertController.create({
+          header: 'Biometric Authentication Unavailable',
+          message:
+            'Biometric authentication is not available on this device. Please ensure you have set up fingerprint, face recognition, or a device PIN/password in your device settings.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+
+        // Reset toggle
+        event.target.checked = false;
+        return;
+      }
+
+      try {
+        const success = await this.biometricAuthService.enableAuth();
+        if (!success) {
+          // User cancelled or authentication failed
+          event.target.checked = false;
+        }
+      } catch (error) {
+        console.error('Error enabling biometric auth:', error);
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message:
+            'Failed to enable biometric authentication. Please try again.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        event.target.checked = false;
+      }
+    } else {
+      // Disable biometric auth
+      await this.biometricAuthService.disableAuth();
+    }
+  }
+
   private readonly displayNames = {
     theme: {
-      light: 'Light',
-      dark: 'Dark',
-      system: 'System',
+      light: 'core.settings.theme.light',
+      dark: 'core.settings.theme.dark',
+      system: 'core.settings.theme.system',
     } as Record<ThemeType, string>,
     fontSize: {
-      small: 'Small',
-      medium: 'Medium',
-      large: 'Large',
+      small: 'core.settings.fontSize.small',
+      medium: 'core.settings.fontSize.medium',
+      large: 'core.settings.fontSize.large',
     } as Record<FontSizeOption, string>,
     privacyMode: {
       true: 'Enabled',
       false: 'Disabled',
     },
     language: {
-      en: 'English',
-      'fr-CA': 'Français (CA)',
-      es: 'Español',
+      en: 'core.settings.language.options.en',
+      'fr-CA': 'core.settings.language.options.fr-CA',
+      es: 'core.settings.language.options.es',
     } as Record<LanguageOption, string>,
   };
 
@@ -121,22 +182,33 @@ export class SettingsPage {
   public readonly language$ = this.settingsPageService.language$;
 
   public readonly themeDisplayName$ = this.theme$.pipe(
-    map((theme) => this.displayNames.theme[theme] || 'System')
+    map(
+      (theme) => this.displayNames.theme[theme] || 'core.settings.theme.system'
+    )
   );
 
   public readonly fontSizeDisplayName$ = this.fontSize$.pipe(
-    map((fontSize) => this.displayNames.fontSize[fontSize] || 'Medium')
+    map(
+      (fontSize) =>
+        this.displayNames.fontSize[fontSize] || 'core.settings.fontSize.medium'
+    )
   );
 
   public readonly languageDisplayName$ = this.language$.pipe(
-    map((language) => this.displayNames.language[language] || 'English')
+    map(
+      (language) =>
+        this.displayNames.language[language] ||
+        'core.settings.language.options.en'
+    )
   );
 
   public async onThemeClick(): Promise<void> {
+    await this.screenReader.speak('Theme settings clicked');
     await this.settingsPageService.presentThemeActionSheet();
   }
 
   public async onFontSizeClick(): Promise<void> {
+    await this.screenReader.speak('Font size settings clicked');
     await this.settingsPageService.presentFontSizeActionSheet();
   }
 
@@ -148,22 +220,27 @@ export class SettingsPage {
   }
 
   public async onResetSettings(): Promise<void> {
-    await this.settingsPageService.presentResetSettingsAlert();
+    await this.screenReader.speak('Reset settings clicked');
+    await this.settingsPageService.presentResetSettingsActionSheet();
   }
 
   public async onLanguageClick(): Promise<void> {
+    await this.screenReader.speak('Language settings clicked');
     await this.settingsPageService.presentLanguageActionSheet();
   }
 
   public async onScreenReaderClick(): Promise<void> {
+    await this.screenReader.speak('Screen reader settings clicked');
     console.log('Screen reader settings clicked');
   }
 
   public async onLoginAuthClick(): Promise<void> {
+    await this.screenReader.speak('Authentication settings clicked');
     console.log('Login authentication settings clicked');
   }
 
   public async onNotificationsClick(): Promise<void> {
+    await this.screenReader.speak('Notifications settings clicked');
     console.log('Notifications settings clicked');
   }
 }
