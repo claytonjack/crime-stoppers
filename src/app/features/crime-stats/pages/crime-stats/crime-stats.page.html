@@ -30,7 +30,7 @@
 					</ion-select>
 				</div>
 
-				<div class="filter-control">
+				<div class="filter-control" role="group" aria-label="TimeFrame Filter">
 					<span class="filter-label">{{ 'feature.crimeStats.filters.timeframe' | translate }}</span>
 					<ion-select [value]="selectedTimeframe" (ionChange)="onTimeframeChange($event)" interface="popover"
 						[interfaceOptions]="selectInterfaceOptions"
