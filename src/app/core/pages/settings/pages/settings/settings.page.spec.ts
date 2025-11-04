@@ -1,98 +1,162 @@
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SettingsPage } from './settings.page';
-import { SettingsPageService } from 'src/app/core/pages/settings/services/settings-page.service';
-import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Pipe, PipeTransform } from '@angular/core';
 import { of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { SettingsPage } from './settings.page';
+import { ScreenReaderService } from '@app/core/pages/settings/services/screen-reader.service';
+import { SettingsPageService } from 'src/app/core/pages/settings/services/settings-page.service';
+import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
+import { BiometricAuthService } from '@app/core/services/authentication.service';
+import { AlertController } from '@ionic/angular';
+import {
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonToggle,
+} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
-// Fake loader so TranslateModule works without real translation files
-class FakeLoader implements TranslateLoader {
-  getTranslation(lang: string) {
-    return of({});
+// ---- Standalone TranslatePipe Mock ----
+@Pipe({ name: 'translate', standalone: true })
+class TranslatePipeMock implements PipeTransform {
+  transform(value: string, args?: any): string {
+    return value;
   }
+}
+
+// ---- Mock Router ----
+class RouterMock {
+  navigate = jasmine.createSpy('navigate');
 }
 
 describe('SettingsPage', () => {
   let component: SettingsPage;
   let fixture: ComponentFixture<SettingsPage>;
-  let settingsPageServiceSpy: jasmine.SpyObj<SettingsPageService>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let navControllerSpy: jasmine.SpyObj<NavController>;
+  let screenReader: jasmine.SpyObj<ScreenReaderService>;
+  let settingsService: jasmine.SpyObj<SettingsPageService>;
+  let notificationsService: jasmine.SpyObj<NotificationsService>;
+  let biometricService: jasmine.SpyObj<BiometricAuthService>;
+  let alertController: jasmine.SpyObj<AlertController>;
 
-  beforeEach(waitForAsync(() => {
-    settingsPageServiceSpy = jasmine.createSpyObj('SettingsPageService', [
-      'presentThemeActionSheet',
-      'presentFontSizeActionSheet',
-      'presentResetSettingsActionSheet',
-      'setPrivacyMode',
-    ]);
+  beforeEach(async () => {
+    screenReader = jasmine.createSpyObj('ScreenReaderService', ['speak']);
+    settingsService = jasmine.createSpyObj(
+      'SettingsPageService',
+      [
+        'presentThemeActionSheet',
+        'presentFontSizeActionSheet',
+        'presentResetSettingsActionSheet',
+        'presentLanguageActionSheet',
+        'setPrivacyMode',
+      ],
+      {
+        theme$: of('light'),
+        fontSize$: of('medium'),
+        language$: of('en'),
+        privacyMode$: of(false),
+      }
+    );
+    notificationsService = jasmine.createSpyObj(
+      'NotificationsService',
+      ['setEnabled'],
+      {
+        notificationEnabled$: of(true),
+      }
+    );
+    biometricService = jasmine.createSpyObj(
+      'BiometricAuthService',
+      [
+        'enableAuth',
+        'disableAuth',
+        'checkBiometryAvailability',
+        'getBiometryTypeName',
+      ],
+      {
+        authEnabled$: of(true),
+      }
+    );
+    alertController = jasmine.createSpyObj('AlertController', ['create']);
 
-    Object.defineProperty(settingsPageServiceSpy, 'theme$', {
-      get: () => of('system'),
-    });
-    Object.defineProperty(settingsPageServiceSpy, 'fontSize$', {
-      get: () => of('medium'),
-    });
-    Object.defineProperty(settingsPageServiceSpy, 'privacyMode$', {
-      get: () => of(false),
-    });
-    Object.defineProperty(settingsPageServiceSpy, 'language$', {
-      get: () => of('en'),
-    });
-
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    navControllerSpy = jasmine.createSpyObj('NavController', [
-      'navigateForward',
-      'navigateBack',
-    ]);
-
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         SettingsPage,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
+        IonContent,
+        IonItem,
+        IonLabel,
+        IonHeader,
+        IonTitle,
+        IonToolbar,
+        IonToggle,
+        TranslatePipeMock,
+        AsyncPipe,
       ],
       providers: [
-        { provide: SettingsPageService, useValue: settingsPageServiceSpy },
-        { provide: Router, useValue: routerSpy },
-        { provide: NavController, useValue: navControllerSpy },
+        { provide: ScreenReaderService, useValue: screenReader },
+        { provide: SettingsPageService, useValue: settingsService },
+        { provide: NotificationsService, useValue: notificationsService },
+        { provide: BiometricAuthService, useValue: biometricService },
+        { provide: AlertController, useValue: alertController },
+        { provide: Router, useClass: RouterMock },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(SettingsPage, {
+        set: {
+          imports: [
+            IonContent,
+            IonItem,
+            IonLabel,
+            IonHeader,
+            IonTitle,
+            IonToolbar,
+            IonToggle,
+            TranslatePipeMock,
+            AsyncPipe,
+          ],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(SettingsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call presentThemeActionSheet on onThemeClick', async () => {
+  it('should announce page load on creation', async () => {
+    expect(screenReader.speak).toHaveBeenCalledWith('Settings page loaded');
+  });
+
+  it('should call onThemeClick and present theme action sheet', async () => {
     await component.onThemeClick();
-    expect(settingsPageServiceSpy.presentThemeActionSheet).toHaveBeenCalled();
+    expect(screenReader.speak).toHaveBeenCalledWith('Theme settings clicked');
+    expect(settingsService.presentThemeActionSheet).toHaveBeenCalled();
   });
 
-  it('should call presentFontSizeActionSheet on onFontSizeClick', async () => {
+  it('should call onFontSizeClick and present font size action sheet', async () => {
     await component.onFontSizeClick();
-    expect(
-      settingsPageServiceSpy.presentFontSizeActionSheet
-    ).toHaveBeenCalled();
+    expect(screenReader.speak).toHaveBeenCalledWith(
+      'Font size settings clicked'
+    );
+    expect(settingsService.presentFontSizeActionSheet).toHaveBeenCalled();
   });
 
-  it('should call setPrivacyMode on privacy mode toggle', () => {
-    if (component.onPrivacyModeToggle) {
-      component.onPrivacyModeToggle(true);
-      expect(settingsPageServiceSpy.setPrivacyMode).toHaveBeenCalledWith(true);
-    }
+  it('should call onLanguageClick and present language action sheet', async () => {
+    await component.onLanguageClick();
+    expect(screenReader.speak).toHaveBeenCalledWith(
+      'Language settings clicked'
+    );
+    expect(settingsService.presentLanguageActionSheet).toHaveBeenCalled();
   });
 
-  it('should call presentResetSettingsActionSheet on onResetSettings', async () => {
+  it('should call onResetSettings and present reset action sheet', async () => {
     await component.onResetSettings();
-    expect(
-      settingsPageServiceSpy.presentResetSettingsActionSheet
-    ).toHaveBeenCalled();
+    expect(screenReader.speak).toHaveBeenCalledWith('Reset settings clicked');
+    expect(settingsService.presentResetSettingsActionSheet).toHaveBeenCalled();
   });
 });
