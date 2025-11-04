@@ -1,31 +1,24 @@
-<section class="lock-screen-overlay" *ngIf="isLocked">
+<section class="lock-screen-overlay" *ngIf="isLocked" role="dialog" aria-modal="true" aria-label="Lock Screen">
 	<div class="lock-card">
 		<div class="lock-header">
 			<div class="lock-icon">
-				<img
-					src="assets/icons/icon-white.png"
-					[attr.alt]="'core.lockScreen.logoAlt' | translate"
-					class="app-icon"
-				/>
+				<img src="assets/icons/icon-white.png" [attr.alt]="'core.lockScreen.logoAlt' | translate" class="app-icon" />
 			</div>
 
 			<h1>{{ 'core.lockScreen.title' | translate }}</h1>
 		</div>
 
-		<p *ngIf="lastError" class="error-message">{{ lastError | translate }}</p>
+		<p *ngIf="lastError" class="error-message" role="alert">
+			{{ lastError | translate }}
+		</p>
 
-		<div *ngIf="isAttempting" class="spinner-container">
+		<div *ngIf="isAttempting" class="spinner-container" role="status" aria-live="polite">
 			<ion-spinner name="crescent"></ion-spinner>
+			<span class="visually-hidden">Authenticating...</span>
 		</div>
 
-		<ion-button
-			expand="block"
-			size="large"
-			class="auth-btn"
-			(click)="tryAuthenticate()"
-			[disabled]="isAttempting"
-			[attr.aria-label]="'core.lockScreen.authenticate' | translate"
-		>
+		<ion-button expand="block" size="large" class="auth-btn" (click)="tryAuthenticate()" [disabled]="isAttempting"
+			[attr.aria-label]="'core.lockScreen.authenticate' | translate">
 			{{ 'core.lockScreen.authenticate' | translate }}
 		</ion-button>
 	</div>

@@ -5,6 +5,7 @@ import {
   ScheduleOptions,
 } from '@capacitor/local-notifications';
 import { Preferences } from '@capacitor/preferences';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsService {
@@ -26,7 +27,6 @@ export class NotificationsService {
     this.trackAppOpened();
   }
 
-  // --- Notification enabled state management ---
   private async load(): Promise<void> {
     try {
       const { value } = await Preferences.get({ key: this.NOTIFICATION_KEY });
@@ -50,8 +50,13 @@ export class NotificationsService {
     return this.enabledSubject.value;
   }
 
-  // --- Notification scheduling logic ---
   async init(): Promise<void> {
+    if (!this.isLocalNotificationsAvailable()) {
+      console.info(
+        '[Notifications] LocalNotifications plugin not available on this platform; skipping init'
+      );
+      return;
+    }
     const permResult = await LocalNotifications.requestPermissions();
     console.log('Notification permission result:', permResult);
 
@@ -70,6 +75,7 @@ export class NotificationsService {
 
   async scheduleWeeklyReminder(): Promise<void> {
     if (!this.current) return;
+    if (!this.isLocalNotificationsAvailable()) return;
 
     await LocalNotifications.cancel({
       notifications: [{ id: this.WEEKLY_ID }],
@@ -94,6 +100,7 @@ export class NotificationsService {
   }
 
   async triggerWeeklyTest(): Promise<void> {
+    if (!this.isLocalNotificationsAvailable()) return;
     await this.triggerNow(
       this.WEEKLY_ID,
       '📰 Stay in the loop',
@@ -103,6 +110,7 @@ export class NotificationsService {
 
   async scheduleMonthlyReminder(): Promise<void> {
     if (!this.current) return;
+    if (!this.isLocalNotificationsAvailable()) return;
 
     await LocalNotifications.cancel({
       notifications: [{ id: this.MONTHLY_ID }],
@@ -127,6 +135,7 @@ export class NotificationsService {
   }
 
   async triggerMonthlyTest(): Promise<void> {
+    if (!this.isLocalNotificationsAvailable()) return;
     await this.triggerNow(
       this.MONTHLY_ID,
       '🔑 Got a lead?',
@@ -136,6 +145,7 @@ export class NotificationsService {
 
   async checkInactivity(): Promise<void> {
     if (!this.current) return;
+    if (!this.isLocalNotificationsAvailable()) return;
 
     const { value } = await Preferences.get({ key: 'lastOpened' });
     if (!value) return;
@@ -155,6 +165,7 @@ export class NotificationsService {
   }
 
   async triggerInactivityTest(): Promise<void> {
+    if (!this.isLocalNotificationsAvailable()) return;
     await this.triggerNow(
       this.INACTIVITY_ID,
       '👋 Checking In',
@@ -164,6 +175,7 @@ export class NotificationsService {
 
   private async triggerNow(id: number, title: string, body: string) {
     if (!this.current) return;
+    if (!this.isLocalNotificationsAvailable()) return;
 
     const perm = await LocalNotifications.checkPermissions();
     if (perm.display !== 'granted') {
@@ -186,9 +198,8 @@ export class NotificationsService {
     });
   }
 
-  // isNotificationEnabled is now replaced by the reactive state above
-
   async requestPermissions(): Promise<void> {
+    if (!this.isLocalNotificationsAvailable()) return;
     await LocalNotifications.requestPermissions();
   }
 
@@ -197,5 +208,12 @@ export class NotificationsService {
       key: 'lastOpened',
       value: new Date().toISOString(),
     });
+  }
+
+  private isLocalNotificationsAvailable(): boolean {
+    return (
+      Capacitor.isNativePlatform() &&
+      Capacitor.isPluginAvailable('LocalNotifications')
+    );
   }
 }

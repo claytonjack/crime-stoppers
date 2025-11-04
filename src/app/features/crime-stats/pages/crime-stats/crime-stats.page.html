@@ -1,14 +1,13 @@
 <app-header [title]="'feature.crimeStats.headerTitle' | translate"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" role="main" aria-label="Crime Statistics Page">
 	<div class="page-shell">
-		<section class="filters-panel surface-card">
+		<section class="filters-panel surface-card" role="region" aria-label="Filter Crime Data">
 			<div class="filters-row">
-				<div class="filter-control">
+				<div class="filter-control" role="group" aria-label="Location Filter">
 					<span class="filter-label">{{ 'feature.crimeStats.filters.location' | translate }}</span>
 					<ion-select [value]="selectedCity" (ionChange)="onCityChange($event)" interface="popover"
-						[interfaceOptions]="selectInterfaceOptions"
-						class="filter-select">
+						[interfaceOptions]="selectInterfaceOptions" class="filter-select" aria-label="Select city">
 						@for (city of cities; track city.value) {
 						<ion-select-option [value]="city.value">
 							{{ city.label | translate }}
@@ -17,11 +16,10 @@
 					</ion-select>
 				</div>
 
-				<div class="filter-control">
+				<div class="filter-control" role="group" aria-label="Category Filter">
 					<span class="filter-label">{{ 'feature.crimeStats.filters.category' | translate }}</span>
 					<ion-select [value]="selectedCategory" (ionChange)="onCategoryChange($event)" interface="popover"
-						[interfaceOptions]="selectInterfaceOptions"
-						class="filter-select">
+						[interfaceOptions]="selectInterfaceOptions" class="filter-select" aria-label="Select category">
 						@for (category of categories; track category.value) {
 						<ion-select-option [value]="category.value">
 							{{ category.label | translate }}
@@ -33,8 +31,7 @@
 				<div class="filter-control">
 					<span class="filter-label">{{ 'feature.crimeStats.filters.timeframe' | translate }}</span>
 					<ion-select [value]="selectedTimeframe" (ionChange)="onTimeframeChange($event)" interface="popover"
-						[interfaceOptions]="selectInterfaceOptions"
-						class="filter-select">
+						[interfaceOptions]="selectInterfaceOptions" class="filter-select" aria-label="Select timeframe">
 						@for (timeframe of timeframes; track timeframe.value) {
 						<ion-select-option [value]="timeframe.value">
 							{{ timeframe.label | translate }}
@@ -46,43 +43,45 @@
 		</section>
 
 		@if (loading) {
-		<div class="loading-card surface-card">
+		<div class="loading-card surface-card" role="status" aria-live="polite">
 			<ion-spinner name="crescent"></ion-spinner>
 			<p>{{ 'feature.crimeStats.loading' | translate }}</p>
 		</div>
 		} @else {
 		@if (!visibleIncidents.length) {
-		<div class="empty-state-card surface-card">
+		<div class="empty-state-card surface-card" role="status" aria-live="polite">
 			<h3>{{ 'feature.crimeStats.empty.title' | translate }}</h3>
 			<p>{{ 'feature.crimeStats.empty.description' | translate }}</p>
 			<p>{{ 'feature.crimeStats.empty.suggestion' | translate }}</p>
 		</div>
 		} @else {
-		<div class="charts-grid">
-			<ion-card class="chart-card surface-card">
+		<div class="charts-grid" role="region" aria-label="Crime Charts">
+			<ion-card class="chart-card surface-card" role="group" aria-label="Crimes by Type Chart">
 				<ion-card-header>
 					<ion-card-title>{{ 'feature.crimeStats.charts.breakdownTitle' | translate }}</ion-card-title>
 				</ion-card-header>
 				<ion-card-content>
 					<div class="chart-container type-chart" [style.height.px]="crimeTypeChartHeight">
-						<div echarts [options]="crimeTypeChartOption" class="chart"></div>
+						<div echarts [options]="crimeTypeChartOption" class="chart" role="img"
+							aria-label="Bar chart showing crimes by type"></div>
 					</div>
 				</ion-card-content>
 			</ion-card>
 
-			<ion-card class="chart-card surface-card">
+			<ion-card class="chart-card surface-card" role="group" aria-label="Crime Trends Timeline Chart">
 				<ion-card-header>
 					<ion-card-title>{{ 'feature.crimeStats.charts.trendsTitle' | translate }}</ion-card-title>
 				</ion-card-header>
 				<ion-card-content>
 					<div class="chart-container timeline-chart">
-						<div echarts [options]="crimeTimelineChartOption" class="chart"></div>
+						<div echarts [options]="crimeTimelineChartOption" class="chart" role="img"
+							aria-label="Line chart showing crime trends over time"></div>
 					</div>
 				</ion-card-content>
 			</ion-card>
 		</div>
 
-		<ion-card class="footnote-card surface-card">
+		<ion-card class="footnote-card surface-card" role="contentinfo" aria-label="Crime Statistics Footnote">
 			<ion-card-content>
 				<p>{{ 'feature.crimeStats.footnote' | translate }}</p>
 			</ion-card-content>
