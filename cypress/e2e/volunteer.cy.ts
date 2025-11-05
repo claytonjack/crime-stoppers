@@ -8,7 +8,7 @@ describe('Volunteer Page', () => {
   });
 
   it('should render the page header', () => {
-    cy.get('app-header').should('have.attr', 'title', 'Volunteer');
+    cy.get('app-header ion-title').should('contain', 'Volunteer');
   });
 
   it('should render the "Why Join Our Team?" section', () => {

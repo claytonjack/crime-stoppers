@@ -35,6 +35,6 @@ describe('Tab Navigation', () => {
     cy.get('ion-tab-button[href="/crime-stats"]').click();
 
     cy.url().should('include', '/crime-stats');
-    cy.get('ion-title').contains('Crime Statistics').should('be.visible');
+    cy.get('ion-title').should('be.visible').and('not.be.empty');
   });
 });

@@ -4,7 +4,7 @@ describe('Donate Page', () => {
   });
 
   it('should render the page header', () => {
-    cy.get('app-header').should('have.attr', 'title', 'Donate');
+    cy.get('app-header ion-title').should('contain', 'Donate');
   });
 
   it('should render the main hero title', () => {

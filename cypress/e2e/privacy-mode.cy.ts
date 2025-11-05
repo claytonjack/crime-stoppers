@@ -4,7 +4,7 @@ describe('Privacy Mode', () => {
   });
 
   it('should load the Privacy Mode page with the calendar', () => {
-    cy.get('app-header').should('contain', 'Calendar');
+    cy.get('app-header ion-title').should('contain', 'Calendar');
     cy.get('ion-datetime').should('exist');
   });
 

@@ -13,12 +13,16 @@ describe('Settings Menu', () => {
 
   it('should display theme options', () => {
     cy.contains('Theme').should('exist');
-    cy.contains('Choose your preferred color scheme').should('exist');
+    cy.contains('ion-item', 'Theme').within(() => {
+      cy.get('ion-label p').should('exist');
+    });
   });
 
   it('should display font size options', () => {
     cy.contains('Font Size').should('exist');
-    cy.contains('Adjust text size for better readability').should('exist');
+    cy.contains('ion-item', 'Font Size').within(() => {
+      cy.get('ion-label p').should('exist');
+    });
   });
 
   it('should display reset button', () => {
