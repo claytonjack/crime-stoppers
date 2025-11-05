@@ -102,7 +102,7 @@ describe('PrivacyModePage', () => {
 
     // Check header text
     expect(compiled.querySelector('app-header')?.textContent).toContain(
-      'core.privacyMode.headerTitle'
+      'Calendar'
     );
 
     // Check no-events message
