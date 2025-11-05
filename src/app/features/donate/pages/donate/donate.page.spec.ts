@@ -27,7 +27,7 @@ class TranslatePipeMock implements PipeTransform {
   imports: [],
   template: `<div>{{ title }}</div>`,
 })
-class HeaderComponentMock {
+class HeaderMockComponent {
   @Input() title!: string;
 }
 
@@ -44,7 +44,7 @@ describe('DonatePage', () => {
     await TestBed.configureTestingModule({
       imports: [
         DonatePage,
-        HeaderComponentMock,
+        HeaderMockComponent,
         IonContent,
         IonGrid,
         IonRow,
@@ -67,7 +67,7 @@ describe('DonatePage', () => {
             IonLabel,
             IonItemDivider,
             TranslatePipeMock,
-            HeaderComponentMock,
+            HeaderMockComponent,
           ],
         },
       })

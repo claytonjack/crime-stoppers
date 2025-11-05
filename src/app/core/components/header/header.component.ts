@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import {
   IonHeader,
@@ -28,7 +28,7 @@ import { inject } from '@angular/core';
     TranslateModule,
   ],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Input() title: string = '';
   @Input() showMenuButton: boolean = true;
 

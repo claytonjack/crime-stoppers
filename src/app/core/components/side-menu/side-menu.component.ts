@@ -1,5 +1,5 @@
 import { NotificationsService } from '@app/core/pages/settings/services/notifications.service';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import {
   IonMenu,
@@ -29,7 +29,7 @@ import { ScreenReaderService } from '@app/core/pages/settings/services/screen-re
     TranslateModule,
   ],
 })
-export class SideMenuComponent {
+export class SideMenuComponent implements OnInit {
   private readonly menuCtrl = inject(MenuController);
   private readonly router = inject(Router);
   private readonly privacyModeService = inject(PrivacyModeService);
